@@ -335,7 +335,7 @@
       "name": "QSVT in Qiskit",
       "description": "Implementing a quantum search algorithm based on Quantum Singular Value framework in Qiskit. ",
       "highlights": [
-        "QSVT in Qiskit was selected as one of the top 3 winning projects of Qiskit Hackaton Europe 2021.",
+        "QSVT in Qiskit was selected as one of the top 3 winning projects of IBM's Qiskit Hackaton Europe 2021.",
         "Quantum Singular Value Transformation (QSVT) is a framework that allows one to apply an arbitrary polynomial transformation to the singular values of a block-encoded unitary transformation.",
         "In its current form, this project contains QSVT-implemented quantum search, utilizing Fixed-point Amplitude Amplification."
       ],
@@ -345,7 +345,7 @@
       "roles": [
         "Team Member"
       ],
-      "entity": "Qiskit Hackaton Europe 2021",
+      "entity": "IBM's Qiskit Hackaton Europe 2021",
       "type": "application"
     },
     {
