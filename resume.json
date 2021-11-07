@@ -31,32 +31,30 @@
   },
   "work": [
     {
-      "name": "Phanous Research and Innovation Centre",
+      "name": "QuOne Lab at Phanous Research and Innovation Centre",
       "location": "Tehran, Iran",
-      "description": "Awesome compression company",
       "position": "Research Assistant",
-      "url": "https://phanous.ir",
+      "url": "https://phanous.ir/quone/",
       "startDate": "2021-06-17",
-      "summary": "P",
+      "summary": "Researching Quantum Machine Learning methods.",
       "highlights": [
-        "1",
-        "2",
-        "3"
+        "Assisting the senior researchers with their ongoing research on QML.",
+        "Desigining assignments and educational material for the 1000qubit workshop. (https://phanous.ir/1000qubit/)",
+        "Working on the theory and numerical simulations of a currently undisclosed project."
       ]
     },
     {
       "name": "School of Computer Science, Institute for Research in Fundamental Sciences (IPM)",
       "location": "Tehran, Iran",
-      "description": "Awesome compression company",
       "position": "Research Intern",
       "url": "https://cs.ipm.ac.ir/",
       "startDate": "2020-06-22",
-      "endDate": "2014-09-22",
-      "summary": "Q",
+      "endDate": "2020-09-22",
+      "summary": "Researching Quantum Computing and Quantum Mechanics.",
       "highlights": [
-        "1",
-        "2",
-        "3"
+        "Learned the basics of quantum computing.",
+        "Learned how to work with quantum computing software tools, such as Q# and Qiskit.",
+        "Learned how to do research and review literature."
       ]
     }
   ],
@@ -131,8 +129,6 @@
         "Information Retrieval",
         "Data Mining",
         "Software Engineering",
-
-        
         "Compiler Design",
         "Signals & Systems",
         "Probability and Statistics",
@@ -141,14 +137,32 @@
         "Microprocessor and Assembly Language",
         "Operating Systems"
       ]
+    },
+    {
+      "institution": "Allameh Helli 3 Highschool",
+      "url": "https://www.helli3.ir/",
+      "area": "Math & Physics",
+      "studyType": "Diploma",
+      "startDate": "2013-09",
+      "endDate": "2017-05"
     }
   ],
   "awards": [
     {
-      "title": "Digital Compression Pioneer Award",
-      "date": "2014-11-01",
-      "awarder": "Techcrunch",
-      "summary": "There is no spoon."
+      "title": "Placed among top 0.8% of the participants in The Iranian Nationwide University Entrance Exam for BSc. in Math & Engineering",
+      "date": "2017",
+      "awarder": "National Organization of Educational Testing"
+    },
+    {
+      "title": "Advanced to the 2nd round of Iran's Chemistry Olympiad",
+      "date": "2016",
+      "awarder": "National Organization for Development of Exceptional Talents"
+    },
+    {
+      "title": "1st Place in the 5th HelliChem",
+      "date": "2015",
+      "awarder": "Allameh Helli 3 Highschool",
+      "summary": "HelliChem is a practical chemistry contest in which contestants should carry out a series of chemical experiments and analyize their results."
     }
   ],
   "publications": [
@@ -204,13 +218,13 @@
   ],
   "references": [
     {
-      "name": "Erlich Bachman"
+      "name": "Salman Beigi, Associate Professor of Mathematics at IPM."
     },
     {
-      "name": "Erlich Bachman"
+      "name": "Hamed Farbeh, Assistant Professor of Computer Engineering Department at AUT."
     },
     {
-      "name": "Erlich Bachman"
+      "name": "Ehsan Nazerfard, Assistant Professor of Computer Engineering Department at AUT."
     }
   ],
   "projects": [
