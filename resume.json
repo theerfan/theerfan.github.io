@@ -36,7 +36,7 @@
       "position": "Research Assistant",
       "url": "https://phanous.ir/quone/",
       "startDate": "2021-06-17",
-      "summary": "Researching Quantum Machine Learning methods.",
+      "summary": "Researching Quantum Machine Learning methods under the supervision of Dr. Salman Beigi.",
       "highlights": [
         "Assisting the senior researchers with their ongoing research on QML.",
         "Desigining assignments and educational material for the 1000qubit workshop. (https://phanous.ir/1000qubit/)",
@@ -50,7 +50,7 @@
       "url": "https://cs.ipm.ac.ir/",
       "startDate": "2020-06-22",
       "endDate": "2020-09-22",
-      "summary": "Researching Quantum Computing and Quantum Mechanics.",
+      "summary": "Researching Quantum Computing and Quantum Mechanics under the supervision of Dr. Dara Rahmati.",
       "highlights": [
         "Learned the basics of quantum computing.",
         "Learned how to work with quantum computing software tools, such as Q# and Qiskit.",
@@ -124,15 +124,11 @@
         "Discrete Mathematics",
         "Computational Inteligence",
         "Artificial Inteligence",
-        "Theory of Machines and Languages",
         "Database Design",
         "Information Retrieval",
-        "Data Mining",
         "Software Engineering",
         "Compiler Design",
         "Signals & Systems",
-        "Probability and Statistics",
-        "Differential Equations",
         "Multicore Programming",
         "Microprocessor and Assembly Language",
         "Operating Systems"
@@ -167,29 +163,145 @@
   ],
   "publications": [
     {
-      "name": "Video compression for 3d media",
-      "publisher": "Hooli",
-      "url": "http://en.wikipedia.org/wiki/Silicon_Valley_(TV_series)",
-      "summary": "Innovative middle-out compression algorithm that changes the way we store data."
+      "name": "Quantum Machine Learning (Audited)",
+      "publisher": "University of TorontoX",
+      "url": "https://learning.edx.org/course/course-v1:University_of_TorontoX+UTQML101x+2T2019/home"
+    },
+    {
+      "name": "Quantum Physics 1 (Audited)",
+      "publisher": "MITx",
+      "url": "https://ocw.mit.edu/courses/physics/8-04-quantum-physics-i-spring-2016/"
+    },
+    {
+      "name": "Quantum Physics 2 (Audited)",
+      "publisher": "MITx",
+      "url": "https://ocw.mit.edu/courses/physics/8-05-quantum-physics-ii-fall-2013/"
+    },
+    {
+      "name": "Quantum Physics 3 (In Progress)",
+      "publisher": "MITx",
+      "url": "https://learning.edx.org/course/course-v1:MITx+8.06x+3T2021/home"
+    },
+    {
+      "name": "Quantum Cryptography (Audited)",
+      "publisher": "MITx",
+      "url": "https://learning.edx.org/course/course-v1:MITx+8.06x+3T2021/home"
+    },
+    {
+      "name": "Differential Equations",
+      "publisher": "MITx",
+      "url": "https://learning.edx.org/course/course-v1:MITx+18.031x+2T2021/home",
+      "summary": "Verified, Certificate at: https://github.com/Erfan-Online/MIT-18.03"
+    },
+    {
+      "name": "The Fourier Transform and its Applications (Audited)",
+      "publisher": "Stanford Engineering Everywhere",
+      "url": "https://see.stanford.edu/Course/EE261"
+    },
+    {
+      "name": "Statistics 110: Probability (In Progress)",
+      "publisher": "HarvardX",
+      "url": "https://learning.edx.org/course/course-v1:HarvardX+STAT110x+2T2021/home"
     }
   ],  
   "skills": [
     {
-      "name": "Web Development",
-      "level": "Master",
+      "name": "Quantum Programming",
       "keywords": [
-        "HTML",
-        "CSS",
-        "Javascript"
+        "Pennylane",
+        "Qiskit",
+        "Cirq",
+        "Q#"
       ]
     },
     {
-      "name": "Compression",
-      "level": "Master",
+      "name": "Machine Learning",
       "keywords": [
-        "Mpeg",
-        "MP4",
-        "GIF"
+        "PyTorch",
+        "Pandas",
+        "SciPy",
+        "NumPy",
+        "Jupyter"
+      ]
+    },
+    {
+      "name": "Back-End Development",
+      "keywords": [
+        "Django",
+        "Flask",
+        "koa.js",
+        "Express.js",
+        "REST",
+        "GraphQL"
+      ]
+    },
+    {
+      "name": "Front-End Development",
+      "keywords": [
+        "ReactJs",
+        "VueJS",
+        "Bootstrap",
+        "HTML",
+        "CSS"
+      ]
+    },
+    {
+      "name": "Databases",
+      "keywords": [
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "SQLite",
+        "Redis"
+      ]
+    },
+    {
+      "name": "DevOps",
+      "keywords": [
+        "Docker",
+        "Docker Swarm",
+        "Gitlab CI",
+        "Nginx",
+        "Gunicorn"
+      ]
+    },
+    {
+      "name": "Databases",
+      "keywords": [
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "SQLite",
+        "Redis"
+      ]
+    },
+    {
+      "name": "Programming Languages",
+      "keywords": [
+        "Python",
+        "Rust",
+        "C/C++",
+        "C#",
+        "Golang",
+        "Java",
+        "JavaScript/TypeScript",
+        "ARM Assembly",
+        "Matlab",
+        "Mathematica",
+        "OCaml",
+        "Racket"
+      ]
+    },
+    {
+      "name": "Miscellaneous",
+      "keywords": [
+       "Arduino",
+       "CUDA",
+       "OpenMP",
+       "LaTeX",
+       "Adobe Photoshop",
+       "Adobe Premiere Pro",
+       "Adobe After Effects"
       ]
     }
   ],
@@ -207,15 +319,6 @@
       "fluency": "Intermediate"
     }
   ],
-  "interests": [
-    {
-      "name": "Wildlife",
-      "keywords": [
-        "Ferrets",
-        "Unicorns"
-      ]
-    }
-  ],
   "references": [
     {
       "name": "Salman Beigi, Associate Professor of Mathematics at IPM."
@@ -229,26 +332,67 @@
   ],
   "projects": [
     {
-      "name": "Miss Direction",
-      "description": "A mapping engine that misguides you",
+      "name": "QSVT in Qiskit",
+      "description": "Implementing a quantum search algorithm based on Quantum Singular Value framework in Qiskit. ",
       "highlights": [
-        "Won award at AIHacks 2016",
-        "Built by all women team of newbie programmers",
-        "Using modern technologies such as GoogleMaps, Chrome Extension and Javascript"
+        "QSVT in Qiskit was selected as one of the top 3 winning projects of Qiskit Hackaton Europe 2021.",
+        "Quantum Singular Value Transformation (QSVT) is a framework that allows one to apply an arbitrary polynomial transformation to the singular values of a block-encoded unitary transformation.",
+        "In its current form, this project contains QSVT-implemented quantum search, utilizing Fixed-point Amplitude Amplification."
       ],
-      "keywords": [
-        "GoogleMaps",
-        "Chrome Extension",
-        "Javascript"
-      ],
-      "startDate": "2016-08-24",
-      "endDate": "2016-08-24",
-      "url": "missdirection.example.com",
+      "startDate": "2021-04-20",
+      "endDate": "2021-06-14",
+      "url": "https://qiskithackathoneurope.bemyapp.com/",
       "roles": [
-        "Team lead",
-        "Designer"
+        "Team Member"
       ],
-      "entity": "Smoogle",
+      "entity": "Qiskit Hackaton Europe 2021",
+      "type": "application"
+    },
+    {
+      "name": "Maqenta",
+      "description": "Maqenta is a software for generating music using Quantum Machine Learning",
+      "highlights": [
+        "Maqenta uses methods such as Quantum Long Short-Term Memory and Quantum Generative Adversarial Networks for generating music.",
+        "Maqenta processes music in the form of MIDI files and after running the data through quantum machine learning methods, generates new music.",
+        "Maqenta served as Erfan's BSc project."
+      ],
+      "startDate": "2021-07-23",
+      "endDate": "2021-10-20",
+      "url": "https://github.com/theerfan/Maqenta",
+      "roles": [
+        "Developer"
+      ],
+      "type": "application"
+    },
+    {
+      "name": "Q",
+      "description": "Q is the ongoing progress of Erfan's early research experience in quantum computing and quantum mechanics.",
+      "highlights": [
+        "Q contains solutions to Microsoft’s quantum programming exercises in Q#",
+        "Q contains solutions to the programming exercises of Prof. Peter Wittek’s QML course in Qiskit",
+        "Q also includes the list of the quantum papers, books and online courses that Erfan has gone through."
+      ],
+      "startDate": "2020-05-01",
+      "endDate": "2021-01-01",
+      "url": "https://github.com/theerfan/Q",
+      "roles": [
+        "Researcher"
+      ],
+      "type": "application"
+    },
+    {
+      "name": "AUT-ICPC information and registration website",
+      "description": "AUT-ICPC’s website is used by the AUT-ICPC contest’s participants to register in and gather more information about the contes",
+      "highlights": [
+        "AUT-ICPC’s website is built using Django on the back-end and React.JS on the front-end",
+        "AUT-ICPC’s website uses technologies such as Ngnix, PostgreSQL, REST framework and Redis."
+      ],
+      "startDate": "2019-06-01",
+      "endDate": "2019-01-01",
+      "url": "https://github.com/theerfan/Q",
+      "roles": [
+        "Researcher"
+      ],
       "type": "application"
     }
   ],
