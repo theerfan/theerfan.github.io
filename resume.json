@@ -366,13 +366,13 @@
     },
     {
       "name": "Q",
-      "description": "Q is the ongoing progress of Erfan's early research experience in quantum computing and quantum mechanics.",
+      "description": "Q is the progress of Erfan's early research experience in quantum computing and quantum mechanics.",
       "highlights": [
         "Q contains solutions to Microsoft’s quantum programming exercises in Q#",
         "Q contains solutions to the programming exercises of Prof. Peter Wittek’s QML course in Qiskit",
         "Q also includes the list of the quantum papers, books and online courses that Erfan has gone through."
       ],
-      "startDate": "2020-05-01",
+      "startDate": "2020-07-01",
       "endDate": "2021-01-01",
       "url": "https://github.com/theerfan/Q",
       "roles": [
@@ -389,7 +389,7 @@
       ],
       "startDate": "2019-06-01",
       "endDate": "2019-01-01",
-      "url": "https://github.com/theerfan/Q",
+      "url": "https://icpc.aut.ac.ir/",
       "roles": [
         "Researcher"
       ],
