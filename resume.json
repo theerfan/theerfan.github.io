@@ -35,12 +35,26 @@
       "location": "Tehran, Iran",
       "position": "Research Assistant",
       "url": "https://phanous.ir/quone/",
+      "startDate": "2021-12-01",
+      "summary": "Researching Quantum Machine Learning methods under the supervision of Dr. Salman Beigi.",
+      "highlights": [
+        "Assisting the senior researchers with their ongoing research on QML.",
+        "Working on the theory and numerical simulations of a paper on Quantum Lazy Training (https://arxiv.org/abs/2202.08232).",
+        "Reading and giving talks about various QML papers at the research group's weekly meetings."
+      ]
+    },
+    {
+      "name": "QuOne Lab at Phanous Research and Innovation Centre",
+      "location": "Tehran, Iran",
+      "position": "Research Intern",
+      "url": "https://phanous.ir/quone/",
       "startDate": "2021-06-17",
+      "endDate": "2021-12-01",
       "summary": "Researching Quantum Machine Learning methods under the supervision of Dr. Salman Beigi.",
       "highlights": [
         "Assisting the senior researchers with their ongoing research on QML.",
         "Desigining assignments and educational material for the 1000qubit workshop. (https://phanous.ir/1000qubit/)",
-        "Working on the theory and numerical simulations of a project. (Details TBA soon)"
+        "Reading and giving talks about various QML papers at the research group's weekly meetings."
       ]
     },
     {
@@ -178,14 +192,9 @@
       "url": "https://ocw.mit.edu/courses/physics/8-05-quantum-physics-ii-fall-2013/"
     },
     {
-      "name": "Quantum Physics 3 (In Progress)",
+      "name": "Quantum Physics 3 (Audited)",
       "publisher": "MITx",
-      "url": "https://learning.edx.org/course/course-v1:MITx+8.06x+3T2021/home"
-    },
-    {
-      "name": "Quantum Cryptography (Audited)",
-      "publisher": "CaltechX - DelftX",
-      "url": "https://learning.edx.org/course/course-v1:MITx+8.06x+3T2021/home"
+      "url": "https://ocw.mit.edu/courses/physics/8-06-quantum-physics-iii-spring-2018/"
     },
     {
       "name": "Differential Equations",
@@ -194,14 +203,15 @@
       "summary": "Verified, Certificate at: https://github.com/Erfan-Online/MIT-18.03"
     },
     {
+      "name": "Statistics 110: Probability",
+      "publisher": "HarvardX",
+      "url": "https://learning.edx.org/course/course-v1:HarvardX+STAT110x+2T2021/home",
+      "summary": "Verified, Certificate at: https://github.com/Erfan-Online/Harvard-Stat110"
+    },
+    {
       "name": "The Fourier Transform and its Applications (Audited)",
       "publisher": "Stanford Engineering Everywhere",
       "url": "https://see.stanford.edu/Course/EE261"
-    },
-    {
-      "name": "Statistics 110: Probability (In Progress)",
-      "publisher": "HarvardX",
-      "url": "https://learning.edx.org/course/course-v1:HarvardX+STAT110x+2T2021/home"
     }
   ],  
   "skills": [
@@ -221,7 +231,6 @@
         "Pandas",
         "SciPy",
         "NumPy",
-        "Jupyter"
       ]
     },
     {
@@ -238,7 +247,6 @@
     {
       "name": "Front-End Development",
       "keywords": [
-        "ReactJs",
         "VueJS",
         "Bootstrap",
         "HTML",
@@ -259,7 +267,6 @@
       "name": "DevOps",
       "keywords": [
         "Docker",
-        "Docker Swarm",
         "Gitlab CI",
         "Nginx",
         "Gunicorn"

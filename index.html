@@ -1,2358 +1,2472 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Erfan Abedi</title>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-    />
-    <style>
-      @font-face {
-        font-family: "icomoon";
-        src: url("fonts/icomoon.eot?z1lat9");
-        src: url("fonts/icomoon.eot?z1lat9#iefix") format("embedded-opentype"),
-          url("fonts/icomoon.ttf?z1lat9") format("truetype"),
-          url("fonts/icomoon.woff?z1lat9") format("woff"),
-          url("fonts/icomoon.svg?z1lat9#icomoon") format("svg");
-        font-weight: normal;
-        font-style: normal;
-      }
 
-      [class^="icon-"],
-      [class*=" icon-"] {
-        /* use !important to prevent issues with browser extensions that change fonts */
-        font-family: "icomoon" !important;
-        speak: none;
-        font-style: normal;
-        font-weight: normal;
-        font-variant: normal;
-        text-transform: none;
-        line-height: 1;
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Erfan Abedi</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+  <style>
+    @font-face {
+      font-family: "icomoon";
+      src: url("fonts/icomoon.eot?z1lat9");
+      src: url("fonts/icomoon.eot?z1lat9#iefix") format("embedded-opentype"),
+        url("fonts/icomoon.ttf?z1lat9") format("truetype"),
+        url("fonts/icomoon.woff?z1lat9") format("woff"),
+        url("fonts/icomoon.svg?z1lat9#icomoon") format("svg");
+      font-weight: normal;
+      font-style: normal;
+    }
 
-        /* Better Font Rendering =========== */
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
+    [class^="icon-"],
+    [class*=" icon-"] {
+      /* use !important to prevent issues with browser extensions that change fonts */
+      font-family: "icomoon" !important;
+      speak: none;
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1;
 
-      .icon-gitlab .path1:before {
-        content: "\e906";
-        color: rgb(252, 109, 38);
-      }
-      .icon-gitlab .path2:before {
-        content: "\e907";
-        margin-left: -1em;
-        color: rgb(226, 67, 41);
-      }
-      .icon-gitlab .path3:before {
-        content: "\e908";
-        margin-left: -1em;
-        color: rgb(252, 109, 38);
-      }
-      .icon-gitlab .path4:before {
-        content: "\e909";
-        margin-left: -1em;
-        color: rgb(252, 163, 38);
-      }
-      .icon-gitlab .path5:before {
-        content: "\e90a";
-        margin-left: -1em;
-        color: rgb(226, 67, 41);
-      }
-      .icon-gitlab .path6:before {
-        content: "\e90b";
-        margin-left: -1em;
-        color: rgb(252, 109, 38);
-      }
-      .icon-gitlab .path7:before {
-        content: "\e90c";
-        margin-left: -1em;
-        color: rgb(252, 163, 38);
-      }
-      .icon-gitlab .path8:before {
-        content: "\e90d";
-        margin-left: -1em;
-        color: rgb(226, 67, 41);
-      }
-      .icon-meetup .path1:before {
-        content: "\e901";
-        color: rgb(255, 255, 255);
-      }
-      .icon-meetup .path2:before {
-        content: "\e902";
-        margin-left: -1.5em;
-        color: rgb(240, 1, 1);
-      }
-      .icon-meetup .path3:before {
-        content: "\e903";
-        margin-left: -1.5em;
-        color: rgb(3, 3, 3);
-      }
-      .icon-blogger:before {
-        content: "\e900";
-      }
-      .icon-exercism:before {
-        content: "\e601";
-      }
-      .icon-telegram:before {
-        content: "\e904";
-      }
-      .icon-flickr:before {
-        content: "\f16e";
-      }
-      .icon-medium:before {
-        content: "\f23a";
-      }
-      .icon-heart:before {
-        content: "\f004";
-      }
-      .icon-book:before {
-        content: "\f02d";
-      }
-      .icon-linkedin:before {
-        content: "\f08c";
-      }
-      .icon-twitter:before {
-        content: "\f099";
-      }
-      .icon-github:before {
-        content: "\f09b";
-      }
-      .icon-link:before {
-        content: "\f0c1";
-      }
-      .icon-bars:before {
-        content: "\f0c9";
-      }
-      .icon-pinterest:before {
-        content: "\f0d2";
-      }
-      .icon-googleplus:before {
-        content: "\f0d5";
-      }
-      .icon-circle:before {
-        content: "\f111";
-      }
-      .icon-code:before {
-        content: "\f121";
-      }
-      .icon-youtube:before {
-        content: "\f167";
-      }
-      .icon-stackoverflow:before {
-        content: "\f16c";
-      }
-      .icon-bitbucket:before {
-        content: "\f171";
-      }
-      .icon-tumblr:before {
-        content: "\f173";
-      }
-      .icon-dribbble:before {
-        content: "\f17d";
-      }
-      .icon-skype:before {
-        content: "\f17e";
-      }
-      .icon-foursquare:before {
-        content: "\f180";
-      }
-      .icon-gittip:before {
-        content: "\f184";
-      }
-      .icon-gratipay:before {
-        content: "\f184";
-      }
-      .icon-stackexchange:before {
-        content: "\f18d";
-      }
-      .icon-vimeo:before {
-        content: "\f194";
-      }
-      .icon-graduation-cap:before {
-        content: "\f19d";
-      }
-      .icon-language:before {
-        content: "\f1ab";
-      }
-      .icon-child:before {
-        content: "\f1ae";
-      }
-      .icon-behance:before {
-        content: "\f1b5";
-      }
-      .icon-spotify:before {
-        content: "\f1bc";
-      }
-      .icon-soundcloud:before {
-        content: "\f1be";
-      }
-      .icon-codepen:before {
-        content: "\f1cb";
-      }
-      .icon-hackernews:before {
-        content: "\f1d4";
-      }
-      .icon-lastfm:before {
-        content: "\f202";
-      }
-      .icon-angellist:before {
-        content: "\f209";
-      }
-      .icon-facebook:before {
-        content: "\f230";
-      }
-      .icon-instagram:before {
-        content: "\e905";
-      }
-      .icon-trophy:before {
-        content: "\e605";
-      }
-      .icon-office:before {
-        content: "\e606";
-      }
-      .icon-clock:before {
-        content: "\e60a";
-      }
-      .icon-reddit:before {
-        content: "\e609";
-      }
-      .icon-profile:before {
-        content: "\e600";
-      }
-      .icon-tools:before {
-        content: "\e034";
-      }
-      .icon-location:before {
-        content: "\e602";
-      }
-      .icon-mail:before {
-        content: "\e603";
-      }
-      .icon-phone:before {
-        content: "\e03f";
-      }
-      .icon-newspaper:before {
-        content: "\e607";
-      }
-      .icon-chevron-down:before {
-        content: "\e60c";
-      }
-      .icon-chevron-up:before {
-        content: "\e60d";
-      }
-      .icon-dots-three-horizontal:before {
-        content: "\e60b";
-      }
-      .icon-thumbs-up:before {
-        content: "\e604";
-      }
-      .icon-board:before {
-        content: "\e608";
-      }
+      /* Better Font Rendering =========== */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
 
-      .relative {
-        position: relative;
+    .icon-gitlab .path1:before {
+      content: "\e906";
+      color: rgb(252, 109, 38);
+    }
+
+    .icon-gitlab .path2:before {
+      content: "\e907";
+      margin-left: -1em;
+      color: rgb(226, 67, 41);
+    }
+
+    .icon-gitlab .path3:before {
+      content: "\e908";
+      margin-left: -1em;
+      color: rgb(252, 109, 38);
+    }
+
+    .icon-gitlab .path4:before {
+      content: "\e909";
+      margin-left: -1em;
+      color: rgb(252, 163, 38);
+    }
+
+    .icon-gitlab .path5:before {
+      content: "\e90a";
+      margin-left: -1em;
+      color: rgb(226, 67, 41);
+    }
+
+    .icon-gitlab .path6:before {
+      content: "\e90b";
+      margin-left: -1em;
+      color: rgb(252, 109, 38);
+    }
+
+    .icon-gitlab .path7:before {
+      content: "\e90c";
+      margin-left: -1em;
+      color: rgb(252, 163, 38);
+    }
+
+    .icon-gitlab .path8:before {
+      content: "\e90d";
+      margin-left: -1em;
+      color: rgb(226, 67, 41);
+    }
+
+    .icon-meetup .path1:before {
+      content: "\e901";
+      color: rgb(255, 255, 255);
+    }
+
+    .icon-meetup .path2:before {
+      content: "\e902";
+      margin-left: -1.5em;
+      color: rgb(240, 1, 1);
+    }
+
+    .icon-meetup .path3:before {
+      content: "\e903";
+      margin-left: -1.5em;
+      color: rgb(3, 3, 3);
+    }
+
+    .icon-blogger:before {
+      content: "\e900";
+    }
+
+    .icon-exercism:before {
+      content: "\e601";
+    }
+
+    .icon-telegram:before {
+      content: "\e904";
+    }
+
+    .icon-flickr:before {
+      content: "\f16e";
+    }
+
+    .icon-medium:before {
+      content: "\f23a";
+    }
+
+    .icon-heart:before {
+      content: "\f004";
+    }
+
+    .icon-book:before {
+      content: "\f02d";
+    }
+
+    .icon-linkedin:before {
+      content: "\f08c";
+    }
+
+    .icon-twitter:before {
+      content: "\f099";
+    }
+
+    .icon-github:before {
+      content: "\f09b";
+    }
+
+    .icon-link:before {
+      content: "\f0c1";
+    }
+
+    .icon-bars:before {
+      content: "\f0c9";
+    }
+
+    .icon-pinterest:before {
+      content: "\f0d2";
+    }
+
+    .icon-googleplus:before {
+      content: "\f0d5";
+    }
+
+    .icon-circle:before {
+      content: "\f111";
+    }
+
+    .icon-code:before {
+      content: "\f121";
+    }
+
+    .icon-youtube:before {
+      content: "\f167";
+    }
+
+    .icon-stackoverflow:before {
+      content: "\f16c";
+    }
+
+    .icon-bitbucket:before {
+      content: "\f171";
+    }
+
+    .icon-tumblr:before {
+      content: "\f173";
+    }
+
+    .icon-dribbble:before {
+      content: "\f17d";
+    }
+
+    .icon-skype:before {
+      content: "\f17e";
+    }
+
+    .icon-foursquare:before {
+      content: "\f180";
+    }
+
+    .icon-gittip:before {
+      content: "\f184";
+    }
+
+    .icon-gratipay:before {
+      content: "\f184";
+    }
+
+    .icon-stackexchange:before {
+      content: "\f18d";
+    }
+
+    .icon-vimeo:before {
+      content: "\f194";
+    }
+
+    .icon-graduation-cap:before {
+      content: "\f19d";
+    }
+
+    .icon-language:before {
+      content: "\f1ab";
+    }
+
+    .icon-child:before {
+      content: "\f1ae";
+    }
+
+    .icon-behance:before {
+      content: "\f1b5";
+    }
+
+    .icon-spotify:before {
+      content: "\f1bc";
+    }
+
+    .icon-soundcloud:before {
+      content: "\f1be";
+    }
+
+    .icon-codepen:before {
+      content: "\f1cb";
+    }
+
+    .icon-hackernews:before {
+      content: "\f1d4";
+    }
+
+    .icon-lastfm:before {
+      content: "\f202";
+    }
+
+    .icon-angellist:before {
+      content: "\f209";
+    }
+
+    .icon-facebook:before {
+      content: "\f230";
+    }
+
+    .icon-instagram:before {
+      content: "\e905";
+    }
+
+    .icon-trophy:before {
+      content: "\e605";
+    }
+
+    .icon-office:before {
+      content: "\e606";
+    }
+
+    .icon-clock:before {
+      content: "\e60a";
+    }
+
+    .icon-reddit:before {
+      content: "\e609";
+    }
+
+    .icon-profile:before {
+      content: "\e600";
+    }
+
+    .icon-tools:before {
+      content: "\e034";
+    }
+
+    .icon-location:before {
+      content: "\e602";
+    }
+
+    .icon-mail:before {
+      content: "\e603";
+    }
+
+    .icon-phone:before {
+      content: "\e03f";
+    }
+
+    .icon-newspaper:before {
+      content: "\e607";
+    }
+
+    .icon-chevron-down:before {
+      content: "\e60c";
+    }
+
+    .icon-chevron-up:before {
+      content: "\e60d";
+    }
+
+    .icon-dots-three-horizontal:before {
+      content: "\e60b";
+    }
+
+    .icon-thumbs-up:before {
+      content: "\e604";
+    }
+
+    .icon-board:before {
+      content: "\e608";
+    }
+
+    .relative {
+      position: relative;
+    }
+
+    .clear-margin {
+      margin: 0;
+    }
+
+    .space-top {
+      margin-top: 10px;
+    }
+
+    .space-right {
+      margin-right: 10px;
+    }
+
+    .space-bottom {
+      margin-bottom: 10px;
+    }
+
+    .mr-5 {
+      margin-right: 5px;
+    }
+
+    .mr-10 {
+      margin-right: 10px;
+    }
+
+    .ml-5 {
+      margin-left: 5px;
+    }
+
+    .labels {
+      line-height: 2;
+    }
+
+    .label-keyword {
+      display: inline-block;
+      background: #7eb0db;
+      color: white;
+      font-size: 0.9em;
+      padding: 5px;
+      border: 1px solid #357ebd;
+      margin-right: 5px;
+    }
+
+    .label-keyword:last-child {
+      margin-right: 0;
+    }
+
+    .label-keyword p {
+      margin: 0;
+    }
+
+    .label-keyword a {
+      color: white;
+    }
+
+    .label-keyword a:hover {
+      text-decoration: none;
+    }
+
+    .link-disguise {
+      color: inherit;
+    }
+
+    .link-disguise:hover {
+      color: inherit;
+    }
+
+    .clear-margin {
+      margin: 0;
+    }
+
+    @media (max-width: 992px) {
+      .clear-margin-sm {
+        margin-bottom: 0;
       }
-      .clear-margin {
-        margin: 0;
-      }
-      .space-top {
-        margin-top: 10px;
-      }
-      .space-right {
-        margin-right: 10px;
-      }
-      .space-bottom {
-        margin-bottom: 10px;
-      }
-      .mr-5 {
-        margin-right: 5px;
-      }
-      .mr-10 {
-        margin-right: 10px;
-      }
-      .ml-5 {
-        margin-left: 5px;
-      }
-      .labels {
-        line-height: 2;
-      }
-      .label-keyword {
-        display: inline-block;
-        background: #7eb0db;
-        color: white;
-        font-size: 0.9em;
-        padding: 5px;
-        border: 1px solid #357ebd;
-        margin-right: 5px;
-      }
-      .label-keyword:last-child {
-        margin-right: 0;
-      }
-      .label-keyword p {
-        margin: 0;
-      }
-      .label-keyword a {
-        color: white;
-      }
-      .label-keyword a:hover {
-        text-decoration: none;
-      }
-      .link-disguise {
-        color: inherit;
-      }
-      .link-disguise:hover {
-        color: inherit;
-      }
-      .clear-margin {
-        margin: 0;
-      }
-      @media (max-width: 992px) {
-        .clear-margin-sm {
-          margin-bottom: 0;
-        }
-      }
-      .fs-lg {
-        font-size: 1.33333333em;
-        line-height: 0.75em;
-        vertical-align: -15%;
-      }
-      .fs-2x {
-        font-size: 2em;
-      }
-      .fs-3x {
-        font-size: 3em;
-      }
-      .fs-4x {
-        font-size: 4em;
-      }
-      .btn-circle-sm {
-        width: 28px;
-        height: 28px;
-        line-height: 28px;
-        border-radius: 50%;
-        text-align: center;
-        padding: 0;
-        outline: none !important;
-      }
-      /* the version when the icon file is last updated */
-      @font-face {
-        font-family: "jst-elegant";
-        src: url("//unpkg.com/jsonresume-theme-elegant@1.12.0/assets/icomoon/fonts/icomoon.eot?f218wo");
-        src: url("//unpkg.com/jsonresume-theme-elegant@1.12.0/assets/icomoon/fonts/icomoon.eot?f218wo#iefix")
-            format("embedded-opentype"),
-          url("//unpkg.com/jsonresume-theme-elegant@1.12.0/assets/icomoon/fonts/icomoon.ttf?f218wo")
-            format("truetype"),
-          url("//unpkg.com/jsonresume-theme-elegant@1.12.0/assets/icomoon/fonts/icomoon.woff?f218wo")
-            format("woff"),
-          url("//unpkg.com/jsonresume-theme-elegant@1.12.0/assets/icomoon/fonts/icomoon.svg?f218wo#icomoon")
-            format("svg");
-        font-weight: normal;
-        font-style: normal;
-      }
-      [class^="icon-"],
-      [class*=" icon-"] {
-        /* use !important to prevent issues with browser extensions that change fonts */
-        font-family: "jst-elegant" !important;
-      }
-      body {
-        font-family: "Lato";
-        background: #f0f0f0;
-        color: #333;
-      }
-      .main {
-        padding: 5px;
-      }
-      .card {
-        background: white;
-        border: 1px solid #e6e6e6;
-        border-radius: 3px;
-        min-height: 300px;
-        padding: 10px 0;
-      }
+    }
+
+    .fs-lg {
+      font-size: 1.33333333em;
+      line-height: 0.75em;
+      vertical-align: -15%;
+    }
+
+    .fs-2x {
+      font-size: 2em;
+    }
+
+    .fs-3x {
+      font-size: 3em;
+    }
+
+    .fs-4x {
+      font-size: 4em;
+    }
+
+    .btn-circle-sm {
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      border-radius: 50%;
+      text-align: center;
+      padding: 0;
+      outline: none !important;
+    }
+
+    /* the version when the icon file is last updated */
+    @font-face {
+      font-family: "jst-elegant";
+      src: url("//unpkg.com/jsonresume-theme-elegant@1.12.0/assets/icomoon/fonts/icomoon.eot?f218wo");
+      src: url("//unpkg.com/jsonresume-theme-elegant@1.12.0/assets/icomoon/fonts/icomoon.eot?f218wo#iefix") format("embedded-opentype"),
+        url("//unpkg.com/jsonresume-theme-elegant@1.12.0/assets/icomoon/fonts/icomoon.ttf?f218wo") format("truetype"),
+        url("//unpkg.com/jsonresume-theme-elegant@1.12.0/assets/icomoon/fonts/icomoon.woff?f218wo") format("woff"),
+        url("//unpkg.com/jsonresume-theme-elegant@1.12.0/assets/icomoon/fonts/icomoon.svg?f218wo#icomoon") format("svg");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    [class^="icon-"],
+    [class*=" icon-"] {
+      /* use !important to prevent issues with browser extensions that change fonts */
+      font-family: "jst-elegant" !important;
+    }
+
+    body {
+      font-family: "Lato";
+      background: #f0f0f0;
+      color: #333;
+    }
+
+    .main {
+      padding: 5px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e6e6e6;
+      border-radius: 3px;
+      min-height: 300px;
+      padding: 10px 0;
+    }
+
+    .card-nested {
+      min-height: 0;
+      border-width: 1px 0 0 0;
+    }
+
+    .card-nested:before,
+    .card-nested:after {
+      content: " ";
+      display: table;
+    }
+
+    .card-nested:after {
+      clear: both;
+    }
+
+    @media (max-width: 480px) {
       .card-nested {
-        min-height: 0;
-        border-width: 1px 0 0 0;
+        padding: 5px 0;
       }
-      .card-nested:before,
-      .card-nested:after {
-        content: " ";
-        display: table;
-      }
-      .card-nested:after {
-        clear: both;
-      }
-      @media (max-width: 480px) {
-        .card-nested {
-          padding: 5px 0;
-        }
-      }
-      .background-card {
-        padding: 10px 20px;
-      }
+    }
+
+    .background-card {
+      padding: 10px 20px;
+    }
+
+    .card-wrapper {
+      padding: 5px;
+    }
+
+    @media (max-width: 992px) {
       .card-wrapper {
-        padding: 5px;
+        float: none !important;
       }
-      @media (max-width: 992px) {
-        .card-wrapper {
-          float: none !important;
-        }
-      }
-      .background-details .detail {
-        display: table;
-      }
-      .background-details .detail .icon {
-        min-width: 45px;
-        max-width: 45px;
-        text-align: center;
-      }
-      .background-details .detail .info {
-        width: 100%;
-      }
-      .background-details .detail .title,
-      .background-details .detail .icon {
-        color: #707070;
-      }
+    }
+
+    .background-details .detail {
+      display: table;
+    }
+
+    .background-details .detail .icon {
+      min-width: 45px;
+      max-width: 45px;
+      text-align: center;
+    }
+
+    .background-details .detail .info {
+      width: 100%;
+    }
+
+    .background-details .detail .title,
+    .background-details .detail .icon {
+      color: #707070;
+    }
+
+    .background-details .detail .mobile-title {
+      display: none;
+    }
+
+    @media (max-width: 480px) {
       .background-details .detail .mobile-title {
-        display: none;
-      }
-      @media (max-width: 480px) {
-        .background-details .detail .mobile-title {
-          display: inline-block;
-          margin-left: 5px;
-          font-weight: bold;
-          text-transform: uppercase;
-          vertical-align: middle;
-        }
-      }
-      .background-details .detail .icon,
-      .background-details .detail .info {
-        display: table-cell;
-        padding: 0 10px;
-      }
-      @media (max-width: 480px) {
-        .background-details .detail {
-          display: block;
-        }
-        .background-details .detail .icon {
-          max-width: inherit;
-          min-width: inherit;
-          text-align: left;
-        }
-        .background-details .detail .icon,
-        .background-details .detail .info {
-          display: block;
-          padding: 10px 0;
-        }
-        .background-details .detail .title {
-          display: none;
-        }
-      }
-      .info .content.has-sidebar {
-        width: 80%;
-        box-sizing: border-box;
-        float: left;
-        padding: 0 10px;
-        border-right: 1px solid #cdcdcd;
-      }
-      @media (max-width: 992px) {
-        .info .content.has-sidebar {
-          width: 100%;
-          border-right: 0;
-        }
-      }
-      @media (max-width: 480px) {
-        .info .content.has-sidebar {
-          padding: 0 2px;
-        }
-      }
-      .info .sidebar {
-        margin-left: 80%;
-        box-sizing: border-box;
-        padding: 10px;
-      }
-      @media (max-width: 480px) {
-        ul {
-          padding-left: 25px;
-        }
-      }
-      .current-event {
-        font-size: 8px;
-        color: #5ace24;
-        position: absolute;
-        right: 100%;
-        top: 4px;
-        left: -10px;
-      }
-      .mop-wrapper > p:last-child {
-        margin: 0;
-      }
-      /*
-    Credits: http://codyhouse.co/demo/smart-fixed-navigation/index.html
-*/
-      .floating-nav-trigger {
-        width: 50px;
-        height: 50px;
-        -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
-        -webkit-transition: background-color 0.5s ease;
-        -o-transition: background-color 0.5s ease;
-        transition: background-color 0.5s ease;
-        display: block;
-        border-radius: 50%;
-        text-align: center;
-        background-color: white;
-        font-size: 1.5em;
-        color: #357ebd;
-        z-index: 100;
-        position: fixed;
-        bottom: 10px;
-        right: 10px;
-        text-decoration: none !important;
-      }
-      .floating-nav-trigger > [class^="icon-"],
-      .floating-nav-trigger [class*=" icon-"],
-      .floating-nav-trigger > .close-icon {
-        line-height: 50px;
-      }
-      .floating-nav-trigger .close-icon {
-        display: none;
-      }
-      .floating-nav-trigger:hover {
-        color: #1f496e;
-        background-color: #e6e6e6;
-      }
-      .floating-nav-trigger.is-open {
-        -webkit-box-shadow: none;
-        box-shadow: none;
-      }
-      .floating-nav-trigger.is-open .close-icon {
-        display: inherit;
-      }
-      .floating-nav-trigger.is-open .icon-bars {
-        display: none;
-      }
-      .floating-nav-trigger.is-open:hover {
-        background-color: white;
-      }
-      .floating-nav {
-        -webkit-transform: scale(0);
-        -ms-transform: scale(0);
-        -o-transform: scale(0);
-        transform: scale(0);
-        -webkit-transform-origin: 100% 100%;
-        -moz-transform-origin: 100% 100%;
-        -ms-transform-origin: 100% 100%;
-        transform-origin: 100% 100%;
-        -webkit-transition: transform 0.3s, visibility 0s 0.3s;
-        -o-transition: transform 0.3s, visibility 0s 0.3s;
-        transition: transform 0.3s, visibility 0s 0.3s;
-        -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
-        position: fixed;
-        z-index: 50;
-        right: 10px;
-        bottom: 10px;
-        background-color: white;
-        width: 90%;
-        max-width: 400px;
-        visibility: hidden;
-        overflow: hidden;
-      }
-      .floating-nav ul {
-        font-size: 1.2em;
-        margin: 0;
-      }
-      .floating-nav ul li {
-        border-bottom: 1px solid #eff2f6;
-      }
-      .floating-nav ul li a {
-        padding: 20px;
-        text-decoration: none;
-        color: #357ebd;
-        display: block;
-      }
-      .floating-nav ul li a:hover {
-        color: #1f496e;
-      }
-      .floating-nav ul li:last-child {
-        border-bottom: 0;
-      }
-      .floating-nav.is-visible {
-        -webkit-transform: scale(1);
-        -ms-transform: scale(1);
-        -o-transform: scale(1);
-        transform: scale(1);
-        -webkit-transition: transform 0.3s, visibility 0s 0s;
-        -o-transition: transform 0.3s, visibility 0s 0s;
-        transition: transform 0.3s, visibility 0s 0s;
-        visibility: visible;
-      }
-      @media (max-width: 992px) {
-        .profile-card-wrapper {
-          position: relative;
-        }
-      }
-      .profile-card-wrapper .profile-card {
-        padding: 10px;
-      }
-      .profile-pic {
-        padding: 20px 0;
-      }
-      @media (max-width: 992px) {
-        .profile-pic {
-          padding: 10px 0;
-        }
-      }
-      .profile-pic img {
-        width: 100px;
-        height: 100px;
-      }
-      @media (max-width: 992px) {
-        .name {
-          margin-top: 10px;
-        }
-      }
-      @media (max-width: 768px) {
-        .contact-details {
-          text-align: center;
-        }
-      }
-      .contact-details .detail {
-        display: table;
-        padding: 10px 0;
-      }
-      .contact-details .detail .icon {
-        padding: 0 10px;
-        color: #707070;
-      }
-      @media (max-width: 992px) {
-        .contact-details .detail .icon {
-          padding: 0 5px 0 0;
-        }
-      }
-      .contact-details .detail .info {
-        font-size: 0.8em;
-      }
-      .contact-details .detail .icon,
-      .contact-details .detail .info {
-        display: table-cell;
+        display: inline-block;
+        margin-left: 5px;
+        font-weight: bold;
+        text-transform: uppercase;
         vertical-align: middle;
       }
-      @media (max-width: 768px) {
-        .contact-details .detail {
-          position: relative;
-          float: left;
-          width: 100%;
-          min-height: 1px;
-          padding-left: 15px;
-          padding-right: 15px;
-        }
-      }
-      @media (max-width: 992px) {
-        .contact-details .detail {
-          position: relative;
-          min-height: 1px;
-          padding-left: 15px;
-          padding-right: 15px;
-          padding: 10px;
-        }
-        .contact-details .detail .icon,
-        .contact-details .detail .info {
-          display: inline-block;
-        }
-      }
-      @media (max-width: 992px) and (min-width: 768px) {
-        .contact-details .detail {
-          float: left;
-          width: 25%;
-        }
-      }
-      .social-links {
-        line-height: 2.5;
-      }
-      .social-link {
-        margin-left: 5px;
-        min-width: 35px;
-        display: inline-block;
-      }
-      .social-link:first-child {
-        margin-left: 0;
-      }
-      .social-link:hover {
-        text-decoration: none;
-      }
-      .link-github {
-        color: #454545;
-      }
-      .link-github:hover,
-      .link-github:focus {
-        text-decoration: none;
-        color: #2b2b2b;
-      }
-      .link-twitter {
-        color: #33ccff;
-      }
-      .link-twitter:hover,
-      .link-twitter:focus {
-        text-decoration: none;
-        color: #00bfff;
-      }
-      .link-blog {
-        color: #f36f24;
-      }
-      .link-blog:hover,
-      .link-blog:focus {
-        text-decoration: none;
-        color: #d8560c;
-      }
-      .link-linkedin {
-        color: #007bb6;
-      }
-      .link-linkedin:hover,
-      .link-linkedin:focus {
-        text-decoration: none;
-        color: #005983;
-      }
-      .link-skype {
-        color: #12a5f4;
-      }
-      .link-skype:hover,
-      .link-skype:focus {
-        text-decoration: none;
-        color: #0986ca;
-      }
-      .link-instagram {
-        color: #e4405f;
-      }
-      .link-instagram:hover,
-      .link-instagram:focus {
-        text-decoration: none;
-        color: #d31e40;
-      }
-      .link-stackoverflow {
-        color: #8e8e92;
-      }
-      .link-stackoverflow:hover,
-      .link-stackoverflow:focus {
-        text-decoration: none;
-        color: #747479;
-      }
-      .link-stackexchange {
-        color: #62b0df;
-      }
-      .link-stackexchange:hover,
-      .link-stackexchange:focus {
-        text-decoration: none;
-        color: #389bd6;
-      }
-      .link-lastfm {
-        color: #d12127;
-      }
-      .link-lastfm:hover,
-      .link-lastfm:focus {
-        text-decoration: none;
-        color: #a51a1f;
-      }
-      .link-soundcloud {
-        color: #e8822d;
-      }
-      .link-soundcloud:hover,
-      .link-soundcloud:focus {
-        text-decoration: none;
-        color: #cc6916;
-      }
-      .link-googleplus {
-        color: #dd4b39;
-      }
-      .link-googleplus:hover,
-      .link-googleplus:focus {
-        text-decoration: none;
-        color: #c23321;
-      }
-      .link-youtube {
-        color: #dd4b39;
-      }
-      .link-youtube:hover,
-      .link-youtube:focus {
-        text-decoration: none;
-        color: #c23321;
-      }
-      .link-pinterest {
-        color: #bd091f;
-      }
-      .link-pinterest:hover,
-      .link-pinterest:focus {
-        text-decoration: none;
-        color: #8c0717;
-      }
-      .link-gratipay {
-        color: #630;
-      }
-      .link-gratipay:hover,
-      .link-gratipay:focus {
-        text-decoration: none;
-        color: #331a00;
-      }
-      .link-vimeo {
-        color: #17b3e8;
-      }
-      .link-vimeo:hover,
-      .link-vimeo:focus {
-        text-decoration: none;
-        color: #128fba;
-      }
-      .link-behance {
-        color: #2c98cf;
-      }
-      .link-behance:hover,
-      .link-behance:focus {
-        text-decoration: none;
-        color: #2379a5;
-      }
-      .link-codepen {
-        color: #1c1c1c;
-      }
-      .link-codepen:hover,
-      .link-codepen:focus {
-        text-decoration: none;
-        color: #020202;
-      }
-      .link-foursquare {
-        color: #fa4778;
-      }
-      .link-foursquare:hover,
-      .link-foursquare:focus {
-        text-decoration: none;
-        color: #f91554;
-      }
-      .link-reddit {
-        color: #545454;
-      }
-      .link-reddit:hover,
-      .link-reddit:focus {
-        text-decoration: none;
-        color: #3b3b3b;
-      }
-      .link-spotify {
-        color: #acd200;
-      }
-      .link-spotify:hover,
-      .link-spotify:focus {
-        text-decoration: none;
-        color: #829f00;
-      }
-      .link-tumblr {
-        color: #2d4661;
-      }
-      .link-tumblr:hover,
-      .link-tumblr:focus {
-        text-decoration: none;
-        color: #1d2d3e;
-      }
-      .link-dribbble {
-        color: #ce366f;
-      }
-      .link-dribbble:hover,
-      .link-dribbble:focus {
-        text-decoration: none;
-        color: #a82959;
-      }
-      .link-facebook {
-        color: #4b6daa;
-      }
-      .link-facebook:hover,
-      .link-facebook:focus {
-        text-decoration: none;
-        color: #3b5687;
-      }
-      .link-angellist {
-        color: black;
-      }
-      .link-angellist:hover,
-      .link-angellist:focus {
-        text-decoration: none;
-        color: #000000;
-      }
-      .link-bitbucket {
-        color: #205081;
-      }
-      .link-bitbucket:hover,
-      .link-bitbucket:focus {
-        text-decoration: none;
-        color: #163758;
-      }
-      .link-hackernews {
-        color: #ff6600;
-      }
-      .link-hackernews:hover,
-      .link-hackernews:focus {
-        text-decoration: none;
-        color: #cc5200;
-      }
-      .link-exercism {
-        color: #d81d4e;
-      }
-      .link-exercism:hover,
-      .link-exercism:focus {
-        text-decoration: none;
-        color: #ab173e;
-      }
-      .link-blogger {
-        color: #ff9234;
-      }
-      .link-blogger:hover,
-      .link-blogger:focus {
-        text-decoration: none;
-        color: #ff7701;
-      }
-      .link-medium {
-        color: #00ab6c;
-      }
-      .link-medium:hover,
-      .link-medium:focus {
-        text-decoration: none;
-        color: #00784c;
-      }
-      .link-flickr {
-        color: black;
-      }
-      .link-flickr:hover,
-      .link-flickr:focus {
-        text-decoration: none;
-        color: #000000;
-      }
-      .link-telegram {
-        color: #3babdd;
-      }
-      .link-telegram:hover,
-      .link-telegram:focus {
-        text-decoration: none;
-        color: #2291c3;
-      }
-      .card-skills {
+    }
+
+    .background-details .detail .icon,
+    .background-details .detail .info {
+      display: table-cell;
+      padding: 0 10px;
+    }
+
+    @media (max-width: 480px) {
+      .background-details .detail {
+        display: block;
+      }
+
+      .background-details .detail .icon {
+        max-width: inherit;
+        min-width: inherit;
+        text-align: left;
+      }
+
+      .background-details .detail .icon,
+      .background-details .detail .info {
+        display: block;
+        padding: 10px 0;
+      }
+
+      .background-details .detail .title {
+        display: none;
+      }
+    }
+
+    .info .content.has-sidebar {
+      width: 80%;
+      box-sizing: border-box;
+      float: left;
+      padding: 0 10px;
+      border-right: 1px solid #cdcdcd;
+    }
+
+    @media (max-width: 992px) {
+      .info .content.has-sidebar {
+        width: 100%;
+        border-right: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .info .content.has-sidebar {
+        padding: 0 2px;
+      }
+    }
+
+    .info .sidebar {
+      margin-left: 80%;
+      box-sizing: border-box;
+      padding: 10px;
+    }
+
+    @media (max-width: 480px) {
+      ul {
+        padding-left: 25px;
+      }
+    }
+
+    .current-event {
+      font-size: 8px;
+      color: #5ace24;
+      position: absolute;
+      right: 100%;
+      top: 4px;
+      left: -10px;
+    }
+
+    .mop-wrapper>p:last-child {
+      margin: 0;
+    }
+
+    /*
+    Credits: http://codyhouse.co/demo/smart-fixed-navigation/index.html
+*/
+    .floating-nav-trigger {
+      width: 50px;
+      height: 50px;
+      -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
+      -webkit-transition: background-color 0.5s ease;
+      -o-transition: background-color 0.5s ease;
+      transition: background-color 0.5s ease;
+      display: block;
+      border-radius: 50%;
+      text-align: center;
+      background-color: white;
+      font-size: 1.5em;
+      color: #357ebd;
+      z-index: 100;
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      text-decoration: none !important;
+    }
+
+    .floating-nav-trigger>[class^="icon-"],
+    .floating-nav-trigger [class*=" icon-"],
+    .floating-nav-trigger>.close-icon {
+      line-height: 50px;
+    }
+
+    .floating-nav-trigger .close-icon {
+      display: none;
+    }
+
+    .floating-nav-trigger:hover {
+      color: #1f496e;
+      background-color: #e6e6e6;
+    }
+
+    .floating-nav-trigger.is-open {
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+
+    .floating-nav-trigger.is-open .close-icon {
+      display: inherit;
+    }
+
+    .floating-nav-trigger.is-open .icon-bars {
+      display: none;
+    }
+
+    .floating-nav-trigger.is-open:hover {
+      background-color: white;
+    }
+
+    .floating-nav {
+      -webkit-transform: scale(0);
+      -ms-transform: scale(0);
+      -o-transform: scale(0);
+      transform: scale(0);
+      -webkit-transform-origin: 100% 100%;
+      -moz-transform-origin: 100% 100%;
+      -ms-transform-origin: 100% 100%;
+      transform-origin: 100% 100%;
+      -webkit-transition: transform 0.3s, visibility 0s 0.3s;
+      -o-transition: transform 0.3s, visibility 0s 0.3s;
+      transition: transform 0.3s, visibility 0s 0.3s;
+      -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
+      position: fixed;
+      z-index: 50;
+      right: 10px;
+      bottom: 10px;
+      background-color: white;
+      width: 90%;
+      max-width: 400px;
+      visibility: hidden;
+      overflow: hidden;
+    }
+
+    .floating-nav ul {
+      font-size: 1.2em;
+      margin: 0;
+    }
+
+    .floating-nav ul li {
+      border-bottom: 1px solid #eff2f6;
+    }
+
+    .floating-nav ul li a {
+      padding: 20px;
+      text-decoration: none;
+      color: #357ebd;
+      display: block;
+    }
+
+    .floating-nav ul li a:hover {
+      color: #1f496e;
+    }
+
+    .floating-nav ul li:last-child {
+      border-bottom: 0;
+    }
+
+    .floating-nav.is-visible {
+      -webkit-transform: scale(1);
+      -ms-transform: scale(1);
+      -o-transform: scale(1);
+      transform: scale(1);
+      -webkit-transition: transform 0.3s, visibility 0s 0s;
+      -o-transition: transform 0.3s, visibility 0s 0s;
+      transition: transform 0.3s, visibility 0s 0s;
+      visibility: visible;
+    }
+
+    @media (max-width: 992px) {
+      .profile-card-wrapper {
         position: relative;
       }
-      .skill-level {
-        border-radius: 3px;
-        position: absolute;
-        top: 10px;
-        bottom: 10px;
-        left: 0;
-        width: 10px;
-        box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
+    }
+
+    .profile-card-wrapper .profile-card {
+      padding: 10px;
+    }
+
+    .profile-pic {
+      padding: 20px 0;
+    }
+
+    @media (max-width: 992px) {
+      .profile-pic {
+        padding: 10px 0;
       }
-      .skill-level .skill-progress {
-        position: absolute;
-        border-radius: 3px;
-        bottom: 0;
+    }
+
+    .profile-pic img {
+      width: 100px;
+      height: 100px;
+    }
+
+    @media (max-width: 992px) {
+      .name {
+        margin-top: 10px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .contact-details {
+        text-align: center;
+      }
+    }
+
+    .contact-details .detail {
+      display: table;
+      padding: 10px 0;
+    }
+
+    .contact-details .detail .icon {
+      padding: 0 10px;
+      color: #707070;
+    }
+
+    @media (max-width: 992px) {
+      .contact-details .detail .icon {
+        padding: 0 5px 0 0;
+      }
+    }
+
+    .contact-details .detail .info {
+      font-size: 0.8em;
+    }
+
+    .contact-details .detail .icon,
+    .contact-details .detail .info {
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    @media (max-width: 768px) {
+      .contact-details .detail {
+        position: relative;
+        float: left;
         width: 100%;
-        -webkit-transition: height 1s ease;
+        min-height: 1px;
+        padding-left: 15px;
+        padding-right: 15px;
       }
-      .skill-level .skill-progress.beginner {
-        height: 50%;
-        background: #e74c3c;
+    }
+
+    @media (max-width: 992px) {
+      .contact-details .detail {
+        position: relative;
+        min-height: 1px;
+        padding-left: 15px;
+        padding-right: 15px;
+        padding: 10px;
       }
-      .skill-level .skill-progress.intermediate {
-        height: 70%;
-        background: #f1c40f;
+
+      .contact-details .detail .icon,
+      .contact-details .detail .info {
+        display: inline-block;
       }
-      .skill-level .skill-progress.advanced {
-        height: 80%;
-        background: #428bca;
+    }
+
+    @media (max-width: 992px) and (min-width: 768px) {
+      .contact-details .detail {
+        float: left;
+        width: 25%;
       }
-      .skill-level .skill-progress.master {
-        height: 95%;
-        background: #5cb85c;
-      }
+    }
+
+    .social-links {
+      line-height: 2.5;
+    }
+
+    .social-link {
+      margin-left: 5px;
+      min-width: 35px;
+      display: inline-block;
+    }
+
+    .social-link:first-child {
+      margin-left: 0;
+    }
+
+    .social-link:hover {
+      text-decoration: none;
+    }
+
+    .link-github {
+      color: #454545;
+    }
+
+    .link-github:hover,
+    .link-github:focus {
+      text-decoration: none;
+      color: #2b2b2b;
+    }
+
+    .link-twitter {
+      color: #33ccff;
+    }
+
+    .link-twitter:hover,
+    .link-twitter:focus {
+      text-decoration: none;
+      color: #00bfff;
+    }
+
+    .link-blog {
+      color: #f36f24;
+    }
+
+    .link-blog:hover,
+    .link-blog:focus {
+      text-decoration: none;
+      color: #d8560c;
+    }
+
+    .link-linkedin {
+      color: #007bb6;
+    }
+
+    .link-linkedin:hover,
+    .link-linkedin:focus {
+      text-decoration: none;
+      color: #005983;
+    }
+
+    .link-skype {
+      color: #12a5f4;
+    }
+
+    .link-skype:hover,
+    .link-skype:focus {
+      text-decoration: none;
+      color: #0986ca;
+    }
+
+    .link-instagram {
+      color: #e4405f;
+    }
+
+    .link-instagram:hover,
+    .link-instagram:focus {
+      text-decoration: none;
+      color: #d31e40;
+    }
+
+    .link-stackoverflow {
+      color: #8e8e92;
+    }
+
+    .link-stackoverflow:hover,
+    .link-stackoverflow:focus {
+      text-decoration: none;
+      color: #747479;
+    }
+
+    .link-stackexchange {
+      color: #62b0df;
+    }
+
+    .link-stackexchange:hover,
+    .link-stackexchange:focus {
+      text-decoration: none;
+      color: #389bd6;
+    }
+
+    .link-lastfm {
+      color: #d12127;
+    }
+
+    .link-lastfm:hover,
+    .link-lastfm:focus {
+      text-decoration: none;
+      color: #a51a1f;
+    }
+
+    .link-soundcloud {
+      color: #e8822d;
+    }
+
+    .link-soundcloud:hover,
+    .link-soundcloud:focus {
+      text-decoration: none;
+      color: #cc6916;
+    }
+
+    .link-googleplus {
+      color: #dd4b39;
+    }
+
+    .link-googleplus:hover,
+    .link-googleplus:focus {
+      text-decoration: none;
+      color: #c23321;
+    }
+
+    .link-youtube {
+      color: #dd4b39;
+    }
+
+    .link-youtube:hover,
+    .link-youtube:focus {
+      text-decoration: none;
+      color: #c23321;
+    }
+
+    .link-pinterest {
+      color: #bd091f;
+    }
+
+    .link-pinterest:hover,
+    .link-pinterest:focus {
+      text-decoration: none;
+      color: #8c0717;
+    }
+
+    .link-gratipay {
+      color: #630;
+    }
+
+    .link-gratipay:hover,
+    .link-gratipay:focus {
+      text-decoration: none;
+      color: #331a00;
+    }
+
+    .link-vimeo {
+      color: #17b3e8;
+    }
+
+    .link-vimeo:hover,
+    .link-vimeo:focus {
+      text-decoration: none;
+      color: #128fba;
+    }
+
+    .link-behance {
+      color: #2c98cf;
+    }
+
+    .link-behance:hover,
+    .link-behance:focus {
+      text-decoration: none;
+      color: #2379a5;
+    }
+
+    .link-codepen {
+      color: #1c1c1c;
+    }
+
+    .link-codepen:hover,
+    .link-codepen:focus {
+      text-decoration: none;
+      color: #020202;
+    }
+
+    .link-foursquare {
+      color: #fa4778;
+    }
+
+    .link-foursquare:hover,
+    .link-foursquare:focus {
+      text-decoration: none;
+      color: #f91554;
+    }
+
+    .link-reddit {
+      color: #545454;
+    }
+
+    .link-reddit:hover,
+    .link-reddit:focus {
+      text-decoration: none;
+      color: #3b3b3b;
+    }
+
+    .link-spotify {
+      color: #acd200;
+    }
+
+    .link-spotify:hover,
+    .link-spotify:focus {
+      text-decoration: none;
+      color: #829f00;
+    }
+
+    .link-tumblr {
+      color: #2d4661;
+    }
+
+    .link-tumblr:hover,
+    .link-tumblr:focus {
+      text-decoration: none;
+      color: #1d2d3e;
+    }
+
+    .link-dribbble {
+      color: #ce366f;
+    }
+
+    .link-dribbble:hover,
+    .link-dribbble:focus {
+      text-decoration: none;
+      color: #a82959;
+    }
+
+    .link-facebook {
+      color: #4b6daa;
+    }
+
+    .link-facebook:hover,
+    .link-facebook:focus {
+      text-decoration: none;
+      color: #3b5687;
+    }
+
+    .link-angellist {
+      color: black;
+    }
+
+    .link-angellist:hover,
+    .link-angellist:focus {
+      text-decoration: none;
+      color: #000000;
+    }
+
+    .link-bitbucket {
+      color: #205081;
+    }
+
+    .link-bitbucket:hover,
+    .link-bitbucket:focus {
+      text-decoration: none;
+      color: #163758;
+    }
+
+    .link-hackernews {
+      color: #ff6600;
+    }
+
+    .link-hackernews:hover,
+    .link-hackernews:focus {
+      text-decoration: none;
+      color: #cc5200;
+    }
+
+    .link-exercism {
+      color: #d81d4e;
+    }
+
+    .link-exercism:hover,
+    .link-exercism:focus {
+      text-decoration: none;
+      color: #ab173e;
+    }
+
+    .link-blogger {
+      color: #ff9234;
+    }
+
+    .link-blogger:hover,
+    .link-blogger:focus {
+      text-decoration: none;
+      color: #ff7701;
+    }
+
+    .link-medium {
+      color: #00ab6c;
+    }
+
+    .link-medium:hover,
+    .link-medium:focus {
+      text-decoration: none;
+      color: #00784c;
+    }
+
+    .link-flickr {
+      color: black;
+    }
+
+    .link-flickr:hover,
+    .link-flickr:focus {
+      text-decoration: none;
+      color: #000000;
+    }
+
+    .link-telegram {
+      color: #3babdd;
+    }
+
+    .link-telegram:hover,
+    .link-telegram:focus {
+      text-decoration: none;
+      color: #2291c3;
+    }
+
+    .card-skills {
+      position: relative;
+    }
+
+    .skill-level {
+      border-radius: 3px;
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 0;
+      width: 10px;
+      box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
+    }
+
+    .skill-level .skill-progress {
+      position: absolute;
+      border-radius: 3px;
+      bottom: 0;
+      width: 100%;
+      -webkit-transition: height 1s ease;
+    }
+
+    .skill-level .skill-progress.beginner {
+      height: 50%;
+      background: #e74c3c;
+    }
+
+    .skill-level .skill-progress.intermediate {
+      height: 70%;
+      background: #f1c40f;
+    }
+
+    .skill-level .skill-progress.advanced {
+      height: 80%;
+      background: #428bca;
+    }
+
+    .skill-level .skill-progress.master {
+      height: 95%;
+      background: #5cb85c;
+    }
+
+    .skill-info {
+      margin-left: 15px;
+    }
+
+    @media (max-width: 480px) {
       .skill-info {
+        margin-left: 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .quote {
+        font-size: inherit;
+      }
+    }
+
+    .icon-meetup .path2:before {
+      margin-left: 0;
+    }
+
+    @media print {
+      a[href]:after {
+        content: none !important;
+      }
+
+      .profile-card {
+        text-align: center;
+      }
+
+      .profile-pic {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .profile-pic img {
+        border-radius: 0;
+      }
+
+      .name-and-profession {
+        display: inline-block;
+        vertical-align: middle;
         margin-left: 15px;
       }
-      @media (max-width: 480px) {
-        .skill-info {
-          margin-left: 20px;
-        }
+
+      .contact-details .detail {
+        position: relative;
+        float: left;
+        width: 25%;
+        min-height: 1px;
+        padding-left: 15px;
+        padding-right: 15px;
+        padding: 0;
       }
-      @media (max-width: 768px) {
-        .quote {
-          font-size: inherit;
-        }
+
+      .floating-nav,
+      .floating-nav-trigger {
+        display: none;
       }
-      .icon-meetup .path2:before {
-        margin-left: 0;
+
+      .pagebreak {
+        page-break-before: always;
       }
-      @media print {
-        a[href]:after {
-          content: none !important;
-        }
-        .profile-card {
-          text-align: center;
-        }
-        .profile-pic {
-          display: inline-block;
-          vertical-align: middle;
-        }
-        .profile-pic img {
-          border-radius: 0;
-        }
-        .name-and-profession {
-          display: inline-block;
-          vertical-align: middle;
-          margin-left: 15px;
-        }
-        .contact-details .detail {
-          position: relative;
-          float: left;
-          width: 25%;
-          min-height: 1px;
-          padding-left: 15px;
-          padding-right: 15px;
-          padding: 0;
-        }
-        .floating-nav,
-        .floating-nav-trigger {
-          display: none;
-        }
-        .pagebreak {
-          page-break-before: always;
-        }
-      }
-    </style>
-  </head>
-  <body itemscope="itemscope" itemtype="http://schema.org/Person">
-    <div class="container-fluid">
-      <div class="row main clearfix">
-        <a class="js-floating-nav-trigger floating-nav-trigger" href="#"
-          ><i class="icon-bars"></i><span class="close-icon">&times;</span></a
-        >
-        <nav class="floating-nav js-floating-nav">
-          <ul class="list-unstyled">
-            <li>
-              <a href="#about"><i class="mr-10 icon-board"></i>About</a>
-            </li>
-            <li>
-              <a href="#research-experience"
-                ><i class="mr-10 icon-office"></i>Research Experience</a
-              >
-            </li>
-            <li>
-              <a href="#extracurricular-activities"
-                ><i class="mr-10 icon-child"></i>Extracurricular Activities</a
-              >
-            </li>
-            <li>
-              <a href="#projects-experience"
-                ><i class="mr-10 icon-code"></i>Projects Experience</a
-              >
-            </li>
-            <li>
-              <a href="#skills"><i class="mr-10 icon-tools"></i>Skills</a>
-            </li>
-            <li>
-              <a href="#education"
-                ><i class="mr-10 icon-graduation-cap"></i>Education</a
-              >
-            </li>
-            <li>
-              <a href="#awards"><i class="mr-10 icon-trophy"></i>Awards</a>
-            </li>
-            <li>
-              <a href="#teaching-experience"
-                ><i class="mr-10 icon-book"></i>Teaching Experience</a
-              >
-            </li>
-            <li>
-              <a href="#online-courses"
-                ><i class="mr-10 icon-newspaper"></i>Online Courses</a
-              >
-            </li>
-            <li>
-              <a href="#languages"
-                ><i class="mr-10 icon-newspaper"></i>Languages</a
-              >
-            </li>
-            <li>
-              <a href="#references"
-                ><i class="mr-10 icon-thumbs-up"></i>References</a
-              >
-            </li>
-          </ul>
-        </nav>
-        <section class="col-md-3 card-wrapper profile-card-wrapper affix">
-          <div class="card profile-card">
-            <span class="profile-pic-container"
-              ><div class="profile-pic">
-                <img
-                  class="media-object img-circle center-block"
-                  data-src="holder.js/100x100"
-                  alt="Erfan Abedi"
-                  src="./img/erfan.jpg"
-                  itemprop="image"
-                />
-              </div>
-              <div class="name-and-profession text-center">
-                <h3 itemprop="name"><b>Erfan Abedi</b></h3>
-                <h5 class="text-muted" itemprop="jobTitle">
-                  Computer Engineering Graduate
-                </h5>
-              </div></span
-            >
-            <hr />
-            <div class="contact-details clearfix">
-              <div class="detail">
-                <span class="icon"
-                  ><i class="icon fs-lg icon-location"></i></span
-                ><span class="info">Tehran, Iran</span>
-              </div>
-              <div class="detail">
-                <span class="icon"><i class="icon fs-lg icon-mail"></i></span
-                ><span class="info"
-                  ><a
-                    class="link-disguise"
-                    href="mailto:pseudoerfan@gmail.com"
-                    itemprop="email"
-                    >pseudoerfan@gmail.com</a
-                  ></span
-                >
-              </div>
-              <div class="detail">
-                <span class="icon" title="Languages I speak"
-                  ><i class="icon fs-lg icon-language"></i></span
-                ><span class="info">English, Persian, German</span>
-              </div>
-              <div class="detail">
-                <span class="icon" title="PDF Version of CV"
-                  ><i class="icon fs-lg icon-book"></i></span
-                ><span class="info">
-                  <a href="./files/cv.pdf" target="_blank">
-                      PDF version of CV.
-                  </a>
-                </span>
-              </div>
+    }
+  </style>
+</head>
+
+<body itemscope="itemscope" itemtype="http://schema.org/Person">
+  <div class="container-fluid">
+    <div class="row main clearfix">
+      <a class="js-floating-nav-trigger floating-nav-trigger" href="#"><i class="icon-bars"></i><span
+          class="close-icon">&times;</span></a>
+      <nav class="floating-nav js-floating-nav">
+        <ul class="list-unstyled">
+          <li>
+            <a href="#about"><i class="mr-10 icon-board"></i>About</a>
+          </li>
+          <li>
+            <a href="#research-experience"><i class="mr-10 icon-office"></i>Research Experience</a>
+          </li>
+          <li>
+            <a href="#publications"><i class="mr-10 icon-newspaper"></i>Publications</a>
+          </li>
+          <li>
+            <a href="#extracurricular-activities"><i class="mr-10 icon-child"></i>Extracurricular Activities</a>
+          </li>
+          <li>
+            <a href="#projects-experience"><i class="mr-10 icon-code"></i>Projects Experience</a>
+          </li>
+          <li>
+            <a href="#skills"><i class="mr-10 icon-tools"></i>Skills</a>
+          </li>
+          <li>
+            <a href="#education"><i class="mr-10 icon-graduation-cap"></i>Education</a>
+          </li>
+          <li>
+            <a href="#awards"><i class="mr-10 icon-trophy"></i>Awards</a>
+          </li>
+          <li>
+            <a href="#teaching-experience"><i class="mr-10 icon-book"></i>Teaching Experience</a>
+          </li>
+          <li>
+            <a href="#online-courses"><i class="mr-10 icon-newspaper"></i>Online Courses</a>
+          </li>
+          <li>
+            <a href="#languages"><i class="mr-10 icon-newspaper"></i>Languages</a>
+          </li>
+          <li>
+            <a href="#references"><i class="mr-10 icon-thumbs-up"></i>References</a>
+          </li>
+        </ul>
+      </nav>
+      <section class="col-md-3 card-wrapper profile-card-wrapper affix">
+        <div class="card profile-card">
+          <span class="profile-pic-container">
+            <div class="profile-pic">
+              <img class="media-object img-circle center-block" data-src="holder.js/100x100" alt="Erfan Abedi"
+                src="./img/erfan.jpg" itemprop="image" />
             </div>
-            <hr />
-            <div class="social-links text-center">
-              <div>
-                <a
-                  class="fs-2x social-link link-linkedin icon-linkedin"
-                  href="https://www.linkedin.com/in/erfanabedi/"
-                  target="_blank"
-                  data-toggle="tooltip"
-                  title="Erfan Abedi on Linkedin"
-                ></a
-                ><a
-                  class="fs-2x social-link link-github icon-github"
-                  href="https://github.com/theerfan"
-                  target="_blank"
-                  data-toggle="tooltip"
-                  title="Erfan Abedi on GitHub"
-                ></a
-                ><a
-                  class="fs-2x social-link link-spotify icon-spotify"
-                  href="https://open.spotify.com/user/spftdqp9d6bui6475x0474jiu"
-                  target="_blank"
-                  data-toggle="tooltip"
-                  title="Erfan Abedi on Spotify"
-                ></a>
-              </div>
+            <div class="name-and-profession text-center">
+              <h3 itemprop="name"><b>Erfan Abedi</b></h3>
+              <h5 class="text-muted" itemprop="jobTitle">
+                Computer Engineering Graduate
+              </h5>
+            </div>
+          </span>
+          <hr />
+          <div class="contact-details clearfix">
+            <div class="detail">
+              <span class="icon"><i class="icon fs-lg icon-location"></i></span><span class="info">Tehran, Iran</span>
+            </div>
+            <div class="detail">
+              <span class="icon"><i class="icon fs-lg icon-mail"></i></span><span class="info"><a class="link-disguise"
+                  href="mailto:pseudoerfan@gmail.com" itemprop="email">pseudoerfan@gmail.com</a></span>
+            </div>
+            <div class="detail">
+              <span class="icon" title="Languages I speak"><i class="icon fs-lg icon-language"></i></span><span
+                class="info">English, Persian, German</span>
+            </div>
+            <div class="detail">
+              <span class="icon" title="PDF Version of CV"><i class="icon fs-lg icon-book"></i></span><span
+                class="info">
+                <a href="./files/cv.pdf" target="_blank">
+                  PDF version of CV.
+                </a>
+              </span>
             </div>
           </div>
-        </section>
-        <section class="col-md-9 card-wrapper pull-right">
-          <div class="card background-card">
-            <h4 class="text-uppercase">Background</h4>
-            <hr />
-            <div class="background-details">
-              <div class="detail" id="about">
-                <div class="icon">
-                  <i class="fs-lg icon-board"></i
-                  ><span class="mobile-title">About</span>
+          <hr />
+          <div class="social-links text-center">
+            <div>
+              <a class="fs-2x social-link link-linkedin icon-linkedin" href="https://www.linkedin.com/in/erfanabedi/"
+                target="_blank" data-toggle="tooltip" title="Erfan Abedi on Linkedin"></a><a
+                class="fs-2x social-link link-github icon-github" href="https://github.com/theerfan" target="_blank"
+                data-toggle="tooltip" title="Erfan Abedi on GitHub"></a><a
+                class="fs-2x social-link link-scholar icon-graduation-cap"
+                href="https://scholar.google.com/citations?user=m_ZZzi4AAAAJ&hl=en" target="_blank" data-toggle="tooltip"
+                title="Erfan Abedi on Google Scholar"></a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="col-md-9 card-wrapper pull-right">
+        <div class="card background-card">
+          <h4 class="text-uppercase">Background</h4>
+          <hr />
+          <div class="background-details">
+            <div class="detail" id="about">
+              <div class="icon">
+                <i class="fs-lg icon-board"></i><span class="mobile-title">About</span>
+              </div>
+              <div class="info">
+                <h4 class="title text-uppercase">About</h4>
+                <div class="card card-nested">
+                  <div class="content mop-wrapper" itemprop="description">
+                    <p>
+                      Erfan got his bachelor's degree in Computer Engineering
+                      from Amirkabir University of Technology, he first
+                      started developing computer programs when he was twelve.
+                      He's currently a Research Assistant at Phanous Research
+                      and Innovation Centre, where he's working on Quantum
+                      Machine Learning.
+                    </p>
+                  </div>
                 </div>
-                <div class="info">
-                  <h4 class="title text-uppercase">About</h4>
-                  <div class="card card-nested">
-                    <div class="content mop-wrapper" itemprop="description">
-                      <p>
-                        Erfan got his bachelor's degree in Computer Engineering
-                        from Amirkabir University of Technology, he first
-                        started developing computer programs when he was twelve.
-                        He's currently a research intern at Phanous Research
-                        and Innovation Centre, where he's working on Quantum
-                        Machine Learning.
+              </div>
+            </div>
+            <div class="detail" id="research-experience">
+              <div class="icon">
+                <i class="fs-lg icon-office"></i><span class="mobile-title">Research Experience</span>
+              </div>
+              <div class="info">
+                <h4 class="title text-uppercase">Research Experience</h4>
+                <ul class="list-unstyled clear-margin">
+                  <li class="card card-nested clearfix">
+                    <div class="content">
+                      <p class="clear-margin relative">
+                        <i class="icon-circle current-event" rel="tooltip" title="Currently Working"
+                          data-placement="left"></i><strong>Research Assistant</strong>,&nbsp;<a
+                          href="https://phanous.ir/quone/" target="_blank">QuOne Lab at Phanous Research and Innovation
+                          Centre</a>
                       </p>
+                      <p class="text-muted">
+                        <small><span class="space-right">Dec, 2021 - Present</span></small>
+                      </p>
+                      <div class="mop-wrapper space-bottom">
+                        <p>
+                          Researching Quantum Machine Learning methods under
+                          the supervision of Dr. Salman Beigi.
+                        </p>
+                      </div>
+                      <ul>
+                        <li class="mop-wrapper">
+                          <p>
+                            Assisting the senior researchers with their
+                            ongoing research on QML.
+                          </p>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>
+                            Working on the theory and numerical simulations of a paper on
+                            <a href="https://arxiv.org/abs/2202.08232" target="_blank">Quantum Lazy Training</a>.
+                          </p>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>
+                            Reading and giving talks about various QML papers at the
+                            research group's weekly meetings.
+                          </p>
+                        </li>
+                      </ul>
                     </div>
-                  </div>
-                </div>
-              </div>
-              <div class="detail" id="research-experience">
-                <div class="icon">
-                  <i class="fs-lg icon-office"></i
-                  ><span class="mobile-title">Research Experience</span>
-                </div>
-                <div class="info">
-                  <h4 class="title text-uppercase">Research Experience</h4>
-                  <ul class="list-unstyled clear-margin">
-                    <li class="card card-nested clearfix">
-                      <div class="content">
-                        <p class="clear-margin relative">
-                          <i
-                            class="icon-circle current-event"
-                            rel="tooltip"
-                            title="Currently Working"
-                            data-placement="left"
-                          ></i
-                          ><strong>Research Intern</strong>,&nbsp;<a
-                            href="https://phanous.ir/quone/"
-                            target="_blank"
-                            >QuOne Lab at Phanous Research and Innovation
-                            Centre</a
-                          >
+                  </li>
+                  <li class="card card-nested clearfix">
+                    <div class="content">
+                      <p class="clear-margin relative">
+                        <strong>Research Intern</strong>,&nbsp;<a href="https://phanous.ir/quone/" target="_blank">QuOne
+                          Lab at Phanous Research and Innovation
+                          Centre</a>
+                      </p>
+                      <p class="text-muted">
+                        <small><span class="space-right">Jun, 2021 - Dec, 2021</span></small>
+                      </p>
+                      <div class="mop-wrapper space-bottom">
+                        <p>
+                          Researching Quantum Machine Learning methods under
+                          the supervision of Dr. Salman Beigi.
                         </p>
-                        <p class="text-muted">
-                          <small
-                            ><span class="space-right"
-                              >Jun, 2021 - Present</span
-                            ></small
-                          >
-                        </p>
-                        <div class="mop-wrapper space-bottom">
+                      </div>
+                      <ul>
+                        <li class="mop-wrapper">
                           <p>
-                            Researching Quantum Machine Learning methods under
-                            the supervision of Dr. Salman Beigi.
+                            Assisting the senior researchers with their
+                            ongoing research on QML.
                           </p>
-                        </div>
-                        <ul>
-                          <li class="mop-wrapper">
-                            <p>
-                              Assisting the senior researchers with their
-                              ongoing research on QML.
-                            </p>
-                          </li>
-                          <li class="mop-wrapper">
-                            <p>
-                              Desigining assignments and educational material
-                              for the <a href="https://phanous.ir/1000qubit/" target="_blank">
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>
+                            Desigining assignments and educational material
+                            for the <a href="https://phanous.ir/1000qubit/" target="_blank">
                               1000qubit workshop</a>.
-                            </p>
-                          </li>
-                          <li class="mop-wrapper">
-                            <p>
-                              Working on the theory and numerical simulations of
-                              a project (Details TBA soon).
-                            </p>
-                          </li>
-                        </ul>
-                      </div>
-                    </li>
-                    <li class="card card-nested clearfix">
-                      <div class="content">
-                        <p class="clear-margin relative">
-                          <strong>Research Intern</strong>,&nbsp;<a
-                            href="https://cs.ipm.ac.ir/"
-                            target="_blank"
-                            >School of Computer Science, Institute for Research
-                            in Fundamental Sciences (IPM)</a
-                          >
-                        </p>
-                        <p class="text-muted">
-                          <small
-                            ><span class="space-right"
-                              >Jun, 2020 - Sep, 2020</span
-                            ><span
-                              ><i class="icon-clock mr-5"></i>3 months</span
-                            ></small
-                          >
-                        </p>
-                        <div class="mop-wrapper space-bottom">
-                          <p>
-                            Researching Quantum Computing and Quantum Mechanics
-                            under the supervision of Dr. Dara Rahmati.
                           </p>
-                        </div>
-                        <ul>
-                          <li class="mop-wrapper">
-                            <p>Learned the basics of quantum computing.</p>
-                          </li>
-                          <li class="mop-wrapper">
-                            <p>
-                              Learned how to work with quantum computing
-                              software tools, such as Q# and Qiskit.
-                            </p>
-                          </li>
-                          <li class="mop-wrapper">
-                            <p>
-                              Learned how to do research and review literature.
-                            </p>
-                          </li>
-                        </ul>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>
+                            Reading and giving talks about various QML papers at the
+                            research group's weekly meetings.
+                          </p>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="card card-nested clearfix">
+                    <div class="content">
+                      <p class="clear-margin relative">
+                        <strong>Research Intern</strong>,&nbsp;<a href="https://cs.ipm.ac.ir/" target="_blank">School of
+                          Computer Science, Institute for Research
+                          in Fundamental Sciences (IPM)</a>
+                      </p>
+                      <p class="text-muted">
+                        <small><span class="space-right">Jun, 2020 - Sep, 2020</span><span><i
+                              class="icon-clock mr-5"></i>3 months</span></small>
+                      </p>
+                      <div class="mop-wrapper space-bottom">
+                        <p>
+                          Researching Quantum Computing and Quantum Mechanics
+                          under the supervision of Dr. Dara Rahmati.
+                        </p>
                       </div>
-                    </li>
-                  </ul>
-                </div>
+                      <ul>
+                        <li class="mop-wrapper">
+                          <p>Learned the basics of quantum computing.</p>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>
+                            Learned how to work with quantum computing
+                            software tools, such as Q# and Qiskit.
+                          </p>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>
+                            Learned how to do research and review literature.
+                          </p>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
               </div>
-              <div class="detail" id="projects-experience">
-                <div class="icon">
-                  <i class="fs-lg icon-code"></i
-                  ><span class="mobile-title">Projects Experience</span>
-                </div>
-                <div class="info">
-                  <h4 class="title text-uppercase">Projects Experience</h4>
+            </div>
+            <div class="detail" id="publications">
+              <div class="icon"><i class="fs-lg icon-newspaper"></i><span class="mobile-title">Publications</span></div>
+              <div class="info">
+                <h4 class="title text-uppercase">Publications</h4>
+                <div class="content">
                   <ul class="list-unstyled clear-margin">
-                    <li class="card card-nested clearfix">
+                    <li class="card card-nested">
                       <div class="content">
-                        <p class="clear-margin relative">
-                          <a
-                            href="https://qiskithackathoneurope.bemyapp.com/"
-                            target="_blank"
-                            ><strong>QSVT in Qiskit</strong></a
-                          ><span>,&nbsp;IBM's Qiskit Hackaton Europe 2021</span>
-                        </p>
-                        <p class="text-muted">
-                          <small
-                            ><span class="space-right"
-                              >Apr, 2021 - Jun, 2021</span
-                            ><span
-                              ><i class="icon-clock mr-5"></i>1 month</span
-                            ></small
-                          >
-                        </p>
-                        <div class="mop-wrapper space-bottom">
-                          <p>
-                            Implementing a quantum search algorithm based on
-                            Quantum Singular Value framework in Qiskit.
-                          </p>
+                        <p class="clear-margin"><strong><a href="https://arxiv.org/abs/2202.08232"
+                              target="_blank">Quantum Lazy Training</a>&nbsp;,&nbsp;</strong>arXiv preprint</p>
+                        <p class="text-muted"><small>Published on: Feb 16, 2022</small></p>
+                        <div class="mop-wrapper">
+                          <p>In this paper, it is shown that the training of geometrically local parameterized quantum
+                            circuits enters the lazy regime for large numbers of qubits.</p>
                         </div>
-                        <ul>
-                          <li class="mop-wrapper">
-                            <p>
-                              QSVT in Qiskit was selected as one of the top 3
-                              winning projects of IBM's Qiskit Hackaton Europe 2021.
-                            </p>
-                          </li>
-                          <li class="mop-wrapper">
-                            <p>
-                              Quantum Singular Value Transformation (QSVT) is a
-                              framework that allows one to apply an arbitrary
-                              polynomial transformation to the singular values
-                              of a block-encoded unitary transformation.
-                            </p>
-                          </li>
-                          <li class="mop-wrapper">
-                            <p>
-                              In its current form, this project contains
-                              QSVT-implemented quantum search, utilizing
-                              Fixed-point Amplitude Amplification.
-                            </p>
-                          </li>
-                        </ul>
                       </div>
                     </li>
-                    <li class="card card-nested clearfix">
+                    <li class="card card-nested">
                       <div class="content">
-                        <p class="clear-margin relative">
-                          <a
-                            href="https://github.com/theerfan/Maqenta"
-                            target="_blank"
-                            ><strong>Maqenta</strong></a
-                          >
-                        </p>
-                        <p class="text-muted">
-                          <small
-                            ><span class="space-right"
-                              >Jul, 2021 - Oct, 2021</span
-                            ><span
-                              ><i class="icon-clock mr-5"></i>2 months</span
-                            ></small
-                          >
-                        </p>
-                        <div class="mop-wrapper space-bottom">
-                          <p>
-                            Maqenta is a software for generating music using
-                            Quantum Machine Learning
-                          </p>
+                        <p class="clear-margin"><strong><a
+                              href="https://github.com/theerfan/Maqenta/raw/main/BSc_Thesis.pdf"
+                              target="_blank">Maqenta: Generating music using Quantum Machine Learning (In
+                              Persian)</a>&nbsp;,&nbsp;</strong>BSc Thesis</p>
+                        <p class="text-muted"><small>Published on: Oct 25, 2021</small></p>
+                        <div class="mop-wrapper">
+                          <p>In this work, the possible use of quantum machine learning methods, specifically, Quantum
+                            Long Short-Term Memory and Quantum Generative Adversarial Networks for generation of novel
+                            musical pieces is analyzed, implemented and tested.</p>
                         </div>
-                        <ul>
-                          <li class="mop-wrapper">
-                            <p>
-                              Maqenta uses methods such as Quantum Long
-                              Short-Term Memory and Quantum Generative
-                              Adversarial Networks for generating music.
-                            </p>
-                          </li>
-                          <li class="mop-wrapper">
-                            <p>
-                              Maqenta processes music in the form of MIDI files
-                              and after running the data through quantum machine
-                              learning methods, generates new music.
-                            </p>
-                          </li>
-                          <li class="mop-wrapper">
-                            <p>Maqenta served as Erfan's BSc project.</p>
-                          </li>
-                        </ul>
                       </div>
                     </li>
-                    <li class="card card-nested clearfix">
+                    <li class="card card-nested">
                       <div class="content">
-                        <p class="clear-margin relative">
-                          <a
-                            href="https://github.com/theerfan/Q"
-                            target="_blank"
-                            ><strong>Q</strong></a
-                          >
-                        </p>
-                        <p class="text-muted">
-                          <small
-                            ><span class="space-right"
-                              >Jul, 2020 - Jan, 2021</span
-                            ><span
-                              ><i class="icon-clock mr-5"></i>8 months</span
-                            ></small
-                          >
-                        </p>
-                        <div class="mop-wrapper space-bottom">
-                          <p>
-                            Q is the progress of Erfan's early research
-                            experience in quantum computing and quantum
-                            mechanics.
-                          </p>
+                        <p class="clear-margin"><strong><a
+                              href="https://github.com/bartubisgin/QSVTinQiskit-2021-Europe-Hackathon-Winning-Project-/raw/main/QSVT_in_Qiskit_Report.pdf"
+                              target="_blank">QSVT in Qiskit</a>&nbsp;,&nbsp;</strong>IBM's Qiskit Hackathon Europe 2021
+                          Project Paper</p>
+                        <p class="text-muted"><small>Published on: Jun 05, 2021</small></p>
+                        <div class="mop-wrapper">
+                          <p>Analyzing, implementing and testing Fixed-point Amplitude Amplification (FPAA) with QSVT in
+                            Qiskit.</p>
                         </div>
-                        <ul>
-                          <li class="mop-wrapper">
-                            <p>
-                              Q contains solutions to Microsoft’s quantum
-                              programming exercises in Q#
-                            </p>
-                          </li>
-                          <li class="mop-wrapper">
-                            <p>
-                              Q contains solutions to the programming exercises
-                              of Prof. Peter Wittek’s QML course in Qiskit
-                            </p>
-                          </li>
-                          <li class="mop-wrapper">
-                            <p>
-                              Q also includes the list of the quantum papers,
-                              books and online courses that Erfan has gone
-                              through.
-                            </p>
-                          </li>
-                        </ul>
-                      </div>
-                    </li>
-                    <li class="card card-nested clearfix">
-                      <div class="content">
-                        <p class="clear-margin relative">
-                          <a href="https://icpc.aut.ac.ir" target="_blank"
-                            ><strong
-                              >AUT-ICPC information and registration
-                              website</strong
-                            >
-                          </a>
-                        </p>
-                        <p class="text-muted">
-                          <small
-                            ><span class="space-right"
-                              >Jun, 2019 - Jan, 2019</span
-                            ><span
-                              ><i class="icon-clock mr-5"></i>4 months</span
-                            ></small
-                          >
-                        </p>
-                        <div class="mop-wrapper space-bottom">
-                          <p>
-                            AUT-ICPC’s website is used by the AUT-ICPC contest’s
-                            participants to register in and gather more
-                            information about the contes
-                          </p>
-                        </div>
-                        <ul>
-                          <li class="mop-wrapper">
-                            <p>
-                              AUT-ICPC’s website is built using Django on the
-                              back-end and React.JS on the front-end
-                            </p>
-                          </li>
-                          <li class="mop-wrapper">
-                            <p>
-                              AUT-ICPC’s website uses technologies such as
-                              Ngnix, PostgreSQL, REST framework and Redis.
-                            </p>
-                          </li>
-                        </ul>
                       </div>
                     </li>
                   </ul>
                 </div>
               </div>
-              <div class="detail" id="extracurricular-activities">
-                <div class="icon">
-                  <i class="fs-lg icon-child"></i
-                  ><span class="mobile-title">Extracurricular Activities</span>
-                </div>
-                <div class="info">
-                  <h4 class="title text-uppercase">
-                    Extracurricular Activities
-                  </h4>
+            </div>
+            <div class="detail" id="projects-experience">
+              <div class="icon">
+                <i class="fs-lg icon-code"></i><span class="mobile-title">Projects Experience</span>
+              </div>
+              <div class="info">
+                <h4 class="title text-uppercase">Projects Experience</h4>
+                <ul class="list-unstyled clear-margin">
+                  <li class="card card-nested clearfix">
+                    <div class="content">
+                      <p class="clear-margin relative">
+                        <a href="https://github.com/bartubisgin/QSVTinQiskit-2021-Europe-Hackathon-Winning-Project-"
+                          target="_blank"><strong>QSVT in
+                            Qiskit</strong></a><span>,&nbsp;IBM's Qiskit Hackaton Europe 2021</span>
+                      </p>
+                      <p class="text-muted">
+                        <small><span class="space-right">Apr, 2021 - Jun, 2021</span><span><i
+                              class="icon-clock mr-5"></i>1 month</span></small>
+                      </p>
+                      <div class="mop-wrapper space-bottom">
+                        <p>
+                          Implementing a quantum search algorithm based on
+                          Quantum Singular Value framework in Qiskit.
+                        </p>
+                      </div>
+                      <ul>
+                        <li class="mop-wrapper">
+                          <p>
+                            QSVT in Qiskit was selected as one of the top 3
+                            winning projects of IBM's Qiskit Hackaton Europe 2021.
+                          </p>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>
+                            Quantum Singular Value Transformation (QSVT) is a
+                            framework that allows one to apply an arbitrary
+                            polynomial transformation to the singular values
+                            of a block-encoded unitary transformation.
+                          </p>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>
+                            In its current form, this project contains
+                            QSVT-implemented quantum search, utilizing
+                            Fixed-point Amplitude Amplification.
+                          </p>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="card card-nested clearfix">
+                    <div class="content">
+                      <p class="clear-margin relative">
+                        <a href="https://github.com/theerfan/Maqenta" target="_blank"><strong>Maqenta</strong></a>
+                      </p>
+                      <p class="text-muted">
+                        <small><span class="space-right">Jul, 2021 - Oct, 2021</span><span><i
+                              class="icon-clock mr-5"></i>2 months</span></small>
+                      </p>
+                      <div class="mop-wrapper space-bottom">
+                        <p>
+                          Maqenta is a software for generating music using
+                          Quantum Machine Learning
+                        </p>
+                      </div>
+                      <ul>
+                        <li class="mop-wrapper">
+                          <p>
+                            Maqenta uses methods such as Quantum Long
+                            Short-Term Memory and Quantum Generative
+                            Adversarial Networks for generating music.
+                          </p>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>
+                            Maqenta processes music in the form of MIDI files
+                            and after running the data through quantum machine
+                            learning methods, generates new music.
+                          </p>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>Maqenta served as Erfan's BSc project.</p>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="card card-nested clearfix">
+                    <div class="content">
+                      <p class="clear-margin relative">
+                        <a href="https://github.com/theerfan/Q" target="_blank"><strong>Q</strong></a>
+                      </p>
+                      <p class="text-muted">
+                        <small><span class="space-right">Jul, 2020 - Jan, 2021</span><span><i
+                              class="icon-clock mr-5"></i>8 months</span></small>
+                      </p>
+                      <div class="mop-wrapper space-bottom">
+                        <p>
+                          Q is the progress of Erfan's early research
+                          experience in quantum computing and quantum
+                          mechanics.
+                        </p>
+                      </div>
+                      <ul>
+                        <li class="mop-wrapper">
+                          <p>
+                            Q contains solutions to Microsoft’s quantum
+                            programming exercises in Q#
+                          </p>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>
+                            Q contains solutions to the programming exercises
+                            of Prof. Peter Wittek’s QML course in Qiskit
+                          </p>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>
+                            Q also includes the list of the quantum papers,
+                            books and online courses that Erfan has gone
+                            through.
+                          </p>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="card card-nested clearfix">
+                    <div class="content">
+                      <p class="clear-margin relative">
+                        <a href="https://icpc.aut.ac.ir" target="_blank"><strong>AUT-ICPC information and registration
+                            website</strong>
+                        </a>
+                      </p>
+                      <p class="text-muted">
+                        <small><span class="space-right">Jun, 2019 - Jan, 2019</span><span><i
+                              class="icon-clock mr-5"></i>4 months</span></small>
+                      </p>
+                      <div class="mop-wrapper space-bottom">
+                        <p>
+                          AUT-ICPC’s website is used by the AUT-ICPC contest’s
+                          participants to register in and gather more
+                          information about the contes
+                        </p>
+                      </div>
+                      <ul>
+                        <li class="mop-wrapper">
+                          <p>
+                            AUT-ICPC’s website is built using Django on the
+                            back-end and React.JS on the front-end
+                          </p>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>
+                            AUT-ICPC’s website uses technologies such as
+                            Ngnix, PostgreSQL, REST framework and Redis.
+                          </p>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="detail" id="extracurricular-activities">
+              <div class="icon">
+                <i class="fs-lg icon-child"></i><span class="mobile-title">Extracurricular Activities</span>
+              </div>
+              <div class="info">
+                <h4 class="title text-uppercase">
+                  Extracurricular Activities
+                </h4>
+                <ul class="list-unstyled clear-margin">
+                  <li class="card card-nested clearfix">
+                    <div class="content">
+                      <p class="clear-margin relative">
+                        <a href="CEIT-SSC.ir" target="_blank"><strong>Students’ Scientific Chapter of AUT’s Department
+                            of Computer Engineering
+                          </strong></a>
+                      </p>
+                      <p class="text-muted">
+                        <small>
+                          <span class="space-right">
+                            Mar. 2019 - Sept. 2020
+                          </span>
+                        </small>
+                      </p>
+                      <div class="mop-wrapper space-bottom">
+                        <p>
+                          Erfan served as a board member and the head of
+                          contests.
+                        </p>
+                      </div>
+                      <ul>
+                        <li class="mop-wrapper">
+                          <p>
+                            Organized and provided technical means for the 6th
+                            Amirkabir Programming League.
+                          </p>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>
+                            Organized the
+                            <a href="http://aaiss.ce.aut.ac.ir/2019" target="_blank">
+                              1st Amirkabir Artificial Intelligence Summer
+                              Summit </a>.
+                          </p>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>
+                            Organized and provided technical means for the
+                            19th
+                            <a href="https://ICPC.aut.ac.ir" target="_blank">
+                              Amirkabir ICPC </a>.
+                          </p>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>
+                            Organized the 11th
+                            <a href="LinuxFest.aut.ac.ir" target="_blank">
+                              Amirkabir Linux Festival </a>.
+                          </p>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>And many more talks, seminars and workshops.</p>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="card card-nested clearfix">
+                    <div class="content">
+                      <p class="clear-margin relative">
+                        <a href="https://shora.ce.aut.ac.ir" target="_blank">
+                          <strong>
+                            The Student Council of AUT's Department of
+                            Computer Engineering
+                          </strong>
+                        </a>
+                      </p>
+                      <p class="text-muted">
+                        <small>
+                          <span class="space-right">
+                            Feb, 2018 - Jan, 2020
+                          </span>
+                        </small>
+                      </p>
+                      <div class="mop-wrapper space-bottom">
+                        <p>
+                          Erfan was a student volunteer for the Student
+                          Council, helping out with their various tasks.
+                        </p>
+                      </div>
+                      <ul>
+                        <li class="mop-wrapper">
+                          <p>
+                            Writer and editor for the council's
+                            <a href="https://t.me/PoyeshMagazine" target="_blank">
+                              Poyesh Magazine </a>.
+                          </p>
+                        </li>
+                        <li class="mop-wrapper">
+                          <p>
+                            Executive staff and content provider for the
+                            department's 30th anniversary, Persian New Year's
+                            Celebration and entrance ceremony for freshmen.
+                          </p>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="detail" id="skills">
+              <div class="icon">
+                <i class="fs-lg icon-tools"></i><span class="mobile-title">Skills</span>
+              </div>
+              <div class="info">
+                <h4 class="title text-uppercase">Skills</h4>
+                <div class="content">
                   <ul class="list-unstyled clear-margin">
-                    <li class="card card-nested clearfix">
-                      <div class="content">
-                        <p class="clear-margin relative">
-                          <a href="CEIT-SSC.ir" target="_blank"
-                            ><strong
-                              >Students’ Scientific Chapter of AUT’s Department
-                              of Computer Engineering
-                            </strong></a
-                          >
-                        </p>
-                        <p class="text-muted">
-                          <small>
-                            <span class="space-right">
-                              Mar. 2019 - Sept. 2020
-                            </span>
-                          </small>
-                        </p>
-                        <div class="mop-wrapper space-bottom">
-                          <p>
-                            Erfan served as a board member and the head of
-                            contests.
-                          </p>
+                    <li class="card card-nested card-skills">
+                      <div class="skill-info">
+                        <strong>Quantum Programming</strong>
+                        <div class="space-top labels">
+                          <span class="label label-keyword">
+                            <p>Pennylane</p>
+                          </span><span class="label label-keyword">
+                            <p>Qiskit</p>
+                          </span><span class="label label-keyword">
+                            <p>Cirq</p>
+                          </span><span class="label label-keyword">
+                            <p>Q#</p>
+                          </span>
                         </div>
-                        <ul>
-                          <li class="mop-wrapper">
-                            <p>
-                              Organized and provided technical means for the 6th
-                              Amirkabir Programming League.
-                            </p>
-                          </li>
-                          <li class="mop-wrapper">
-                            <p>
-                              Organized the
-                              <a
-                                href="http://aaiss.ce.aut.ac.ir/2019"
-                                target="_blank"
-                              >
-                                1st Amirkabir Artificial Intelligence Summer
-                                Summit </a
-                              >.
-                            </p>
-                          </li>
-                          <li class="mop-wrapper">
-                            <p>
-                              Organized and provided technical means for the
-                              19th
-                              <a href="https://ICPC.aut.ac.ir" target="_blank">
-                                Amirkabir ICPC </a
-                              >.
-                            </p>
-                          </li>
-                          <li class="mop-wrapper">
-                            <p>
-                              Organized the 11th
-                              <a href="LinuxFest.aut.ac.ir" target="_blank">
-                                Amirkabir Linux Festival </a>.
-                            </p>
-                          </li>
-                          <li class="mop-wrapper">
-                            <p>And many more talks, seminars and workshops.</p>
-                          </li>
-                        </ul>
                       </div>
                     </li>
-                    <li class="card card-nested clearfix">
-                      <div class="content">
-                        <p class="clear-margin relative">
-                          <a href="https://shora.ce.aut.ac.ir" target="_blank">
-                            <strong>
-                              The Student Council of AUT's Department of
-                              Computer Engineering
-                            </strong>
-                          </a>
-                        </p>
-                        <p class="text-muted">
-                          <small>
-                            <span class="space-right">
-                              Feb, 2018 - Jan, 2020
-                            </span>
-                          </small>
-                        </p>
-                        <div class="mop-wrapper space-bottom">
-                          <p>
-                            Erfan was a student volunteer for the Student
-                            Council, helping out with their various tasks.
-                          </p>
+                    <li class="card card-nested card-skills">
+                      <div class="skill-info">
+                        <strong>Machine Learning</strong>
+                        <div class="space-top labels">
+                          <span class="label label-keyword">
+                            <p>PyTorch</p>
+                          </span><span class="label label-keyword">
+                            <p>Pandas</p>
+                          </span><span class="label label-keyword">
+                            <p>SciPy</p>
+                          </span><span class="label label-keyword">
+                            <p>NumPy</p>
                         </div>
-                        <ul>
-                          <li class="mop-wrapper">
-                            <p>
-                              Writer and editor for the council's
-                              <a
-                                href="https://t.me/PoyeshMagazine"
-                                target="_blank"
-                              >
-                                Poyesh Magazine </a
-                              >.
-                            </p>
-                          </li>
-                          <li class="mop-wrapper">
-                            <p>
-                              Executive staff and content provider for the
-                              department's 30th anniversary, Persian New Year's
-                              Celebration and entrance ceremony for freshmen.
-                            </p>
-                          </li>
-                        </ul>
+                      </div>
+                    </li>
+                    <li class="card card-nested card-skills">
+                      <div class="skill-info">
+                        <strong>Back-End Development</strong>
+                        <div class="space-top labels">
+                          <span class="label label-keyword">
+                            <p>Django</p>
+                          </span><span class="label label-keyword">
+                            <p>Flask</p>
+                          </span><span class="label label-keyword">
+                            <p>koa.js</p>
+                          </span><span class="label label-keyword">
+                            <p>Express.js</p>
+                          </span><span class="label label-keyword">
+                            <p>REST</p>
+                          </span><span class="label label-keyword">
+                            <p>GraphQL</p>
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="card card-nested card-skills">
+                      <div class="skill-info">
+                        <strong>Front-End Development</strong>
+                        <div class="space-top labels">
+                          </span><span class="label label-keyword">
+                            <p>VueJS</p>
+                          </span><span class="label label-keyword">
+                            <p>Bootstrap</p>
+                          </span><span class="label label-keyword">
+                            <p>HTML</p>
+                          </span><span class="label label-keyword">
+                            <p>CSS</p>
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="card card-nested card-skills">
+                      <div class="skill-info">
+                        <strong>Databases</strong>
+                        <div class="space-top labels">
+                          <span class="label label-keyword">
+                            <p>PostgreSQL</p>
+                          </span><span class="label label-keyword">
+                            <p>MySQL</p>
+                          </span><span class="label label-keyword">
+                            <p>MongoDB</p>
+                          </span><span class="label label-keyword">
+                            <p>SQLite</p>
+                          </span><span class="label label-keyword">
+                            <p>Redis</p>
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="card card-nested card-skills">
+                      <div class="skill-info">
+                        <strong>DevOps</strong>
+                        <div class="space-top labels">
+                          <span class="label label-keyword">
+                            <p>Docker</p>
+                          </span><span class="label label-keyword">
+                            <p>Gitlab CI</p>
+                          </span><span class="label label-keyword">
+                            <p>Nginx</p>
+                          </span><span class="label label-keyword">
+                            <p>Gunicorn</p>
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="card card-nested card-skills">
+                      <div class="skill-info">
+                        <strong>Databases</strong>
+                        <div class="space-top labels">
+                          <span class="label label-keyword">
+                            <p>PostgreSQL</p>
+                          </span><span class="label label-keyword">
+                            <p>MySQL</p>
+                          </span><span class="label label-keyword">
+                            <p>MongoDB</p>
+                          </span><span class="label label-keyword">
+                            <p>SQLite</p>
+                          </span><span class="label label-keyword">
+                            <p>Redis</p>
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="card card-nested card-skills">
+                      <div class="skill-info">
+                        <strong>Programming Languages</strong>
+                        <div class="space-top labels">
+                          <span class="label label-keyword">
+                            <p>Python</p>
+                          </span><span class="label label-keyword">
+                            <p>Rust</p>
+                          </span><span class="label label-keyword">
+                            <p>C/C++</p>
+                          </span><span class="label label-keyword">
+                            <p>C#</p>
+                          </span><span class="label label-keyword">
+                            <p>Golang</p>
+                          </span><span class="label label-keyword">
+                            <p>Java</p>
+                          </span><span class="label label-keyword">
+                            <p>JavaScript/TypeScript</p>
+                          </span><span class="label label-keyword">
+                            <p>ARM Assembly</p>
+                          </span><span class="label label-keyword">
+                            <p>Matlab</p>
+                          </span><span class="label label-keyword">
+                            <p>Mathematica</p>
+                          </span><span class="label label-keyword">
+                            <p>OCaml</p>
+                          </span><span class="label label-keyword">
+                            <p>Racket</p>
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="card card-nested card-skills">
+                      <div class="skill-info">
+                        <strong>Miscellaneous</strong>
+                        <div class="space-top labels">
+                          <span class="label label-keyword">
+                            <p>Arduino</p>
+                          </span><span class="label label-keyword">
+                            <p>CUDA</p>
+                          </span><span class="label label-keyword">
+                            <p>OpenMP</p>
+                          </span><span class="label label-keyword">
+                            <p>LaTeX</p>
+                          </span><span class="label label-keyword">
+                            <p>Adobe Photoshop</p>
+                          </span><span class="label label-keyword">
+                            <p>Adobe Premiere Pro</p>
+                          </span><span class="label label-keyword">
+                            <p>Adobe After Effects</p>
+                          </span>
+                        </div>
                       </div>
                     </li>
                   </ul>
                 </div>
               </div>
-              <div class="detail" id="skills">
-                <div class="icon">
-                  <i class="fs-lg icon-tools"></i
-                  ><span class="mobile-title">Skills</span>
-                </div>
-                <div class="info">
-                  <h4 class="title text-uppercase">Skills</h4>
-                  <div class="content">
-                    <ul class="list-unstyled clear-margin">
-                      <li class="card card-nested card-skills">
-                        <div class="skill-info">
-                          <strong>Quantum Programming</strong>
-                          <div class="space-top labels">
-                            <span class="label label-keyword"
-                              ><p>Pennylane</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Qiskit</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Cirq</p> </span
-                            ><span class="label label-keyword"><p>Q#</p> </span>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="card card-nested card-skills">
-                        <div class="skill-info">
-                          <strong>Machine Learning</strong>
-                          <div class="space-top labels">
-                            <span class="label label-keyword"
-                              ><p>PyTorch</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Pandas</p> </span
-                            ><span class="label label-keyword"
-                              ><p>SciPy</p> </span
-                            ><span class="label label-keyword"
-                              ><p>NumPy</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Jupyter</p>
-                            </span>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="card card-nested card-skills">
-                        <div class="skill-info">
-                          <strong>Back-End Development</strong>
-                          <div class="space-top labels">
-                            <span class="label label-keyword"
-                              ><p>Django</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Flask</p> </span
-                            ><span class="label label-keyword"
-                              ><p>koa.js</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Express.js</p> </span
-                            ><span class="label label-keyword"
-                              ><p>REST</p> </span
-                            ><span class="label label-keyword"
-                              ><p>GraphQL</p>
-                            </span>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="card card-nested card-skills">
-                        <div class="skill-info">
-                          <strong>Front-End Development</strong>
-                          <div class="space-top labels">
-                            <span class="label label-keyword"
-                              ><p>ReactJs</p> </span
-                            ><span class="label label-keyword"
-                              ><p>VueJS</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Bootstrap</p> </span
-                            ><span class="label label-keyword"
-                              ><p>HTML</p> </span
-                            ><span class="label label-keyword"
-                              ><p>CSS</p>
-                            </span>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="card card-nested card-skills">
-                        <div class="skill-info">
-                          <strong>Databases</strong>
-                          <div class="space-top labels">
-                            <span class="label label-keyword"
-                              ><p>PostgreSQL</p> </span
-                            ><span class="label label-keyword"
-                              ><p>MySQL</p> </span
-                            ><span class="label label-keyword"
-                              ><p>MongoDB</p> </span
-                            ><span class="label label-keyword"
-                              ><p>SQLite</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Redis</p>
-                            </span>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="card card-nested card-skills">
-                        <div class="skill-info">
-                          <strong>DevOps</strong>
-                          <div class="space-top labels">
-                            <span class="label label-keyword"
-                              ><p>Docker</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Docker Swarm</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Gitlab CI</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Nginx</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Gunicorn</p>
-                            </span>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="card card-nested card-skills">
-                        <div class="skill-info">
-                          <strong>Databases</strong>
-                          <div class="space-top labels">
-                            <span class="label label-keyword"
-                              ><p>PostgreSQL</p> </span
-                            ><span class="label label-keyword"
-                              ><p>MySQL</p> </span
-                            ><span class="label label-keyword"
-                              ><p>MongoDB</p> </span
-                            ><span class="label label-keyword"
-                              ><p>SQLite</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Redis</p>
-                            </span>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="card card-nested card-skills">
-                        <div class="skill-info">
-                          <strong>Programming Languages</strong>
-                          <div class="space-top labels">
-                            <span class="label label-keyword"
-                              ><p>Python</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Rust</p> </span
-                            ><span class="label label-keyword"
-                              ><p>C/C++</p> </span
-                            ><span class="label label-keyword"><p>C#</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Golang</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Java</p> </span
-                            ><span class="label label-keyword"
-                              ><p>JavaScript/TypeScript</p> </span
-                            ><span class="label label-keyword"
-                              ><p>ARM Assembly</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Matlab</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Mathematica</p> </span
-                            ><span class="label label-keyword"
-                              ><p>OCaml</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Racket</p>
-                            </span>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="card card-nested card-skills">
-                        <div class="skill-info">
-                          <strong>Miscellaneous</strong>
-                          <div class="space-top labels">
-                            <span class="label label-keyword"
-                              ><p>Arduino</p> </span
-                            ><span class="label label-keyword"
-                              ><p>CUDA</p> </span
-                            ><span class="label label-keyword"
-                              ><p>OpenMP</p> </span
-                            ><span class="label label-keyword"
-                              ><p>LaTeX</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Adobe Photoshop</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Adobe Premiere Pro</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Adobe After Effects</p>
-                            </span>
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+            </div>
+            <div class="detail" id="education">
+              <div class="icon">
+                <i class="fs-lg icon-graduation-cap"></i><span class="mobile-title">Education</span>
               </div>
-              <div class="detail" id="education">
-                <div class="icon">
-                  <i class="fs-lg icon-graduation-cap"></i
-                  ><span class="mobile-title">Education</span>
-                </div>
-                <div class="info">
-                  <h4 class="title text-uppercase">Education</h4>
-                  <div class="content">
-                    <ul class="list-unstyled clear-margin">
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin relative">
-                            <strong
-                              >Computer Engineering, Bachelor,&nbsp;</strong
-                            >Amirkabir University of Technology
-                          </p>
-                          <p class="text-muted">
-                            <small>Sep, 2017 - Oct, 2021</small>
-                          </p>
-                          <i>3.36 (16.75/20)</i>
-                          <div class="space-top labels">
-                            <span class="label label-keyword"
-                              ><p>Fundamental of Programming</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Advanced Programming</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Data Structures</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Algorithm Design</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Linear Algebra</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Quantum Physics 1</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Quantum Physics 2</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Computer Architecture</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Programming Languages</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Discrete Mathematics</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Computational Inteligence</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Artificial Inteligence</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Database Design</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Information Retrieval</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Software Engineering</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Compiler Design</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Signals &amp; Systems</p> </span
-                            ><span class="label label-keyword"
-                              ><p>Multicore Programming</p> </span
-                            ><span class="label label-keyword"
-                              ><p>
-                                Microprocessor and Assembly Language
-                              </p> </span
-                            ><span class="label label-keyword"
-                              ><p>Operating Systems</p>
-                            </span>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin relative">
-                            <strong>Math &amp; Physics, Diploma,&nbsp;</strong
-                            >Allameh Helli 3
-                          </p>
-                          <p class="text-muted clear-margin">
-                            <small>Sep, 2013 - May, 2017</small>
-                          </p>
-                          <i></i>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="detail" id="awards">
-                <div class="icon">
-                  <i class="fs-lg icon-trophy"></i
-                  ><span class="mobile-title">Awards</span>
-                </div>
-                <div class="info">
-                  <h4 class="title text-uppercase">Awards</h4>
-                  <div class="content">
-                    <ul class="list-unstyled clear-margin">
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin" itemprop="award">
-                            <strong
-                              >Placed among top 0.8% of the participants in The
-                              Iranian Nationwide University Entrance Exam for
-                              BSc. in Math &amp; Engineering </strong
-                            >,&nbsp;National Organization of Educational Testing
-                          </p>
-                          <p class="text-muted">
-                            <small>Awarded on: July, 2017</small>
-                          </p>
-                          <div class="mop-wrapper"></div>
-                        </div>
-                      </li>
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin" itemprop="award">
-                            <strong
-                              >Advanced to the 2nd round of Iran's Chemistry
-                              Olympiad </strong
-                            >,&nbsp;National Organization for Development of
-                            Exceptional Talents
-                          </p>
-                          <p class="text-muted">
-                            <small>Awarded on: Jan, 2015 & Jan, 2016</small>
-                          </p>
-                          <div class="mop-wrapper"></div>
-                        </div>
-                      </li>
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin" itemprop="award">
-                            <strong>1st Place in the 5th HelliChem </strong
-                            >,&nbsp;Allameh Helli 3 Highschool
-                          </p>
-                          <p class="text-muted">
-                            <small>Awarded on: Nov, 2013</small>
-                          </p>
-                          <div class="mop-wrapper">
-                            <p>
-                              HelliChem is a practical chemistry contest in
-                              which contestants should carry out a series of
-                              chemical experiments and analyize their results.
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="detail" id="teaching-experience">
-                <div class="icon">
-                  <i class="fs-lg icon-book"></i
-                  ><span class="mobile-title">Teaching Experience</span>
-                </div>
-                <div class="info">
-                  <h4 class="title text-uppercase">Teaching Experience</h4>
-                  <div class="content">
-                    <ul class="list-unstyled clear-margin">
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin relative">
-                            <strong
-                              >Teaching Assistant, Signals and Systems, </strong
-                            >Amirkabir University of Technology
-                          </p>
-                          <p class="text-muted">
-                            <small>Sep, 2020 - Dec, 2020</small>
-                          </p>
-                          <div class="mop-wrapper">
-                            <p>
-                              Designing and grading assignments and projects,
-                              providing extra educational material under the
-                              supervision of Dr. Mehdi Rasti.
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin relative">
-                            <strong
-                              >Teaching Assistant, Microprocessors and Assembly
-                              Language, </strong
-                            >Amirkabir University of Technology
-                          </p>
-                          <p class="text-muted">
-                            <small>Sep, 2020 - Dec, 2020</small>
-                          </p>
-                          <div class="mop-wrapper">
-                            <p>
-                              Designing lab assignments and projects, providing
-                              supplementary learning resources under the
-                              supervision of Dr. Hamed Farbeh.
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin relative">
-                            <strong
-                              >Teaching Assistant, Computer Architecture and
-                              Organization, </strong
-                            >Amirkabir University of Technology
-                          </p>
-                          <p class="text-muted">
-                            <small>Jan, 2020 - May, 2020</small>
-                          </p>
-                          <div class="mop-wrapper">
-                            <p>
-                              Designing and grading assignments and projects
-                              under the supervision of Dr. Hamed Farbeh.
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin relative">
-                            <strong
-                              >Teaching Assistant, Programming Languages, </strong
-                            >Amirkabir University of Technology
-                          </p>
-                          <p class="text-muted">
-                            <small>Jan, 2020 - May, 2020</small>
-                          </p>
-                          <div class="mop-wrapper">
-                            <p>
-                              Grading assignments and projects under the
-                              supervision of Dr. Mehran S. Fallah.
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin relative">
-                            <strong
-                              >Teaching Assistant, Advanced Programming, </strong
-                            >Amirkabir University of Technology
-                          </p>
-                          <p class="text-muted">
-                            <small>Jan, 2019 - May, 2020</small>
-                          </p>
-                          <div class="mop-wrapper">
-                            <p>
-                              Designing and grading assignments and projects,
-                              assisting lab sessions under the supervision of
-                              Dr. Amir Kalbasi &amp; Eng. Ehsan Edalat.
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin relative">
-                            <strong
-                              >Teaching Assistant, Fundamentals of Programming, </strong
-                            >Amirkabir University of Technology
-                          </p>
-                          <p class="text-muted">
-                            <small>Sep, 2019 - Dec, 2019</small>
-                          </p>
-                          <div class="mop-wrapper">
-                            <p>
-                              Designing and grading assignments and projects,
-                              conducting recitation sessions under the
-                              supervision of Dr. Ehsan Nazerfard.
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="detail" id="online-courses">
-                <div class="icon">
-                  <i class="fs-lg icon-newspaper"></i
-                  ><span class="mobile-title">Online Courses</span>
-                </div>
-                <div class="info">
-                  <h4 class="title text-uppercase">Online Courses</h4>
-                  <div class="content">
-                    <ul class="list-unstyled clear-margin">
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin">
-                            <strong
-                              ><a
-                                href="https://learning.edx.org/course/course-v1:University_of_TorontoX+UTQML101x+2T2019/home"
-                                target="_blank"
-                                >Quantum Machine Learning (Audited)</a
-                              >&nbsp;,&nbsp;</strong
-                            >University of TorontoX
-                          </p>
-                          <div class="mop-wrapper"></div>
-                        </div>
-                      </li>
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin">
-                            <strong
-                              ><a
-                                href="https://ocw.mit.edu/courses/physics/8-04-quantum-physics-i-spring-2016/"
-                                target="_blank"
-                                >Quantum Physics 1 (Audited)</a
-                              >&nbsp;,&nbsp;</strong
-                            >MITx
-                          </p>
-                          <div class="mop-wrapper"></div>
-                        </div>
-                      </li>
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin">
-                            <strong
-                              ><a
-                                href="https://ocw.mit.edu/courses/physics/8-05-quantum-physics-ii-fall-2013/"
-                                target="_blank"
-                                >Quantum Physics 2 (Audited)</a
-                              >&nbsp;,&nbsp;</strong
-                            >MITx
-                          </p>
-                          <div class="mop-wrapper"></div>
-                        </div>
-                      </li>
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin">
-                            <strong
-                              ><a
-                                href="https://learning.edx.org/course/course-v1:MITx+8.06x+3T2021/home"
-                                target="_blank"
-                                >Quantum Physics 3 (In Progress)</a
-                              >&nbsp;,&nbsp;</strong
-                            >MITx
-                          </p>
-                          <div class="mop-wrapper"></div>
-                        </div>
-                      </li>
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin">
-                            <strong
-                              ><a
-                                href="https://learning.edx.org/course/course-v1:MITx+8.06x+3T2021/home"
-                                target="_blank"
-                                >Quantum Cryptography (Audited)</a
-                              >&nbsp;,&nbsp;</strong
-                            >CaltechX - DelftX
-                          </p>
-                          <div class="mop-wrapper"></div>
-                        </div>
-                      </li>
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin">
-                            <strong
-                              ><a
-                                href="https://learning.edx.org/course/course-v1:MITx+18.031x+2T2021/home"
-                                target="_blank"
-                                >Differential Equations</a
-                              >&nbsp;,&nbsp;</strong
-                            >MITx
-                          </p>
-                          <div class="mop-wrapper">
-                            <p>
-                              Verified,
-                              <a
-                                href="https://github.com/Erfan-Online/MIT-18.03 "
-                                target="_blank"
-                                >Certificate of Completion</a
-                              >
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin">
-                            <strong
-                              ><a
-                                href="https://see.stanford.edu/Course/EE261"
-                                target="_blank"
-                                >The Fourier Transform and its Applications
-                                (Audited)</a
-                              >&nbsp;,&nbsp;</strong
-                            >Stanford Engineering Everywhere
-                          </p>
-                          <div class="mop-wrapper"></div>
-                        </div>
-                      </li>
-                      <li class="card card-nested">
-                        <div class="content">
-                          <p class="clear-margin">
-                            <strong
-                              ><a
-                                href="https://learning.edx.org/course/course-v1:HarvardX+STAT110x+2T2021/home"
-                                target="_blank"
-                                >Statistics 110: Probability (In Progress)</a
-                              >&nbsp;,&nbsp;</strong
-                            >HarvardX
-                          </p>
-                          <div class="mop-wrapper"></div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="detail" id="languages">
-                <div class="icon">
-                  <i class="fs-lg icon-language"></i
-                  ><span class="mobile-title">Interests</span>
-                </div>
-                <div class="info">
-                  <h4 class="title text-uppercase">Languages</h4>
-                  <div class="content">
-                    <ul class="list-unstyled clear-margin">
-                      <li class="card card-nested">
-                        <strong>Persian</strong>
-                        <p class="text-muted">
-                          <small>
-                            <span class="space-right"> Native Speaker </span>
-                          </small>
+              <div class="info">
+                <h4 class="title text-uppercase">Education</h4>
+                <div class="content">
+                  <ul class="list-unstyled clear-margin">
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin relative">
+                          <strong>Computer Engineering, Bachelor,&nbsp;</strong>Amirkabir University of Technology
                         </p>
-                      </li>
-                      <li class="card card-nested">
-                        <strong>English</strong>
                         <p class="text-muted">
-                          <small>
-                            <span class="space-right">
-                              Bilingual Proficiency
-                            </span>
-                          </small>
+                          <small>Sep, 2017 - Oct, 2021</small>
                         </p>
-                        <div class="content mop-wrapper" itemprop="description">
+                        <i>3.36 (16.75/20)</i>
+                        <div class="space-top labels">
+                          <span class="label label-keyword">
+                            <p>Fundamental of Programming</p>
+                          </span><span class="label label-keyword">
+                            <p>Advanced Programming</p>
+                          </span><span class="label label-keyword">
+                            <p>Data Structures</p>
+                          </span><span class="label label-keyword">
+                            <p>Algorithm Design</p>
+                          </span><span class="label label-keyword">
+                            <p>Linear Algebra</p>
+                          </span><span class="label label-keyword">
+                            <p>Quantum Physics 1</p>
+                          </span><span class="label label-keyword">
+                            <p>Quantum Physics 2</p>
+                          </span><span class="label label-keyword">
+                            <p>Computer Architecture</p>
+                          </span><span class="label label-keyword">
+                            <p>Programming Languages</p>
+                          </span><span class="label label-keyword">
+                            <p>Discrete Mathematics</p>
+                          </span><span class="label label-keyword">
+                            <p>Computational Inteligence</p>
+                          </span><span class="label label-keyword">
+                            <p>Artificial Inteligence</p>
+                          </span><span class="label label-keyword">
+                            <p>Database Design</p>
+                          </span><span class="label label-keyword">
+                            <p>Information Retrieval</p>
+                          </span><span class="label label-keyword">
+                            <p>Software Engineering</p>
+                          </span><span class="label label-keyword">
+                            <p>Compiler Design</p>
+                          </span><span class="label label-keyword">
+                            <p>Signals &amp; Systems</p>
+                          </span><span class="label label-keyword">
+                            <p>Multicore Programming</p>
+                          </span><span class="label label-keyword">
+                            <p>
+                              Microprocessor and Assembly Language
+                            </p>
+                          </span><span class="label label-keyword">
+                            <p>Operating Systems</p>
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin relative">
+                          <strong>Math &amp; Physics, Diploma,&nbsp;</strong>Allameh Helli 3
+                        </p>
+                        <p class="text-muted clear-margin">
+                          <small>Sep, 2013 - May, 2017</small>
+                        </p>
+                        <i></i>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="detail" id="awards">
+              <div class="icon">
+                <i class="fs-lg icon-trophy"></i><span class="mobile-title">Awards</span>
+              </div>
+              <div class="info">
+                <h4 class="title text-uppercase">Awards</h4>
+                <div class="content">
+                  <ul class="list-unstyled clear-margin">
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin" itemprop="award">
+                          <strong>Placed among top 0.8% of the participants in The
+                            Iranian Nationwide University Entrance Exam for
+                            BSc. in Math &amp; Engineering </strong>,&nbsp;National Organization of Educational Testing
+                        </p>
+                        <p class="text-muted">
+                          <small>Awarded on: July, 2017</small>
+                        </p>
+                        <div class="mop-wrapper"></div>
+                      </div>
+                    </li>
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin" itemprop="award">
+                          <strong>Advanced to the 2nd round of Iran's Chemistry
+                            Olympiad </strong>,&nbsp;National Organization for Development of
+                          Exceptional Talents
+                        </p>
+                        <p class="text-muted">
+                          <small>Awarded on: Jan, 2015 & Jan, 2016</small>
+                        </p>
+                        <div class="mop-wrapper"></div>
+                      </div>
+                    </li>
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin" itemprop="award">
+                          <strong>1st Place in the 5th HelliChem </strong>,&nbsp;Allameh Helli 3 Highschool
+                        </p>
+                        <p class="text-muted">
+                          <small>Awarded on: Nov, 2013</small>
+                        </p>
+                        <div class="mop-wrapper">
                           <p>
-                            TOEFL iBT: 113 (Reading: 30, Listening: 28,
-                            Speaking: 28, Writing: 27)
+                            HelliChem is a practical chemistry contest in
+                            which contestants should carry out a series of
+                            chemical experiments and analyize their results.
                           </p>
-                          <p>GRE General: V155, Q164, AW4.0</p>
                         </div>
-                      </li>
-                      <li class="card card-nested">
-                        <strong>German</strong>
-                        <p class="text-muted">
-                          <small>
-                            <span class="space-right"> Intermediate </span>
-                          </small>
-                        </p>
-                      </li>
-                    </ul>
-                  </div>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
-              <div class="detail" id="references">
-                <div class="icon">
-                  <i class="fs-lg icon-thumbs-up"></i
-                  ><span class="mobile-title">References</span>
+            </div>
+            <div class="detail" id="teaching-experience">
+              <div class="icon">
+                <i class="fs-lg icon-book"></i><span class="mobile-title">Teaching Experience</span>
+              </div>
+              <div class="info">
+                <h4 class="title text-uppercase">Teaching Experience</h4>
+                <div class="content">
+                  <ul class="list-unstyled clear-margin">
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin relative">
+                          <strong>Teaching Assistant, Signals and Systems, </strong>Amirkabir University of Technology
+                        </p>
+                        <p class="text-muted">
+                          <small>Sep, 2020 - Dec, 2020</small>
+                        </p>
+                        <div class="mop-wrapper">
+                          <p>
+                            Designing and grading assignments and projects,
+                            providing extra educational material under the
+                            supervision of Dr. Mehdi Rasti.
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin relative">
+                          <strong>Teaching Assistant, Microprocessors and Assembly
+                            Language, </strong>Amirkabir University of Technology
+                        </p>
+                        <p class="text-muted">
+                          <small>Sep, 2020 - Dec, 2020</small>
+                        </p>
+                        <div class="mop-wrapper">
+                          <p>
+                            Designing lab assignments and projects, providing
+                            supplementary learning resources under the
+                            supervision of Dr. Hamed Farbeh.
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin relative">
+                          <strong>Teaching Assistant, Computer Architecture and
+                            Organization, </strong>Amirkabir University of Technology
+                        </p>
+                        <p class="text-muted">
+                          <small>Jan, 2020 - May, 2020</small>
+                        </p>
+                        <div class="mop-wrapper">
+                          <p>
+                            Designing and grading assignments and projects
+                            under the supervision of Dr. Hamed Farbeh.
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin relative">
+                          <strong>Teaching Assistant, Programming Languages, </strong>Amirkabir University of Technology
+                        </p>
+                        <p class="text-muted">
+                          <small>Jan, 2020 - May, 2020</small>
+                        </p>
+                        <div class="mop-wrapper">
+                          <p>
+                            Grading assignments and projects under the
+                            supervision of Dr. Mehran S. Fallah.
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin relative">
+                          <strong>Teaching Assistant, Advanced Programming, </strong>Amirkabir University of Technology
+                        </p>
+                        <p class="text-muted">
+                          <small>Jan, 2019 - May, 2020</small>
+                        </p>
+                        <div class="mop-wrapper">
+                          <p>
+                            Designing and grading assignments and projects,
+                            assisting lab sessions under the supervision of
+                            Dr. Amir Kalbasi &amp; Eng. Ehsan Edalat.
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin relative">
+                          <strong>Teaching Assistant, Fundamentals of Programming, </strong>Amirkabir University of
+                          Technology
+                        </p>
+                        <p class="text-muted">
+                          <small>Sep, 2019 - Dec, 2019</small>
+                        </p>
+                        <div class="mop-wrapper">
+                          <p>
+                            Designing and grading assignments and projects,
+                            conducting recitation sessions under the
+                            supervision of Dr. Ehsan Nazerfard.
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-                <div class="info">
-                  <h4 class="title text-uppercase">References</h4>
-                  <div class="content">
-                    <ul class="list-unstyled clear-margin">
-                      <li class="card card-nested">
-                        <b>Salman Beigi</b>, Associate Professor of Mathematics
-                        at IPM.
-                        <br />
-                        Email:
-                        <a
-                          class="link-disguise"
-                          href="mailto:salman.beigi@gmail.com"
-                          itemprop="email"
-                          >salman.beigi@gmail.com</a
-                        >
-                      </li>
-                      <li class="card card-nested">
-                        <b>Hamed Farbeh</b>, Assistant Professor of Computer
-                        Engineering Department at AUT.
-                        <br />
-                        Email:
-                        <a
-                          class="link-disguise"
-                          href="mailto:farbeh@aut.ac.ir"
-                          itemprop="email"
-                          >farbeh@aut.ac.ir</a
-                        >
-                      </li>
-                      <li class="card card-nested">
-                        <b>Ehsan Nazerfard</b>, Assistant Professor of Computer
-                        Engineering Department at AUT.
-                        <br />
-                        Email:
-                        <a
-                          class="link-disguise"
-                          href="mailto:nazerfard@aut.ac.ir"
-                          itemprop="email"
-                          >nazerfard@aut.ac.ir</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
+              </div>
+            </div>
+            <div class="detail" id="online-courses">
+              <div class="icon">
+                <i class="fs-lg icon-newspaper"></i><span class="mobile-title">Online Courses</span>
+              </div>
+              <div class="info">
+                <h4 class="title text-uppercase">Online Courses</h4>
+                <div class="content">
+                  <ul class="list-unstyled clear-margin">
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin">
+                          <strong><a
+                              href="https://learning.edx.org/course/course-v1:University_of_TorontoX+UTQML101x+2T2019/home"
+                              target="_blank">Quantum Machine Learning (Audited)</a>&nbsp;,&nbsp;</strong>University of
+                          TorontoX
+                        </p>
+                        <div class="mop-wrapper"></div>
+                      </div>
+                    </li>
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin">
+                          <strong><a href="https://ocw.mit.edu/courses/physics/8-04-quantum-physics-i-spring-2016/"
+                              target="_blank">Quantum Physics 1 (Audited)</a>&nbsp;,&nbsp;</strong>MITx
+                        </p>
+                        <div class="mop-wrapper"></div>
+                      </div>
+                    </li>
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin">
+                          <strong><a href="https://ocw.mit.edu/courses/physics/8-05-quantum-physics-ii-fall-2013/"
+                              target="_blank">Quantum Physics 2 (Audited)</a>&nbsp;,&nbsp;</strong>MITx
+                        </p>
+                        <div class="mop-wrapper"></div>
+                      </div>
+                    </li>
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin">
+                          <strong><a href="https://ocw.mit.edu/courses/physics/8-06-quantum-physics-iii-spring-2018/"
+                              target="_blank">Quantum Physics 3 (Audited)</a>&nbsp;,&nbsp;</strong>MITx
+                        </p>
+                        <div class="mop-wrapper"></div>
+                      </div>
+                    </li>
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin">
+                          <strong><a href="https://learning.edx.org/course/course-v1:MITx+18.031x+2T2021/home"
+                              target="_blank">Differential Equations</a>&nbsp;,&nbsp;</strong>MITx
+                        </p>
+                        <div class="mop-wrapper">
+                          <p>
+                            Verified,
+                            <a href="https://github.com/Erfan-Online/MIT-18.03 " target="_blank">Certificate of
+                              Completion</a>
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin">
+                          <strong><a href="https://learning.edx.org/course/course-v1:HarvardX+STAT110x+2T2021/home"
+                              target="_blank">Statistics 110: Probability</a>&nbsp;,&nbsp;</strong>HarvardX
+                        </p>
+                        <div class="mop-wrapper">
+                          <p>
+                            Verified,
+                            <a href="https://github.com/Erfan-Online/Harvard-Stat110" target="_blank">Certificate of
+                              Completion</a>
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="card card-nested">
+                      <div class="content">
+                        <p class="clear-margin">
+                          <strong><a href="https://see.stanford.edu/Course/EE261" target="_blank">The Fourier Transform
+                              and its Applications
+                              (Audited)</a>&nbsp;,&nbsp;</strong>Stanford Engineering Everywhere
+                        </p>
+                        <div class="mop-wrapper"></div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="detail" id="languages">
+              <div class="icon">
+                <i class="fs-lg icon-language"></i><span class="mobile-title">Interests</span>
+              </div>
+              <div class="info">
+                <h4 class="title text-uppercase">Languages</h4>
+                <div class="content">
+                  <ul class="list-unstyled clear-margin">
+                    <li class="card card-nested">
+                      <strong>Persian</strong>
+                      <p class="text-muted">
+                        <small>
+                          <span class="space-right"> Native Speaker </span>
+                        </small>
+                      </p>
+                    </li>
+                    <li class="card card-nested">
+                      <strong>English</strong>
+                      <p class="text-muted">
+                        <small>
+                          <span class="space-right">
+                            Bilingual Proficiency
+                          </span>
+                        </small>
+                      </p>
+                      <div class="content mop-wrapper" itemprop="description">
+                        <p>
+                          TOEFL iBT: 113 (Reading: 30, Listening: 28,
+                          Speaking: 28, Writing: 27)
+                        </p>
+                        <p>GRE General: V155, Q164, AW4.0</p>
+                      </div>
+                    </li>
+                    <li class="card card-nested">
+                      <strong>German</strong>
+                      <p class="text-muted">
+                        <small>
+                          <span class="space-right"> Intermediate </span>
+                        </small>
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="detail" id="references">
+              <div class="icon">
+                <i class="fs-lg icon-thumbs-up"></i><span class="mobile-title">References</span>
+              </div>
+              <div class="info">
+                <h4 class="title text-uppercase">References</h4>
+                <div class="content">
+                  <ul class="list-unstyled clear-margin">
+                    <li class="card card-nested">
+                      <b>Salman Beigi</b>, Associate Professor of Mathematics
+                      at IPM.
+                      <br />
+                      Email:
+                      <a class="link-disguise" href="mailto:salman.beigi@gmail.com"
+                        itemprop="email">salman.beigi@gmail.com</a>
+                    </li>
+                    <li class="card card-nested">
+                      <b>Hamed Farbeh</b>, Assistant Professor of Computer
+                      Engineering Department at AUT.
+                      <br />
+                      Email:
+                      <a class="link-disguise" href="mailto:farbeh@aut.ac.ir" itemprop="email">farbeh@aut.ac.ir</a>
+                    </li>
+                    <li class="card card-nested">
+                      <b>Ehsan Nazerfard</b>, Assistant Professor of Computer
+                      Engineering Department at AUT.
+                      <br />
+                      Email:
+                      <a class="link-disguise" href="mailto:nazerfard@aut.ac.ir"
+                        itemprop="email">nazerfard@aut.ac.ir</a>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script>
-      $(function () {
-        var toggleFloatingMenu = function () {
-          $(".js-floating-nav").toggleClass("is-visible");
-          $(".js-floating-nav-trigger").toggleClass("is-open");
-        };
-
-        $(".background-card").css(
-          "min-height",
-          window.screen.availHeight + "px"
-        );
-        $("[data-toggle=tooltip]").tooltip();
-        $(".js-floating-nav-trigger").on("click", function (e) {
-          e.preventDefault();
-          toggleFloatingMenu();
-        });
-        $(".js-floating-nav a").on("click", toggleFloatingMenu);
-
-        $("#remaining-profiles").on("show.bs.collapse", function () {
-          $(".js-profiles-collapse > i")
-            .removeClass("icon-chevron-down")
-            .addClass("icon-chevron-up");
-        });
-
-        $("#remaining-profiles").on("hidden.bs.collapse", function () {
-          $(".js-profiles-collapse > i")
-            .removeClass("icon-chevron-up")
-            .addClass("icon-chevron-down");
-        });
-      });
-    </script>
-    <script>
-      WebFontConfig = {
-        google: { families: ["Lato:300,400,700:latin"] },
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script>
+    $(function () {
+      var toggleFloatingMenu = function () {
+        $(".js-floating-nav").toggleClass("is-visible");
+        $(".js-floating-nav-trigger").toggleClass("is-open");
       };
-      (function () {
-        var wf = document.createElement("script");
-        wf.src =
-          ("https:" == document.location.protocol ? "https" : "http") +
-          "://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js";
-        wf.type = "text/javascript";
-        wf.async = "true";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(wf, s);
-      })();
-    </script>
-  </body>
+
+      $(".background-card").css(
+        "min-height",
+        window.screen.availHeight + "px"
+      );
+      $("[data-toggle=tooltip]").tooltip();
+      $(".js-floating-nav-trigger").on("click", function (e) {
+        e.preventDefault();
+        toggleFloatingMenu();
+      });
+      $(".js-floating-nav a").on("click", toggleFloatingMenu);
+
+      $("#remaining-profiles").on("show.bs.collapse", function () {
+        $(".js-profiles-collapse > i")
+          .removeClass("icon-chevron-down")
+          .addClass("icon-chevron-up");
+      });
+
+      $("#remaining-profiles").on("hidden.bs.collapse", function () {
+        $(".js-profiles-collapse > i")
+          .removeClass("icon-chevron-up")
+          .addClass("icon-chevron-down");
+      });
+    });
+  </script>
+  <script>
+    WebFontConfig = {
+      google: { families: ["Lato:300,400,700:latin"] },
+    };
+    (function () {
+      var wf = document.createElement("script");
+      wf.src =
+        ("https:" == document.location.protocol ? "https" : "http") +
+        "://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js";
+      wf.type = "text/javascript";
+      wf.async = "true";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(wf, s);
+    })();
+  </script>
+</body>
+
 </html>
