@@ -83,6 +83,7 @@
     }
 
     const prefix = (root || "").replace(/^\/+|\/+$/g, "");
+    const prefixLower = prefix.toLowerCase();
     const paths = tree.paths.filter(function (path) {
       for (let i = 0; i < SKIP_PREFIXES.length; i++) {
         if (path === SKIP_PREFIXES[i].slice(0, -1) || path.indexOf(SKIP_PREFIXES[i]) === 0) {
@@ -90,7 +91,8 @@
         }
       }
       if (!prefix) return true;
-      return path === prefix || path.indexOf(prefix + "/") === 0;
+      const pathLower = path.toLowerCase();
+      return pathLower === prefixLower || pathLower.indexOf(prefixLower + "/") === 0;
     });
 
     return { truncated: tree.truncated, paths: paths };
@@ -153,6 +155,26 @@
     );
   }
 
+  function githubTreeUrl(owner, repo, branch, path) {
+    var url =
+      "https://github.com/" +
+      owner +
+      "/" +
+      repo +
+      "/tree/" +
+      encodeURIComponent(branch);
+    var folder = (path || "").replace(/^\/+|\/+$/g, "");
+    if (folder) {
+      url +=
+        "/" +
+        folder
+          .split("/")
+          .map(encodeURIComponent)
+          .join("/");
+    }
+    return url;
+  }
+
   function decodePart(part) {
     try {
       return decodeURIComponent(part);
@@ -185,17 +207,18 @@
       if (!/^https?:\/\//i.test(s)) s = "https://" + s.replace(/^\/\//, "");
       try {
         var u = new URL(s);
-        var segs = u.pathname.replace(/^\/+|\/+$/g, "").split("/");
+        var segs = u.pathname
+          .replace(/^\/+|\/+$/g, "")
+          .split("/")
+          .map(decodePart);
         if (segs.length < 2 || !segs[0] || !segs[1]) return null;
         var owner = segs[0];
         var repo = segs[1].replace(/\.git$/i, "");
         var path = "";
         var branch = "";
-        if (segs[2] === "blob" || segs[2] === "raw") {
+        if (segs[2] === "blob" || segs[2] === "raw" || segs[2] === "tree") {
           branch = segs[3] || "";
-          path = segs.slice(4).join("/");
-        } else if (segs[2] === "tree") {
-          branch = segs[3] || "";
+          path = segs.slice(4).filter(Boolean).join("/");
         }
         return { owner: owner, repo: repo, path: path, branch: branch };
       } catch (e) {
@@ -219,6 +242,7 @@
     fetchMarkdown: fetchMarkdown,
     rawFileUrl: rawFileUrl,
     githubBlobUrl: githubBlobUrl,
+    githubTreeUrl: githubTreeUrl,
     parseInput: parseInput
   };
 })(window);

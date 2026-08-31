@@ -6,7 +6,8 @@
     meta: null,
     files: [],
     truncated: false,
-    sidebarOpen: false
+    sidebarOpen: false,
+    scopedFolder: ""
   };
 
   function $(id) {
@@ -174,19 +175,7 @@
         /* ignore */
       }
     }
-    var hash =
-      "#/" +
-      encodeURIComponent(parsed.owner) +
-      "/" +
-      encodeURIComponent(parsed.repo);
-    if (parsed.path && /\.md$/i.test(parsed.path)) {
-      hash +=
-        "/" +
-        parsed.path
-          .split("/")
-          .map(encodeURIComponent)
-          .join("/");
-    }
+    var hash = hashFor(parsed.owner, parsed.repo, parsed.path);
     if (location.hash === hash) {
       onRoute();
     } else {
@@ -246,6 +235,45 @@
     els.menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
   }
 
+  function encodePath(path) {
+    return (path || "")
+      .replace(/^\/+|\/+$/g, "")
+      .split("/")
+      .filter(Boolean)
+      .map(encodeURIComponent)
+      .join("/");
+  }
+
+  function hashFor(owner, repo, path) {
+    var hash =
+      "#/" + encodeURIComponent(owner) + "/" + encodeURIComponent(repo);
+    var encoded = encodePath(path);
+    if (encoded) hash += "/" + encoded;
+    return hash;
+  }
+
+  function joinRepoPath(a, b) {
+    a = (a || "").replace(/^\/+|\/+$/g, "");
+    b = (b || "").replace(/^\/+|\/+$/g, "");
+    if (!a) return b;
+    if (!b) return a;
+    return a + "/" + b;
+  }
+
+  function parentFolder(folder) {
+    var clean = (folder || "").replace(/^\/+|\/+$/g, "");
+    if (!clean) return "";
+    var i = clean.lastIndexOf("/");
+    return i === -1 ? "" : clean.slice(0, i);
+  }
+
+  function pathIsUnder(path, folder) {
+    if (!folder) return true;
+    var a = String(path || "").toLowerCase();
+    var b = String(folder || "").replace(/^\/+|\/+$/g, "").toLowerCase();
+    return a === b || a.indexOf(b + "/") === 0;
+  }
+
   function parseHash() {
     const raw = (location.hash || "").replace(/^#\/?/, "");
     if (!raw) return { view: "catalog" };
@@ -255,13 +283,18 @@
       } catch (e) {
         return p;
       }
+    }).filter(function (p, i) {
+      return i < 2 || p;
     });
     const owner = parts[0];
     const repo = parts[1];
     const path = parts.slice(2).join("/");
     if (!owner || !repo) return { view: "catalog" };
     if (!path) return { view: "repo", owner: owner, repo: repo };
-    return { view: "file", owner: owner, repo: repo, path: path };
+    if (/\.md$/i.test(path)) {
+      return { view: "file", owner: owner, repo: repo, path: path };
+    }
+    return { view: "repo", owner: owner, repo: repo, folder: path };
   }
 
   function findCatalogEntry(owner, repo) {
@@ -333,7 +366,7 @@
 
     els.repoList.innerHTML = repos
       .map(function (r) {
-        const href = "#/" + encodeURIComponent(r.owner) + "/" + encodeURIComponent(r.repo);
+        const href = hashFor(r.owner, r.repo);
         const desc = r.description
           ? "<p>" + escapeHtml(r.description) + "</p>"
           : "";
@@ -364,20 +397,80 @@
 
   function relativePath(path, root) {
     const prefix = (root || "").replace(/^\/+|\/+$/g, "");
-    if (prefix && path.indexOf(prefix + "/") === 0) return path.slice(prefix.length + 1);
-    if (prefix && path === prefix) return path.split("/").pop();
+    if (!prefix) return path;
+    if (
+      path.length >= prefix.length &&
+      path.slice(0, prefix.length).toLowerCase() === prefix.toLowerCase()
+    ) {
+      if (path.length === prefix.length) return path.split("/").pop();
+      if (path.charAt(prefix.length) === "/") return path.slice(prefix.length + 1);
+    }
     return path;
   }
 
-  function renderFileList(activePath) {
+  function canonicalFolder(paths, folder) {
+    const prefix = (folder || "").replace(/^\/+|\/+$/g, "");
+    if (!prefix || !paths || !paths.length) return prefix;
+    const lower = prefix.toLowerCase();
+    for (let i = 0; i < paths.length; i++) {
+      const path = paths[i];
+      if (
+        path.length >= prefix.length &&
+        path.slice(0, prefix.length).toLowerCase() === lower &&
+        (path.length === prefix.length || path.charAt(prefix.length) === "/")
+      ) {
+        return path.slice(0, prefix.length);
+      }
+    }
+    return prefix;
+  }
+
+  function dirHeadingHtml(owner, repo, root, dir) {
+    const segs = dir.split("/").filter(Boolean);
+    let acc = [];
+    return segs
+      .map(function (part, i) {
+        acc.push(part);
+        const href = hashFor(owner, repo, joinRepoPath(root, acc.join("/")));
+        const sep = i ? '<span class="dir-sep">/</span>' : "";
+        return (
+          sep +
+          '<a href="' +
+          href +
+          '" title="Show only this folder">' +
+          escapeHtml(part) +
+          "</a>"
+        );
+      })
+      .join("");
+  }
+
+  function renderFileList(activePath, folder) {
     const root = state.meta ? state.meta.root : "";
+    const bits = [];
+
+    if (folder) {
+      const parent = parentFolder(folder);
+      const parentLabel = parent
+        ? parent.split("/").pop()
+        : state.meta.title || state.meta.repo;
+      bits.push(
+        '<li class="dir-up"><a href="' +
+          hashFor(state.meta.owner, state.meta.repo, parent) +
+          '" title="Show the parent folder">← ' +
+          escapeHtml(parentLabel) +
+          "</a></li>"
+      );
+    }
+
     if (!state.files.length) {
-      els.fileList.innerHTML = '<li class="muted">No Markdown files in this repo.</li>';
+      bits.push('<li class="muted">No Markdown files in this folder.</li>');
+      els.fileList.innerHTML = bits.join("");
+      els.truncated.hidden = !state.truncated;
       return;
     }
 
     let lastDir = null;
-    const bits = [];
     state.files.forEach(function (path) {
       const rel = relativePath(path, root);
       const slash = rel.lastIndexOf("/");
@@ -386,21 +479,14 @@
       if (dir !== lastDir) {
         if (dir) {
           bits.push(
-            '<li class="dir" aria-hidden="true">' + escapeHtml(dir) + "</li>"
+            '<li class="dir">' +
+              dirHeadingHtml(state.meta.owner, state.meta.repo, root, dir) +
+              "</li>"
           );
         }
         lastDir = dir;
       }
-      const href =
-        "#/" +
-        encodeURIComponent(state.meta.owner) +
-        "/" +
-        encodeURIComponent(state.meta.repo) +
-        "/" +
-        path
-          .split("/")
-          .map(encodeURIComponent)
-          .join("/");
+      const href = hashFor(state.meta.owner, state.meta.repo, path);
       const active = path === activePath ? " active" : "";
       const current = path === activePath ? ' aria-current="page"' : "";
       bits.push(
@@ -419,25 +505,40 @@
     els.truncated.hidden = !state.truncated;
   }
 
-  function setCrumb(meta, path) {
-    const repoHref =
-      "#/" + encodeURIComponent(meta.owner) + "/" + encodeURIComponent(meta.repo);
+  function setCrumb(meta, path, folder) {
+    const repoHref = hashFor(meta.owner, meta.repo);
     let html =
       '<a href="#/">Catalog</a><span class="sep">/</span><a href="' +
       repoHref +
       '">' +
       escapeHtml(meta.title || meta.repo) +
       "</a>";
-    if (path) {
-      html +=
-        '<span class="sep">/</span><span class="here">' +
-        escapeHtml(relativePath(path, meta.root)) +
-        "</span>";
+    const trail = path || folder || "";
+    if (!trail) {
+      els.crumb.innerHTML = html;
+      return;
     }
+    const parts = trail.split("/").filter(Boolean);
+    let acc = [];
+    parts.forEach(function (part, i) {
+      acc.push(part);
+      const isLast = i === parts.length - 1;
+      html += '<span class="sep">/</span>';
+      if (isLast) {
+        html += '<span class="here">' + escapeHtml(part) + "</span>";
+      } else {
+        html +=
+          '<a href="' +
+          hashFor(meta.owner, meta.repo, acc.join("/")) +
+          '">' +
+          escapeHtml(part) +
+          "</a>";
+      }
+    });
     els.crumb.innerHTML = html;
   }
 
-  function showRepoChrome(meta, path) {
+  function showRepoChrome(meta, path, folder) {
     document.body.classList.remove("view-catalog");
     document.body.classList.add("view-repo");
     els.catalog.hidden = true;
@@ -451,15 +552,29 @@
         path
       );
       els.githubLink.textContent = "View on GitHub";
+    } else if (folder) {
+      els.githubLink.href = ReaderGitHub.githubTreeUrl(
+        meta.owner,
+        meta.repo,
+        meta.branch,
+        folder
+      );
+      els.githubLink.textContent = "View on GitHub";
     } else {
       els.githubLink.href =
         "https://github.com/" + meta.owner + "/" + meta.repo;
       els.githubLink.textContent = "Repo";
     }
-    setCrumb(meta, path);
-    $("sidebarTitle").textContent = meta.title || meta.repo;
-    $("sidebarMeta").textContent = meta.owner + "/" + meta.repo;
-    els.jumpInputBar.value = meta.owner + "/" + meta.repo;
+    setCrumb(meta, path, folder);
+    const folderName = folder ? folder.split("/").pop() : "";
+    $("sidebarTitle").textContent = folderName || meta.title || meta.repo;
+    $("sidebarMeta").textContent =
+      meta.owner + "/" + meta.repo + (folder ? "/" + folder : "");
+    els.jumpInputBar.value =
+      meta.owner +
+      "/" +
+      meta.repo +
+      (path || folder ? "/" + (path || folder) : "");
   }
 
   function showArticleMessage(title, body, kind) {
@@ -473,7 +588,7 @@
       "</p></div>";
   }
 
-  async function loadRepo(owner, repo) {
+  async function loadRepo(owner, repo, folder) {
     showStatus("Indexing Markdown files…");
     const meta = await resolveMeta(owner, repo);
     try {
@@ -484,6 +599,9 @@
     } catch (e) {
       /* ignore */
     }
+    const catalogRoot = (meta.root || "").replace(/^\/+|\/+$/g, "");
+    const urlFolder = (folder || "").replace(/^\/+|\/+$/g, "");
+    meta.root = urlFolder || catalogRoot;
     state.meta = meta;
     const listed = await ReaderGitHub.listMarkdownFiles(
       meta.owner,
@@ -493,6 +611,7 @@
     );
     state.files = listed.paths;
     state.truncated = listed.truncated;
+    if (meta.root) meta.root = canonicalFolder(state.files, meta.root);
     showStatus("");
     return meta;
   }
@@ -504,43 +623,50 @@
 
     try {
       if (route.view === "catalog") {
+        state.scopedFolder = "";
         renderCatalog();
         return;
       }
 
-      const meta = await loadRepo(route.owner, route.repo);
-      showRepoChrome(meta, route.path || "");
-      renderFileList(route.path || "");
+      if (route.view === "repo") {
+        state.scopedFolder = route.folder || "";
+      } else if (state.scopedFolder && !pathIsUnder(route.path, state.scopedFolder)) {
+        state.scopedFolder = "";
+      }
+
+      const folderFilter = route.folder || state.scopedFolder || "";
+      const meta = await loadRepo(route.owner, route.repo, folderFilter);
+      if (folderFilter) state.scopedFolder = meta.root;
+      const folder = folderFilter ? meta.root : "";
+      showRepoChrome(meta, route.path || "", folder);
+      renderFileList(route.path || "", folder);
 
       if (route.view === "repo") {
-        setTitle([meta.title, "Reader"]);
+        const heading = folder ? folder.split("/").pop() : meta.title;
+        setTitle([heading, meta.title, "Reader"]);
         if (!state.files.length) {
           showArticleMessage(
-            meta.title,
+            heading,
             "No Markdown files showed up under " +
               (meta.root ? '"' + meta.root + '"' : "the repo root") +
               "."
           );
           return;
         }
+        const folderHint = folder
+          ? " Showing " + folder + "."
+          : meta.description
+            ? " " + meta.description
+            : "";
         els.article.innerHTML =
           '<div class="article-msg"><h1>' +
-          escapeHtml(meta.title) +
+          escapeHtml(heading) +
           "</h1><p>Select a note in the sidebar." +
-          (meta.description ? " " + escapeHtml(meta.description) : "") +
+          escapeHtml(folderHint) +
           '</p><ul class="pick-list">' +
           state.files
             .map(function (path) {
-              const href =
-                "#/" +
-                encodeURIComponent(meta.owner) +
-                "/" +
-                encodeURIComponent(meta.repo) +
-                "/" +
-                path
-                  .split("/")
-                  .map(encodeURIComponent)
-                  .join("/");
+              const href = hashFor(meta.owner, meta.repo, path);
               return (
                 '<li><a href="' +
                 href +

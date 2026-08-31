@@ -9,8 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css">
-  <link rel="stylesheet" href="css/styles.css?v=3">
-  <script src="js/prefs.js?v=3"></script>
+  <link rel="stylesheet" href="css/styles.css?v=4">
+  <script src="js/prefs.js?v=4"></script>
 </head>
 <body>
   <header class="topbar">
@@ -19,7 +19,7 @@
     <a class="brand" href="#/">Reader <span>notes</span></a>
     <nav class="crumb" id="crumb" aria-label="Breadcrumb"></nav>
     <form class="jump-bar" id="jumpFormBar" action="#" method="get" role="search">
-      <input id="jumpInputBar" type="search" placeholder="owner/repo or GitHub URL" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository">
+      <input id="jumpInputBar" type="search" placeholder="owner/repo, folder, or GitHub URL" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository or folder">
     </form>
     <div class="topbar-actions">
       <div class="seg" id="alignGroup" role="group" aria-label="Page alignment">
@@ -52,9 +52,9 @@
 
       <section class="article catalog" id="catalogView">
         <h1>Reader</h1>
-        <p class="lede">Markdown from public GitHub repos, rendered with math. Open a repo below, or paste any public GitHub address.</p>
+        <p class="lede">Markdown from public GitHub repos, rendered with math. Open a repo below, or paste any public GitHub address — including a folder.</p>
         <form class="jump jump-hero" id="jumpForm" action="#" method="get" role="search">
-          <input id="jumpInput" type="search" placeholder="owner/repo or https://github.com/owner/repo" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository">
+          <input id="jumpInput" type="search" placeholder="owner/repo, folder path, or https://github.com/owner/repo/tree/…" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository or folder">
           <p class="jump-error" id="jumpError" hidden></p>
         </form>
         <h2 class="saved-heading">Saved libraries</h2>
@@ -71,8 +71,8 @@
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
-  <script src="js/github.js?v=3"></script>
-  <script src="js/markdown.js?v=3"></script>
-  <script src="js/app.js?v=3"></script>
+  <script src="js/github.js?v=4"></script>
+  <script src="js/markdown.js?v=4"></script>
+  <script src="js/app.js?v=4"></script>
 </body>
 </html>
