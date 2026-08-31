@@ -7,7 +7,11 @@
     files: [],
     truncated: false,
     sidebarOpen: false,
-    scopedFolder: ""
+    scopedFolder: "",
+    collapsed: new Set(),
+    collapsedRepo: "",
+    listActivePath: "",
+    listFolder: ""
   };
 
   function $(id) {
@@ -36,6 +40,9 @@
     els.alignGroup = $("alignGroup");
     els.sidebarToggle = $("sidebarToggle");
     els.filesBtn = $("filesBtn");
+    els.folderTools = $("folderTools");
+    els.collapseAll = $("collapseAll");
+    els.expandAll = $("expandAll");
 
     els.menuBtn.addEventListener("click", function () {
       setSidebar(!state.sidebarOpen);
@@ -59,6 +66,19 @@
       if (ev.target.closest("[data-action='toggle-sidebar']")) return;
       toggleSidebarRail();
     });
+    els.fileList.addEventListener("click", onFileListClick);
+    if (els.collapseAll) {
+      els.collapseAll.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        collapseAllFolders();
+      });
+    }
+    if (els.expandAll) {
+      els.expandAll.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        expandAllFolders();
+      });
+    }
     window.addEventListener("hashchange", onRoute);
     window.addEventListener("keydown", function (ev) {
       if (ev.key === "Escape") setSidebar(false);
@@ -352,6 +372,7 @@
     els.githubLink.hidden = true;
     els.crumb.innerHTML = "";
     els.fileList.innerHTML = "";
+    if (els.folderTools) els.folderTools.hidden = true;
     els.jumpInput.value = "";
     els.jumpInputBar.value = "";
     setJumpError("");
@@ -425,27 +446,186 @@
     return prefix;
   }
 
-  function dirHeadingHtml(owner, repo, root, dir) {
-    const segs = dir.split("/").filter(Boolean);
-    let acc = [];
-    return segs
-      .map(function (part, i) {
-        acc.push(part);
-        const href = hashFor(owner, repo, joinRepoPath(root, acc.join("/")));
-        const sep = i ? '<span class="dir-sep">/</span>' : "";
-        return (
-          sep +
-          '<a href="' +
-          href +
-          '" title="Show only this folder">' +
-          escapeHtml(part) +
-          "</a>"
-        );
-      })
-      .join("");
+  function collapsedStorageKey() {
+    if (!state.meta) return "reader-collapsed";
+    return "reader-collapsed:" + state.meta.owner + "/" + state.meta.repo;
+  }
+
+  function loadCollapsed() {
+    const key = collapsedStorageKey();
+    if (state.collapsedRepo === key) return;
+    state.collapsedRepo = key;
+    state.collapsed = new Set();
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) return;
+      const list = JSON.parse(raw);
+      if (Array.isArray(list)) {
+        list.forEach(function (p) {
+          if (p) state.collapsed.add(p);
+        });
+      }
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function saveCollapsed() {
+    persist(collapsedStorageKey(), JSON.stringify(Array.from(state.collapsed)));
+  }
+
+  function folderIsCollapsed(folderPath) {
+    return state.collapsed.has(folderPath);
+  }
+
+  function buildFolderTree(files, root) {
+    const tree = { name: "", path: root || "", dirs: [], dirMap: {}, files: [] };
+
+    function child(parent, name, fullPath) {
+      if (!parent.dirMap[name]) {
+        const node = { name: name, path: fullPath, dirs: [], dirMap: {}, files: [] };
+        parent.dirMap[name] = node;
+        parent.dirs.push(node);
+      }
+      return parent.dirMap[name];
+    }
+
+    files.forEach(function (path) {
+      const rel = relativePath(path, root);
+      const parts = rel.split("/").filter(Boolean);
+      if (!parts.length) return;
+      if (parts.length === 1) {
+        tree.files.push({ name: parts[0], path: path });
+        return;
+      }
+      let node = tree;
+      let acc = root || "";
+      for (let i = 0; i < parts.length - 1; i++) {
+        acc = joinRepoPath(acc, parts[i]);
+        node = child(node, parts[i], acc);
+      }
+      node.files.push({ name: parts[parts.length - 1], path: path });
+    });
+    return tree;
+  }
+
+  function countTreeFiles(node) {
+    let n = node.files.length;
+    for (let i = 0; i < node.dirs.length; i++) n += countTreeFiles(node.dirs[i]);
+    return n;
+  }
+
+  function collectFolderPaths(node, out) {
+    for (let i = 0; i < node.dirs.length; i++) {
+      out.push(node.dirs[i].path);
+      collectFolderPaths(node.dirs[i], out);
+    }
+    return out;
+  }
+
+  function renderFileItem(file, activePath, depth) {
+    const href = hashFor(state.meta.owner, state.meta.repo, file.path);
+    const active = file.path === activePath ? " active" : "";
+    const current = file.path === activePath ? ' aria-current="page"' : "";
+    return (
+      '<li class="file-item' +
+      (depth === 0 ? " is-root" : "") +
+      '" style="--depth:' +
+      depth +
+      '"><a class="file-link' +
+      active +
+      '" href="' +
+      href +
+      '"' +
+      current +
+      ">" +
+      escapeHtml(file.name) +
+      "</a></li>"
+    );
+  }
+
+  function renderTreeNode(node, activePath, depth) {
+    let html = "";
+    node.files.forEach(function (file) {
+      html += renderFileItem(file, activePath, depth);
+    });
+    node.dirs.forEach(function (dir) {
+      const collapsed = folderIsCollapsed(dir.path);
+      const n = countTreeFiles(dir);
+      html +=
+        '<li class="dir-node' +
+        (collapsed ? " is-collapsed" : "") +
+        '">';
+      html +=
+        '<div class="dir-row" style="--depth:' +
+        depth +
+        '">' +
+        '<button type="button" class="dir-twist" data-action="toggle-folder" data-folder="' +
+        escapeHtml(dir.path) +
+        '" aria-expanded="' +
+        (collapsed ? "false" : "true") +
+        '" title="' +
+        (collapsed ? "Expand folder" : "Collapse folder") +
+        '"><span class="caret"></span></button>' +
+        '<a class="dir-name" href="' +
+        hashFor(state.meta.owner, state.meta.repo, dir.path) +
+        '" title="Show only this folder">' +
+        escapeHtml(dir.name) +
+        "</a>";
+      if (collapsed) {
+        html += '<span class="dir-count">' + n + "</span>";
+      }
+      html += "</div>";
+      if (!collapsed) {
+        html += '<ul class="file-list nested">';
+        html += renderTreeNode(dir, activePath, depth + 1);
+        html += "</ul>";
+      }
+      html += "</li>";
+    });
+    return html;
+  }
+
+  function redrawFileList() {
+    renderFileList(state.listActivePath, state.listFolder);
+  }
+
+  function onFileListClick(ev) {
+    const btn = ev.target.closest("[data-action='toggle-folder']");
+    if (!btn) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    const folder = btn.getAttribute("data-folder");
+    if (!folder) return;
+    if (state.collapsed.has(folder)) state.collapsed.delete(folder);
+    else state.collapsed.add(folder);
+    saveCollapsed();
+    const top = els.sidebar ? els.sidebar.scrollTop : 0;
+    redrawFileList();
+    if (els.sidebar) els.sidebar.scrollTop = top;
+  }
+
+  function collapseAllFolders() {
+    if (!state.folderTree) return;
+    collectFolderPaths(state.folderTree, []).forEach(function (p) {
+      state.collapsed.add(p);
+    });
+    saveCollapsed();
+    redrawFileList();
+  }
+
+  function expandAllFolders() {
+    if (!state.folderTree) return;
+    collectFolderPaths(state.folderTree, []).forEach(function (p) {
+      state.collapsed.delete(p);
+    });
+    saveCollapsed();
+    redrawFileList();
   }
 
   function renderFileList(activePath, folder) {
+    state.listActivePath = activePath || "";
+    state.listFolder = folder || "";
     const root = state.meta ? state.meta.root : "";
     const bits = [];
 
@@ -465,44 +645,19 @@
 
     if (!state.files.length) {
       bits.push('<li class="muted">No Markdown files in this folder.</li>');
+      state.folderTree = { name: "", path: root || "", dirs: [], files: [] };
       els.fileList.innerHTML = bits.join("");
       els.truncated.hidden = !state.truncated;
+      if (els.folderTools) els.folderTools.hidden = true;
       return;
     }
 
-    let lastDir = null;
-    state.files.forEach(function (path) {
-      const rel = relativePath(path, root);
-      const slash = rel.lastIndexOf("/");
-      const dir = slash === -1 ? "" : rel.slice(0, slash);
-      const name = slash === -1 ? rel : rel.slice(slash + 1);
-      if (dir !== lastDir) {
-        if (dir) {
-          bits.push(
-            '<li class="dir">' +
-              dirHeadingHtml(state.meta.owner, state.meta.repo, root, dir) +
-              "</li>"
-          );
-        }
-        lastDir = dir;
-      }
-      const href = hashFor(state.meta.owner, state.meta.repo, path);
-      const active = path === activePath ? " active" : "";
-      const current = path === activePath ? ' aria-current="page"' : "";
-      bits.push(
-        '<li><a class="file-link' +
-          active +
-          '" href="' +
-          href +
-          '"' +
-          current +
-          ">" +
-          escapeHtml(name) +
-          "</a></li>"
-      );
-    });
+    const tree = buildFolderTree(state.files, root);
+    state.folderTree = tree;
+    bits.push(renderTreeNode(tree, activePath, 0));
     els.fileList.innerHTML = bits.join("");
     els.truncated.hidden = !state.truncated;
+    if (els.folderTools) els.folderTools.hidden = tree.dirs.length === 0;
   }
 
   function setCrumb(meta, path, folder) {
@@ -603,6 +758,7 @@
     const urlFolder = (folder || "").replace(/^\/+|\/+$/g, "");
     meta.root = urlFolder || catalogRoot;
     state.meta = meta;
+    loadCollapsed();
     const listed = await ReaderGitHub.listMarkdownFiles(
       meta.owner,
       meta.repo,
