@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reader · Erfan Abedi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="sidebar">Notes</button>
+    <a class="brand" href="#/">Reader <span>notes</span></a>
+    <nav class="crumb" id="crumb" aria-label="Breadcrumb"></nav>
+    <div class="topbar-actions">
+      <a id="githubLink" hidden href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a class="home-link" href="/">Home</a>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <p class="sidebar-title" id="sidebarTitle">Notes</p>
+      <p class="sidebar-meta" id="sidebarMeta"></p>
+      <ul class="file-list" id="fileList"></ul>
+      <p class="truncated" id="truncatedNote" hidden>GitHub truncated this tree; some files may be missing.</p>
+    </aside>
+    <div class="backdrop" id="backdrop"></div>
+
+    <main class="main">
+      <p class="status" id="status" hidden></p>
+
+      <section class="article catalog" id="catalogView">
+        <h1>Reader</h1>
+        <p class="lede">Markdown from public GitHub repos, rendered with math. Pick a library, then a note.</p>
+        <div class="repo-grid" id="repoList"></div>
+      </section>
+
+      <section class="article" id="repoView" hidden>
+        <div id="article"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
+  <script src="js/github.js"></script>
+  <script src="js/markdown.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
