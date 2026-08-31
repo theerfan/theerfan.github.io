@@ -34,8 +34,13 @@
 
   <div class="layout">
     <aside class="sidebar" id="sidebar">
-      <p class="sidebar-title" id="sidebarTitle">Notes</p>
-      <p class="sidebar-meta" id="sidebarMeta"></p>
+      <div class="sidebar-head">
+        <div class="sidebar-head-text">
+          <p class="sidebar-title" id="sidebarTitle">Notes</p>
+          <p class="sidebar-meta" id="sidebarMeta"></p>
+        </div>
+        <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-expanded="true" aria-controls="sidebar" title="Collapse sidebar">«</button>
+      </div>
       <ul class="file-list" id="fileList"></ul>
       <p class="truncated" id="truncatedNote" hidden>GitHub truncated this tree; some files may be missing.</p>
     </aside>

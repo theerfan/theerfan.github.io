@@ -245,8 +245,38 @@ body.view-catalog .menu-btn {
   background: var(--sidebar);
   border-right: 1px solid var(--rule);
   overflow: auto;
-  padding: 20px 16px 32px;
+  padding: 16px 12px 32px;
+  transition: width 0.18s ease, padding 0.18s ease;
 }
+
+.sidebar-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.sidebar-head-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar-toggle {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--rule);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.sidebar-toggle:hover { border-color: var(--accent); }
 
 .sidebar-title {
   font-size: 0.95rem;
@@ -257,8 +287,29 @@ body.view-catalog .menu-btn {
 .sidebar-meta {
   font-size: 0.75rem;
   color: var(--muted);
-  margin: 0 0 16px;
+  margin: 0;
   word-break: break-all;
+}
+
+[data-sidebar="collapsed"] .sidebar {
+  width: 48px;
+  padding: 12px 8px;
+  overflow: hidden;
+}
+
+[data-sidebar="collapsed"] .sidebar-head {
+  margin: 0;
+  justify-content: center;
+}
+
+[data-sidebar="collapsed"] .sidebar-head-text,
+[data-sidebar="collapsed"] .file-list,
+[data-sidebar="collapsed"] .truncated {
+  display: none;
+}
+
+[data-sidebar="collapsed"] .sidebar {
+  cursor: pointer;
 }
 
 .file-list {
@@ -554,6 +605,23 @@ body.view-catalog .menu-btn {
 
 @media (max-width: 800px) {
   .menu-btn { display: inline-flex; }
+  .sidebar-toggle { display: none; }
+  [data-sidebar="collapsed"] .sidebar {
+    width: var(--sidebar-w);
+    padding: 16px 12px 32px;
+    overflow: auto;
+  }
+  [data-sidebar="collapsed"] .sidebar-head-text,
+  [data-sidebar="collapsed"] .file-list {
+    display: block;
+  }
+  [data-sidebar="collapsed"] .truncated { display: none; }
+  [data-sidebar="collapsed"] .truncated:not([hidden]) { display: block; }
+  [data-sidebar="collapsed"] .sidebar { cursor: default; }
+  [data-sidebar="collapsed"] .sidebar-head {
+    margin-bottom: 12px;
+    justify-content: flex-start;
+  }
   .sidebar {
     position: fixed;
     top: var(--bar-h);

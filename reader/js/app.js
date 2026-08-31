@@ -33,6 +33,7 @@
     els.jumpInputBar = $("jumpInputBar");
     els.themeBtn = $("themeBtn");
     els.alignGroup = $("alignGroup");
+    els.sidebarToggle = $("sidebarToggle");
 
     els.menuBtn.addEventListener("click", function () {
       setSidebar(!state.sidebarOpen);
@@ -44,6 +45,12 @@
     els.jumpFormBar.addEventListener("submit", onJump);
     els.themeBtn.addEventListener("click", toggleTheme);
     els.alignGroup.addEventListener("click", onAlignClick);
+    els.sidebarToggle.addEventListener("click", toggleSidebarRail);
+    els.sidebar.addEventListener("click", function (ev) {
+      if (!sidebarCollapsed()) return;
+      if (ev.target.closest("#sidebarToggle")) return;
+      toggleSidebarRail();
+    });
     window.addEventListener("hashchange", onRoute);
     window.addEventListener("keydown", function (ev) {
       if (ev.key === "Escape") setSidebar(false);
@@ -54,6 +61,7 @@
     });
     syncThemeButton();
     syncAlignButtons();
+    syncSidebarToggle();
   }
 
   function isTypingIntoField(el) {
@@ -178,6 +186,34 @@
       location.hash = hash;
     }
     input.blur();
+  }
+
+  function sidebarCollapsed() {
+    return document.documentElement.getAttribute("data-sidebar") === "collapsed";
+  }
+
+  function toggleSidebarRail() {
+    var next = sidebarCollapsed() ? "expanded" : "collapsed";
+    document.documentElement.setAttribute("data-sidebar", next);
+    persist("reader-sidebar", next);
+    syncSidebarToggle();
+  }
+
+  function syncSidebarToggle() {
+    var collapsed = sidebarCollapsed();
+    els.sidebarToggle.textContent = collapsed ? "»" : "«";
+    els.sidebarToggle.setAttribute(
+      "aria-expanded",
+      collapsed ? "false" : "true"
+    );
+    els.sidebarToggle.setAttribute(
+      "title",
+      collapsed ? "Expand sidebar" : "Collapse sidebar"
+    );
+    els.sidebarToggle.setAttribute(
+      "aria-label",
+      collapsed ? "Expand sidebar" : "Collapse sidebar"
+    );
   }
 
   function setSidebar(open) {
