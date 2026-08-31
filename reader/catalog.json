@@ -2,10 +2,10 @@
   "title": "Reader",
   "repos": [
     {
-      "title": "Quantum Field Theory",
-      "description": "Working notes on David Tong's QFT course.",
-      "owner": "Erfan-Online",
-      "repo": "Quantum-Field-Theory",
+      "title": "Pauli",
+      "description": "Working on a lot of things.",
+      "owner": "theerfan",
+      "repo": "Pauli",
       "branch": "main",
       "root": ""
     }

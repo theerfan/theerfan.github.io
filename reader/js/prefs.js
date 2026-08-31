@@ -26,4 +26,7 @@
   document.documentElement.setAttribute("data-theme", theme);
   document.documentElement.setAttribute("data-align", align);
   document.documentElement.setAttribute("data-sidebar", sidebar);
+  if (document.body) {
+    document.body.classList.toggle("sidebar-collapsed", sidebar === "collapsed");
+  }
 })();

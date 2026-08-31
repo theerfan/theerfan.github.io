@@ -34,6 +34,7 @@
     els.themeBtn = $("themeBtn");
     els.alignGroup = $("alignGroup");
     els.sidebarToggle = $("sidebarToggle");
+    els.filesBtn = $("filesBtn");
 
     els.menuBtn.addEventListener("click", function () {
       setSidebar(!state.sidebarOpen);
@@ -45,10 +46,16 @@
     els.jumpFormBar.addEventListener("submit", onJump);
     els.themeBtn.addEventListener("click", toggleTheme);
     els.alignGroup.addEventListener("click", onAlignClick);
-    els.sidebarToggle.addEventListener("click", toggleSidebarRail);
+    document.addEventListener("click", function (ev) {
+      var btn = ev.target.closest("[data-action='toggle-sidebar']");
+      if (!btn) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      toggleSidebarRail();
+    });
     els.sidebar.addEventListener("click", function (ev) {
       if (!sidebarCollapsed()) return;
-      if (ev.target.closest("#sidebarToggle")) return;
+      if (ev.target.closest("[data-action='toggle-sidebar']")) return;
       toggleSidebarRail();
     });
     window.addEventListener("hashchange", onRoute);
@@ -61,7 +68,7 @@
     });
     syncThemeButton();
     syncAlignButtons();
-    syncSidebarToggle();
+    setSidebarRail(document.documentElement.getAttribute("data-sidebar") === "collapsed");
   }
 
   function isTypingIntoField(el) {
@@ -189,32 +196,49 @@
   }
 
   function sidebarCollapsed() {
-    return document.documentElement.getAttribute("data-sidebar") === "collapsed";
+    return (
+      document.documentElement.getAttribute("data-sidebar") === "collapsed" ||
+      document.body.classList.contains("sidebar-collapsed")
+    );
   }
 
   function toggleSidebarRail() {
-    var next = sidebarCollapsed() ? "expanded" : "collapsed";
+    setSidebarRail(!sidebarCollapsed());
+  }
+
+  function setSidebarRail(collapsed) {
+    var next = collapsed ? "collapsed" : "expanded";
     document.documentElement.setAttribute("data-sidebar", next);
+    document.body.classList.toggle("sidebar-collapsed", collapsed);
+    if (els.sidebar) els.sidebar.classList.toggle("is-collapsed", collapsed);
     persist("reader-sidebar", next);
     syncSidebarToggle();
   }
 
   function syncSidebarToggle() {
     var collapsed = sidebarCollapsed();
-    els.sidebarToggle.textContent = collapsed ? "»" : "«";
-    els.sidebarToggle.setAttribute(
-      "aria-expanded",
-      collapsed ? "false" : "true"
-    );
-    els.sidebarToggle.setAttribute(
-      "title",
-      collapsed ? "Expand sidebar" : "Collapse sidebar"
-    );
-    els.sidebarToggle.setAttribute(
-      "aria-label",
-      collapsed ? "Expand sidebar" : "Collapse sidebar"
-    );
+    var expanded = collapsed ? "false" : "true";
+    var hideLabel = collapsed ? "Show" : "Hide";
+    var filesLabel = collapsed ? "Show files" : "Hide files";
+    if (els.sidebarToggle) {
+      els.sidebarToggle.textContent = hideLabel;
+      els.sidebarToggle.setAttribute("aria-expanded", expanded);
+      els.sidebarToggle.setAttribute(
+        "title",
+        collapsed ? "Expand sidebar" : "Collapse sidebar"
+      );
+      els.sidebarToggle.setAttribute(
+        "aria-label",
+        collapsed ? "Expand sidebar" : "Collapse sidebar"
+      );
+    }
+    if (els.filesBtn) {
+      els.filesBtn.textContent = filesLabel;
+      els.filesBtn.setAttribute("aria-expanded", expanded);
+    }
   }
+
+  window.ReaderToggleSidebar = toggleSidebarRail;
 
   function setSidebar(open) {
     state.sidebarOpen = open;
