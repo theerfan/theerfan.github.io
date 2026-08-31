@@ -26,6 +26,13 @@
     els.menuBtn = $("menuBtn");
     els.backdrop = $("backdrop");
     els.truncated = $("truncatedNote");
+    els.jumpForm = $("jumpForm");
+    els.jumpInput = $("jumpInput");
+    els.jumpError = $("jumpError");
+    els.jumpFormBar = $("jumpFormBar");
+    els.jumpInputBar = $("jumpInputBar");
+    els.themeBtn = $("themeBtn");
+    els.alignGroup = $("alignGroup");
 
     els.menuBtn.addEventListener("click", function () {
       setSidebar(!state.sidebarOpen);
@@ -33,10 +40,144 @@
     els.backdrop.addEventListener("click", function () {
       setSidebar(false);
     });
+    els.jumpForm.addEventListener("submit", onJump);
+    els.jumpFormBar.addEventListener("submit", onJump);
+    els.themeBtn.addEventListener("click", toggleTheme);
+    els.alignGroup.addEventListener("click", onAlignClick);
     window.addEventListener("hashchange", onRoute);
     window.addEventListener("keydown", function (ev) {
       if (ev.key === "Escape") setSidebar(false);
+      if (ev.key === "/" && !isTypingIntoField(ev.target)) {
+        ev.preventDefault();
+        focusJump();
+      }
     });
+    syncThemeButton();
+    syncAlignButtons();
+  }
+
+  function isTypingIntoField(el) {
+    if (!el) return false;
+    var tag = (el.tagName || "").toLowerCase();
+    return tag === "input" || tag === "textarea" || el.isContentEditable;
+  }
+
+  function focusJump() {
+    var input = document.body.classList.contains("view-catalog")
+      ? els.jumpInput
+      : els.jumpInputBar;
+    if (input) input.focus();
+  }
+
+  function currentTheme() {
+    return document.documentElement.getAttribute("data-theme") === "dark"
+      ? "dark"
+      : "light";
+  }
+
+  function currentAlign() {
+    var align = document.documentElement.getAttribute("data-align");
+    if (align === "left" || align === "right" || align === "center") return align;
+    return "center";
+  }
+
+  function persist(key, value) {
+    try {
+      localStorage.setItem(key, value);
+    } catch (e) {
+      /* ignore quota / private mode */
+    }
+  }
+
+  function toggleTheme() {
+    var next = currentTheme() === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    persist("reader-theme", next);
+    syncThemeButton();
+  }
+
+  function syncThemeButton() {
+    var dark = currentTheme() === "dark";
+    els.themeBtn.textContent = dark ? "Light" : "Dark";
+    els.themeBtn.setAttribute(
+      "aria-label",
+      dark ? "Switch to light mode" : "Switch to dark mode"
+    );
+  }
+
+  function onAlignClick(ev) {
+    var btn = ev.target.closest("[data-align]");
+    if (!btn) return;
+    setAlign(btn.getAttribute("data-align"));
+  }
+
+  function setAlign(align) {
+    if (align !== "left" && align !== "right" && align !== "center") return;
+    document.documentElement.setAttribute("data-align", align);
+    persist("reader-align", align);
+    syncAlignButtons();
+  }
+
+  function syncAlignButtons() {
+    var align = currentAlign();
+    var buttons = els.alignGroup.querySelectorAll("[data-align]");
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].setAttribute(
+        "aria-pressed",
+        buttons[i].getAttribute("data-align") === align ? "true" : "false"
+      );
+    }
+  }
+
+  function setJumpError(message) {
+    els.jumpError.hidden = !message;
+    els.jumpError.textContent = message || "";
+    if (document.body.classList.contains("view-catalog")) {
+      showStatus("");
+      return;
+    }
+    showStatus(message || "", message ? "error" : "");
+  }
+
+  function onJump(ev) {
+    ev.preventDefault();
+    var form = ev.currentTarget;
+    var input = form.querySelector("input");
+    var parsed = ReaderGitHub.parseInput(input.value);
+    if (!parsed) {
+      setJumpError("Could not parse that. Try owner/repo or a GitHub URL.");
+      return;
+    }
+    setJumpError("");
+    if (parsed.branch) {
+      try {
+        sessionStorage.setItem(
+          "reader-branch:" + parsed.owner + "/" + parsed.repo,
+          parsed.branch
+        );
+      } catch (e) {
+        /* ignore */
+      }
+    }
+    var hash =
+      "#/" +
+      encodeURIComponent(parsed.owner) +
+      "/" +
+      encodeURIComponent(parsed.repo);
+    if (parsed.path && /\.md$/i.test(parsed.path)) {
+      hash +=
+        "/" +
+        parsed.path
+          .split("/")
+          .map(encodeURIComponent)
+          .join("/");
+    }
+    if (location.hash === hash) {
+      onRoute();
+    } else {
+      location.hash = hash;
+    }
+    input.blur();
   }
 
   function setSidebar(open) {
@@ -118,6 +259,9 @@
     els.githubLink.hidden = true;
     els.crumb.innerHTML = "";
     els.fileList.innerHTML = "";
+    els.jumpInput.value = "";
+    els.jumpInputBar.value = "";
+    setJumpError("");
     showStatus("");
 
     const repos = state.catalog.repos || [];
@@ -255,6 +399,7 @@
     setCrumb(meta, path);
     $("sidebarTitle").textContent = meta.title || meta.repo;
     $("sidebarMeta").textContent = meta.owner + "/" + meta.repo;
+    els.jumpInputBar.value = meta.owner + "/" + meta.repo;
   }
 
   function showArticleMessage(title, body, kind) {
@@ -271,6 +416,14 @@
   async function loadRepo(owner, repo) {
     showStatus("Indexing Markdown files…");
     const meta = await resolveMeta(owner, repo);
+    try {
+      var stored = sessionStorage.getItem(
+        "reader-branch:" + meta.owner + "/" + meta.repo
+      );
+      if (stored) meta.branch = stored;
+    } catch (e) {
+      /* ignore */
+    }
     state.meta = meta;
     const listed = await ReaderGitHub.listMarkdownFiles(
       meta.owner,

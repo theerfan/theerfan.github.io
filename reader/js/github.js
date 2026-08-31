@@ -153,11 +153,72 @@
     );
   }
 
+  function decodePart(part) {
+    try {
+      return decodeURIComponent(part);
+    } catch (e) {
+      return part;
+    }
+  }
+
+  function parseInput(raw) {
+    var s = String(raw || "").trim();
+    if (!s) return null;
+
+    var hashIdx = s.indexOf("#/");
+    if (hashIdx !== -1) {
+      var hp = s.slice(hashIdx + 2).split("/").filter(Boolean);
+      if (hp.length >= 2) {
+        return {
+          owner: decodePart(hp[0]),
+          repo: decodePart(hp[1]).replace(/\.git$/i, ""),
+          path: hp.slice(2).map(decodePart).join("/"),
+          branch: ""
+        };
+      }
+    }
+
+    s = s.replace(/^git@github\.com:/i, "https://github.com/");
+    s = s.replace(/\.git$/i, "");
+
+    if (/^(https?:\/\/)?(www\.)?github\.com[:/]/i.test(s)) {
+      if (!/^https?:\/\//i.test(s)) s = "https://" + s.replace(/^\/\//, "");
+      try {
+        var u = new URL(s);
+        var segs = u.pathname.replace(/^\/+|\/+$/g, "").split("/");
+        if (segs.length < 2 || !segs[0] || !segs[1]) return null;
+        var owner = segs[0];
+        var repo = segs[1].replace(/\.git$/i, "");
+        var path = "";
+        var branch = "";
+        if (segs[2] === "blob" || segs[2] === "raw") {
+          branch = segs[3] || "";
+          path = segs.slice(4).join("/");
+        } else if (segs[2] === "tree") {
+          branch = segs[3] || "";
+        }
+        return { owner: owner, repo: repo, path: path, branch: branch };
+      } catch (e) {
+        return null;
+      }
+    }
+
+    var m = s.match(/^([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)(?:\/(.*))?$/);
+    if (!m) return null;
+    return {
+      owner: m[1],
+      repo: m[2].replace(/\.git$/i, ""),
+      path: m[3] || "",
+      branch: ""
+    };
+  }
+
   global.ReaderGitHub = {
     getRepo: getRepo,
     listMarkdownFiles: listMarkdownFiles,
     fetchMarkdown: fetchMarkdown,
     rawFileUrl: rawFileUrl,
-    githubBlobUrl: githubBlobUrl
+    githubBlobUrl: githubBlobUrl,
+    parseInput: parseInput
   };
 })(window);

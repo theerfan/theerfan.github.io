@@ -10,13 +10,23 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css">
   <link rel="stylesheet" href="css/styles.css">
+  <script src="js/prefs.js"></script>
 </head>
 <body>
   <header class="topbar">
     <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="sidebar">Notes</button>
     <a class="brand" href="#/">Reader <span>notes</span></a>
     <nav class="crumb" id="crumb" aria-label="Breadcrumb"></nav>
+    <form class="jump-bar" id="jumpFormBar" action="#" method="get" role="search">
+      <input id="jumpInputBar" type="search" placeholder="owner/repo or GitHub URL" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository">
+    </form>
     <div class="topbar-actions">
+      <div class="seg" id="alignGroup" role="group" aria-label="Page alignment">
+        <button type="button" data-align="left" title="Align left">Left</button>
+        <button type="button" data-align="center" title="Align center">Center</button>
+        <button type="button" data-align="right" title="Align right">Right</button>
+      </div>
+      <button type="button" class="icon-btn" id="themeBtn" aria-label="Toggle dark mode">Dark</button>
       <a id="githubLink" hidden href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
       <a class="home-link" href="/">Home</a>
     </div>
@@ -36,7 +46,12 @@
 
       <section class="article catalog" id="catalogView">
         <h1>Reader</h1>
-        <p class="lede">Markdown from public GitHub repos, rendered with math. Pick a library, then a note.</p>
+        <p class="lede">Markdown from public GitHub repos, rendered with math. Open a repo below, or paste any public GitHub address.</p>
+        <form class="jump jump-hero" id="jumpForm" action="#" method="get" role="search">
+          <input id="jumpInput" type="search" placeholder="owner/repo or https://github.com/owner/repo" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository">
+          <p class="jump-error" id="jumpError" hidden></p>
+        </form>
+        <h2 class="saved-heading">Saved libraries</h2>
         <div class="repo-grid" id="repoList"></div>
       </section>
 
