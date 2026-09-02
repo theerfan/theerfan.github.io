@@ -612,6 +612,52 @@ body.sidebar-collapsed .truncated,
 }
 .article-msg.error h1 { color: var(--danger); }
 
+.folder-pick {
+  list-style: none;
+  margin: 20px 0 8px;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.folder-card {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 16px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  color: inherit;
+  text-decoration: none;
+}
+
+.folder-card:hover {
+  text-decoration: none;
+  border-color: var(--hover-border);
+}
+
+.folder-card-name {
+  font-family: var(--ui);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.folder-card-meta {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.pick-heading {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 24px 0 8px;
+}
+
 .pick-list {
   padding-left: 1.2em;
   line-height: 1.8;

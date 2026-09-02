@@ -123,6 +123,26 @@
     } catch (e) {
       /* ignore quota / private mode */
     }
+    try {
+      sessionStorage.setItem(key, value);
+    } catch (e) {
+      /* ignore */
+    }
+    if (
+      key === "reader-theme" ||
+      key === "reader-align" ||
+      key === "reader-sidebar"
+    ) {
+      try {
+        document.cookie =
+          key +
+          "=" +
+          encodeURIComponent(value) +
+          "; Max-Age=31536000; Path=/; SameSite=Lax";
+      } catch (e) {
+        /* ignore */
+      }
+    }
   }
 
   function toggleTheme() {
@@ -732,6 +752,80 @@
       (path || folder ? "/" + (path || folder) : "");
   }
 
+  function renderRepoLanding(meta, folder, heading) {
+    const tree =
+      state.folderTree || buildFolderTree(state.files, meta.root || "");
+    const intro = folder
+      ? "Open a subfolder, or a note in this folder."
+      : meta.description
+        ? meta.description
+        : "Open a folder or a note.";
+
+    let foldersHtml = "";
+    if (tree.dirs && tree.dirs.length) {
+      foldersHtml =
+        '<ul class="folder-pick">' +
+        tree.dirs
+          .map(function (dir) {
+            const notes = countTreeFiles(dir);
+            const subs = dir.dirs.length;
+            const bits = [];
+            if (subs) {
+              bits.push(subs + (subs === 1 ? " folder" : " folders"));
+            }
+            if (notes) {
+              bits.push(notes + (notes === 1 ? " note" : " notes"));
+            }
+            return (
+              '<li><a class="folder-card" href="' +
+              hashFor(meta.owner, meta.repo, dir.path) +
+              '"><span class="folder-card-name">' +
+              escapeHtml(dir.name) +
+              "</span>" +
+              (bits.length
+                ? '<span class="folder-card-meta">' +
+                  escapeHtml(bits.join(" · ")) +
+                  "</span>"
+                : "") +
+              "</a></li>"
+            );
+          })
+          .join("") +
+        "</ul>";
+    }
+
+    let filesHtml = "";
+    if (tree.files && tree.files.length) {
+      filesHtml =
+        (tree.dirs && tree.dirs.length
+          ? '<h2 class="pick-heading">Notes in this folder</h2>'
+          : "") +
+        '<ul class="pick-list">' +
+        tree.files
+          .map(function (file) {
+            return (
+              '<li><a href="' +
+              hashFor(meta.owner, meta.repo, file.path) +
+              '">' +
+              escapeHtml(file.name) +
+              "</a></li>"
+            );
+          })
+          .join("") +
+        "</ul>";
+    }
+
+    els.article.innerHTML =
+      '<div class="article-msg"><h1>' +
+      escapeHtml(heading) +
+      "</h1><p>" +
+      escapeHtml(intro) +
+      "</p>" +
+      foldersHtml +
+      filesHtml +
+      "</div>";
+  }
+
   function showArticleMessage(title, body, kind) {
     els.article.innerHTML =
       '<div class="article-msg' +
@@ -809,30 +903,7 @@
           );
           return;
         }
-        const folderHint = folder
-          ? " Showing " + folder + "."
-          : meta.description
-            ? " " + meta.description
-            : "";
-        els.article.innerHTML =
-          '<div class="article-msg"><h1>' +
-          escapeHtml(heading) +
-          "</h1><p>Select a note in the sidebar." +
-          escapeHtml(folderHint) +
-          '</p><ul class="pick-list">' +
-          state.files
-            .map(function (path) {
-              const href = hashFor(meta.owner, meta.repo, path);
-              return (
-                '<li><a href="' +
-                href +
-                '">' +
-                escapeHtml(relativePath(path, meta.root)) +
-                "</a></li>"
-              );
-            })
-            .join("") +
-          "</ul></div>";
+        renderRepoLanding(meta, folder, heading);
         return;
       }
 
