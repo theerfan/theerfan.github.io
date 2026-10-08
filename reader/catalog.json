@@ -16,6 +16,14 @@
       "repo": "theerfan.github.io",
       "branch": "main",
       "root": "reader/library/tong-qft"
+    },
+    {
+      "title": "Quantum Notes",
+      "description": "Notes on quantum algorithms, computation and information (UCLA courses), QML, QSVT, MBQC and topological quantum computing, with an interactive surface code.",
+      "owner": "theerfan",
+      "repo": "QuantumNotes",
+      "branch": "main",
+      "root": ""
     }
   ]
 }
