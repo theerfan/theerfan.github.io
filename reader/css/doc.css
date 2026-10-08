@@ -163,6 +163,33 @@
   height: auto;
 }
 
+/* SVG drawings inlined from <img> (they draw in currentColor, so they follow
+   the theme). Inside equations KaTeX sets their size and alignment. */
+.markdown-body svg.reader-svg-img:not(.katex svg) {
+  max-width: 100%;
+  height: auto;
+}
+/* KaTeX styles every svg inside .katex as one of its own glyph pieces
+   (absolutely positioned, filled); undo that for drawings. */
+.katex svg.reader-svg-img {
+  position: static;
+  display: inline-block;
+  max-width: none;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.katex svg.reader-svg-img path:not([stroke="none"]) {
+  stroke: inherit;
+}
+/* An SVG image that could not be inlined: black line art on a dark page. */
+[data-theme="dark"] .doc-markdown img[src$=".svg"] {
+  filter: invert(1) hue-rotate(180deg);
+}
+
 .katex,
 .katex-display {
   color: var(--ink);

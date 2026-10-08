@@ -2,7 +2,7 @@
 (function (global) {
   const document = global.document;
 
-  function render(text, ctx) {
+  async function render(text, ctx) {
     const fences = [];
     let processed = String(text || "").replace(/```[\s\S]*?```/g, function (m) {
       const i = fences.length;
@@ -47,7 +47,13 @@
 
     const wrap = document.createElement("div");
     wrap.innerHTML = html;
-    return global.ReaderDoc.finalize(wrap, ctx);
+    global.ReaderDoc.finalize(wrap, ctx);
+    /* SVG images (figures, and \includegraphics inside equations) are inlined
+       so their line art follows the theme, as in HTML documents. */
+    if (global.ReaderHTML && global.ReaderHTML.inlineSvgImages) {
+      await global.ReaderHTML.inlineSvgImages(wrap);
+    }
+    return wrap;
   }
 
   global.ReaderMarkdown = { render: render };

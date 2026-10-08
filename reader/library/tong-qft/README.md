@@ -4,7 +4,7 @@
 
 > Source: the HTML edition of the notes at <a href="https://davidtong.org/teaching/quantum-field-theory/qfthtml/qfthtml">https://davidtong.org/teaching/quantum-field-theory/qfthtml/qfthtml</a>, converted for this reader (math rendered with KaTeX, figures on a white background so they stay legible in dark mode). The <a href="https://davidtong.org/pdfs/teaching/quantum-field-theory/qft.pdf">PDF version</a> remains the definitive text; see also the <a href="https://davidtong.org/teaching/quantum-field-theory">course page</a>. All content © David Tong.
 
-> A few Feynman diagrams that appear inside equations, and some figures, are missing from the original HTML edition; they are marked "diagram" / "not included" here. Consult the PDF for those.
+> Feynman diagrams and figures are redrawn here as SVG from the PDF (the HTML edition left many of them out); they follow the reader's light/dark theme. Two figures (the 1910 photograph and the ALEPH data plot) are kept as images.
 
 ## Contents
 

@@ -422,7 +422,7 @@
   }
 
   const SVG_IMG_MAX_BYTES = 1500000;
-  const SVG_IMG_MAX_COUNT = 40;
+  const SVG_IMG_MAX_COUNT = 120;
 
   /* Parse and sanitize an SVG file; ids get a prefix so several inlined files
      (and the document) can't collide. Returns an <svg> element or null. */
@@ -780,5 +780,5 @@
     return renderInline(doc, ctx, title);
   }
 
-  global.ReaderHTML = { render: render };
+  global.ReaderHTML = { render: render, inlineSvgImages: inlineSvgImages };
 })(window);

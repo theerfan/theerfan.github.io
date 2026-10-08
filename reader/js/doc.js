@@ -119,7 +119,8 @@
     ];
     attrs.forEach(function (pair) {
       wrap.querySelectorAll(pair[0] + "[" + pair[1] + "]").forEach(function (el) {
-        const src = el.getAttribute(pair[1]);
+        /* trim: KaTeX's \includegraphics markup ends src with a space */
+        const src = (el.getAttribute(pair[1]) || "").trim();
         if (!src || /^(https?:|data:|blob:|\/\/)/i.test(src)) return;
         el.setAttribute(pair[1], rawUrl(ctx, resolveRepoPath(ctx, src)));
       });
@@ -232,12 +233,24 @@
     return wrap;
   }
 
+  /* KaTeX's trust option: only \includegraphics of an SVG file in the same
+     repository (a relative path), so a diagram can sit inside an equation —
+     aligned, tagged and centred on the math axis. Nothing else is trusted. */
+  function trustLatex(context) {
+    return (
+      context.command === "\\includegraphics" &&
+      /^(?![a-z][a-z0-9+.-]*:|\/\/)[\w\-./ ]+\.svg$/i.test(context.url || "") &&
+      !/(^|\/)\.\.(\/|$)/.test(context.url)
+    );
+  }
+
   function renderLatex(content, display) {
     try {
       return global.katex.renderToString(content, {
         displayMode: display,
         throwOnError: false,
         strict: "ignore",
+        trust: trustLatex,
         fleqn: false
       });
     } catch (e) {
