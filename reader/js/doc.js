@@ -140,49 +140,52 @@
     });
   }
 
+  /* Where a link in a document should go:
+     { kind: "anchor", id }            same document, #fragment
+     { kind: "route", hash }           another document or folder in the reader
+     { kind: "external", url }         another site (opens in a new tab)
+     { kind: "file", url }             a non-document repo file (raw, new tab)
+     { kind: "none" }                  javascript: and other unusable links */
+  function resolveHref(ctx, href) {
+    href = String(href || "").trim();
+    if (!href) return { kind: "none" };
+    if (href.charAt(0) === "#") return { kind: "anchor", id: safeDecode(href.slice(1)) };
+    if (isExternal(href)) {
+      if (/^(https?:|mailto:|\/\/)/i.test(href)) return { kind: "external", url: href };
+      return { kind: "none" };
+    }
+    const hashIdx = href.indexOf("#");
+    const frag = hashIdx === -1 ? "" : safeDecode(href.slice(hashIdx + 1));
+    const resolved = resolveRepoPath(ctx, href);
+    if (resolved === ctx.path) return { kind: "anchor", id: frag };
+    if (isDocPath(resolved)) {
+      return { kind: "route", hash: hashFor(ctx.owner, ctx.repo, resolved, frag) };
+    }
+    const bare = href.split("#")[0].split("?")[0];
+    if (/\/$/.test(bare) || !resolved) {
+      return { kind: "route", hash: hashFor(ctx.owner, ctx.repo, resolved) };
+    }
+    return { kind: "file", url: rawUrl(ctx, resolved) };
+  }
+
   function rewriteLinks(wrap, ctx) {
     wrap.querySelectorAll("a[href]").forEach(function (a) {
       const href = a.getAttribute("href");
       if (!href) return;
-
-      if (href.charAt(0) === "#") {
-        bindInPage(a, wrap, ctx, safeDecode(href.slice(1)));
-        return;
-      }
-
-      if (isExternal(href)) {
-        if (/^javascript:/i.test(href)) {
-          a.removeAttribute("href");
-          return;
-        }
+      const target = resolveHref(ctx, href);
+      if (target.kind === "anchor") {
+        bindInPage(a, wrap, ctx, target.id);
+      } else if (target.kind === "route") {
+        a.setAttribute("href", target.hash);
+      } else if (/^\s*javascript:/i.test(href)) {
+        a.removeAttribute("href");
+      } else if (target.kind === "none" && !isExternal(href)) {
+        /* nothing to do */
+      } else {
+        if (target.kind === "file") a.setAttribute("href", target.url);
         a.setAttribute("target", "_blank");
         a.setAttribute("rel", "noopener noreferrer");
-        return;
       }
-
-      const hashIdx = href.indexOf("#");
-      const frag = hashIdx === -1 ? "" : safeDecode(href.slice(hashIdx + 1));
-      const resolved = resolveRepoPath(ctx, href);
-
-      if (resolved === ctx.path) {
-        bindInPage(a, wrap, ctx, frag);
-        return;
-      }
-
-      if (isDocPath(resolved)) {
-        a.setAttribute("href", hashFor(ctx.owner, ctx.repo, resolved, frag));
-        return;
-      }
-
-      const bare = href.split("#")[0].split("?")[0];
-      if (/\/$/.test(bare) || !resolved) {
-        a.setAttribute("href", hashFor(ctx.owner, ctx.repo, resolved));
-        return;
-      }
-
-      a.setAttribute("href", rawUrl(ctx, resolved));
-      a.setAttribute("target", "_blank");
-      a.setAttribute("rel", "noopener noreferrer");
     });
   }
 
@@ -217,12 +220,15 @@
   }
 
   /* options.keepCodeMarkup: leave code blocks that already contain markup
-     (e.g. pre-highlighted HTML) alone instead of re-highlighting them. */
+     (e.g. pre-highlighted HTML) alone instead of re-highlighting them.
+     options.links === false: leave links alone (sandboxed frames route clicks
+     through the host instead). */
   function finalize(wrap, ctx, options) {
-    highlightCode(wrap, !!(options && options.keepCodeMarkup));
+    options = options || {};
+    highlightCode(wrap, !!options.keepCodeMarkup);
     headingIds(wrap);
     rewriteMedia(wrap, ctx);
-    rewriteLinks(wrap, ctx);
+    if (options.links !== false) rewriteLinks(wrap, ctx);
     return wrap;
   }
 
@@ -252,6 +258,8 @@
     hashFor: hashFor,
     safeDecode: safeDecode,
     resolveRepoPath: resolveRepoPath,
+    resolveHref: resolveHref,
+    rawUrl: rawUrl,
     scrollToAnchor: scrollToAnchor,
     renderLatex: renderLatex,
     finalize: finalize

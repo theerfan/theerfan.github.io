@@ -1,0 +1,31 @@
+/* Inside the sandboxed frame of an HTML document with scripts (js/frame.js).
+   Not layered, so it outranks the page's own CSS (in @layer page) and the
+   reader typography (in @layer reader): the frame is exactly as tall as its
+   content and the reader's colours and fonts stay in charge. */
+html[data-reader-frame] {
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: transparent !important;
+}
+
+html[data-reader-frame] > body {
+  height: auto !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  color: var(--ink) !important;
+  font-family: var(--body) !important;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+html[data-reader-frame] :where(h1, h2, h3, h4, h5, h6) { font-family: var(--ui); }
+html[data-reader-frame] :where(p, li, blockquote, dd, dt, figcaption) { font-family: var(--body); }
+html[data-reader-frame] :where(pre, code, kbd, samp) { font-family: var(--mono); }

@@ -1,0 +1,339 @@
+/* Theme variables and document typography (Markdown and HTML). Shared by the
+   reader page and by sandboxed HTML documents (loaded there in @layer reader,
+   see js/frame-host.js), so keep it free of reader-chrome rules. */
+:root {
+  --paper: #fbfaf6;
+  --ink: #1c1917;
+  --muted: #78716c;
+  --rule: #e7e5e4;
+  --accent: #0f766e;
+  --accent-ink: #115e59;
+  --sidebar: #f5f5f4;
+  --card: #ffffff;
+  --danger: #b91c1c;
+  --code-bg: #f5f5f4;
+  --status-bg: #ecfdf5;
+  --status-ink: #115e59;
+  --status-border: #a7f3d0;
+  --status-error-bg: #fef2f2;
+  --status-error-border: #fecaca;
+  --hover-border: #99f6e4;
+  --shadow: 0 1px 2px rgba(28, 25, 23, 0.06), 0 8px 24px rgba(28, 25, 23, 0.04);
+  --ui: "IBM Plex Sans", system-ui, sans-serif;
+  --body: "Source Serif 4", "Iowan Old Style", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --sidebar-w: 280px;
+  --bar-h: 56px;
+  --measure: 46rem;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --paper: #141210;
+  --ink: #f5f2eb;
+  --muted: #a8a29e;
+  --rule: #3f3b37;
+  --accent: #2dd4bf;
+  --accent-ink: #5eead4;
+  --sidebar: #1c1917;
+  --card: #1c1917;
+  --danger: #f87171;
+  --code-bg: #292524;
+  --status-bg: #134e4a;
+  --status-ink: #99f6e4;
+  --status-border: #115e59;
+  --status-error-bg: #3f1d1d;
+  --status-error-border: #7f1d1d;
+  --hover-border: #134e4a;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.25);
+  color-scheme: dark;
+}
+
+.markdown-body {
+  font-family: var(--body);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  max-width: var(--measure);
+  width: 100%;
+  color: var(--ink);
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  font-family: var(--ui);
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 1.6em 0 0.5em;
+}
+
+.markdown-body h1 { font-size: 2em; }
+.markdown-body h2 {
+  font-size: 1.45em;
+  padding-bottom: 0.25em;
+  border-bottom: 1px solid var(--rule);
+}
+.markdown-body h3 { font-size: 1.2em; }
+
+.markdown-body p { margin: 1em 0; }
+
+.markdown-body a { color: var(--accent-ink); text-decoration: none; }
+.markdown-body a:hover { text-decoration: underline; }
+
+.markdown-body code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  background: var(--code-bg);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+
+.markdown-body pre {
+  background: #1c1917;
+  color: #f5f5f4;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1.2em 0;
+}
+
+.markdown-body pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: 0.88em;
+  line-height: 1.55;
+}
+
+.markdown-body pre code.hljs {
+  background: transparent;
+  padding: 0;
+}
+
+.markdown-body blockquote {
+  margin: 1em 0;
+  padding: 0.2em 0 0.2em 1em;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  margin: 1em 0;
+  padding-left: 1.6em;
+}
+
+.markdown-body li { margin: 0.35em 0; }
+
+.markdown-body hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 2em 0;
+}
+
+.markdown-body table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 1.2em 0;
+  font-size: 0.95em;
+}
+
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid var(--rule);
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.markdown-body th {
+  background: var(--sidebar);
+  font-family: var(--ui);
+  font-weight: 600;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+}
+
+.katex,
+.katex-display {
+  color: var(--ink);
+}
+
+.katex-display {
+  margin: 1.2em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.2em 0;
+}
+
+.katex-error {
+  color: var(--danger);
+  font-family: var(--mono);
+  font-size: 0.85em;
+}
+
+/* Numbered display equations (\tag): lay the number out beside the formula
+   instead of absolutely positioned on top of it, so wide formulas on phones
+   scroll horizontally rather than overlapping the equation number. */
+.katex-display > .katex > .katex-html:has(> .tag) {
+  display: flex;
+  align-items: baseline;
+}
+.katex-display > .katex > .katex-html:has(> .tag)::before {
+  content: "";
+  flex: 1 1 0;
+}
+.katex-display > .katex > .katex-html:has(> .tag) > .base {
+  flex: 0 0 auto;
+}
+.katex-display > .katex > .katex-html > .tag {
+  position: static;
+  flex: 1 1 0;
+  min-width: max-content;
+  padding-left: 1em;
+  text-align: right;
+}
+
+/* HTML documents: same typography as Markdown (.markdown-body), plus the
+   elements HTML pages tend to carry. Inline (script-free) documents never load
+   page CSS; framed documents load it in @layer page, above these rules. */
+.doc-html figure {
+  margin: 1.5em auto;
+  text-align: center;
+}
+
+.doc-html figcaption {
+  font-size: 0.9em;
+  color: var(--muted);
+  margin-top: 0.4em;
+}
+
+.doc-html video,
+.doc-html svg:not(.katex svg) {
+  max-width: 100%;
+  height: auto;
+}
+
+[data-theme="dark"] .doc-html img:not(.katex img) {
+  background: #fff;
+  border-radius: 4px;
+}
+
+.doc-html dl dt { font-weight: 600; }
+.doc-html dl dd { margin: 0 0 0.6em 1.4em; }
+
+.doc-html details {
+  margin: 1em 0;
+  padding: 0.4em 0.8em;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+}
+
+.doc-html summary { cursor: pointer; font-family: var(--ui); }
+
+.doc-html aside,
+.doc-html .footnotes,
+.doc-html .footnote {
+  font-size: 0.9em;
+  color: var(--muted);
+}
+
+.doc-html math[display="block"] {
+  display: block;
+  margin: 1.2em 0;
+  overflow-x: auto;
+}
+
+.doc-html .reader-mjx-display {
+  display: block;
+  margin: 1.2em 0;
+  overflow-x: auto;
+  text-align: center;
+}
+
+/* LaTeXML output (arXiv HTML, lecture notes): equation tables and notes. */
+.doc-html table.ltx_equationgroup,
+.doc-html table.ltx_equation,
+.doc-html table.ltx_eqn_table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 1.2em 0;
+}
+
+.doc-html table.ltx_eqn_table > tbody {
+  display: table;
+  width: 100%;
+}
+
+.doc-html .ltx_eqn_table td,
+.doc-html .ltx_eqn_table th {
+  border: 0;
+  padding: 0.15em 0;
+  background: none;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.doc-html .ltx_eqn_center_padleft,
+.doc-html .ltx_eqn_center_padright { width: 50%; }
+.doc-html .ltx_eqn_eqno {
+  text-align: right;
+  padding-left: 1em !important;
+  color: var(--muted);
+}
+
+.doc-html .ltx_align_right { text-align: right; }
+.doc-html .ltx_align_center { text-align: center; }
+.doc-html .ltx_align_left { text-align: left; }
+
+.doc-html .ltx_note_outer {
+  display: block;
+  margin: 0.4em 0;
+  padding-left: 0.8em;
+  border-left: 2px solid var(--rule);
+  font-size: 0.88em;
+  color: var(--muted);
+}
+
+.doc-html .ltx_note_content > .ltx_note_mark,
+.doc-html .ltx_tag_note { display: none; }
+.doc-html .ltx_itemize > li[style*="list-style-type"] .ltx_tag_item { margin-right: 0.4em; }
+.doc-html .ltx_page_logo { font-size: 0.75em; color: var(--muted); }
+
+/* Wide equations scroll sideways (phones); keep the equation number pinned
+   to the right edge of the scroll box instead of scrolled out of view. */
+.doc-html .ltx_eqn_table td.ltx_eqn_eqno {
+  position: sticky;
+  right: 0;
+  background: var(--paper);
+  box-shadow: -0.6em 0 0.5em -0.3em var(--paper);
+}
+
+/* HTML documents with scripts run in a sandboxed frame sized to its content
+   (js/frame-host.js); the mark is the scroll target for anchors inside it. */
+.doc-frame-wrap { position: relative; }
+.doc-frame {
+  display: block;
+  width: 100%;
+  height: 240px;
+  border: 0;
+  background: transparent;
+}
+.doc-frame-mark {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}

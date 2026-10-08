@@ -12,7 +12,8 @@
     collapsedRepo: "",
     listActivePath: "",
     listFolder: "",
-    renderedDoc: ""
+    renderedDoc: "",
+    framed: false
   };
 
   function $(id) {
@@ -908,6 +909,11 @@
   }
 
   function scrollDocTo(anchor, smooth) {
+    if (state.framed && ReaderFrame.active()) {
+      if (anchor) ReaderFrame.scrollTo(anchor, smooth);
+      else els.repo.scrollTop = 0;
+      return;
+    }
     if (!anchor || !ReaderDoc.scrollToAnchor(els.article, anchor, smooth)) {
       els.repo.scrollTop = 0;
       return;
@@ -1001,19 +1007,23 @@
       );
       const kind = ReaderDoc.docKind(route.path);
       const renderer = kind === "html" ? ReaderHTML : ReaderMarkdown;
-      const rendered = renderer.render(text, {
+      const rendered = await renderer.render(text, {
         owner: meta.owner,
         repo: meta.repo,
         branch: meta.branch,
         path: route.path
       });
+      if (state.route !== route) return; /* navigated away meanwhile */
       const docTitle = rendered.getAttribute("data-doc-title");
       if (docTitle) setTitle([docTitle, meta.title, "Reader"]);
+      const framed = rendered.hasAttribute("data-doc-framed");
       els.article.innerHTML = "";
       const body = document.createElement("div");
-      body.className = "markdown-body doc-" + kind;
+      body.className = "markdown-body doc-" + kind + (framed ? " doc-framed" : "");
       while (rendered.firstChild) body.appendChild(rendered.firstChild);
       els.article.appendChild(body);
+      state.framed = framed;
+      if (!framed && window.ReaderInk) ReaderInk.scan(body);
       state.renderedDoc = docKey(route);
       showStatus("");
       scrollDocTo(route.anchor, false);
