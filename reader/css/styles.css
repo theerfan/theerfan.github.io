@@ -816,6 +816,113 @@ body.sidebar-collapsed .truncated,
   text-align: right;
 }
 
+/* HTML documents: same typography as Markdown (.markdown-body), plus the
+   elements HTML pages tend to carry. Page CSS is never loaded. */
+.doc-html figure {
+  margin: 1.5em auto;
+  text-align: center;
+}
+
+.doc-html figcaption {
+  font-size: 0.9em;
+  color: var(--muted);
+  margin-top: 0.4em;
+}
+
+.doc-html video,
+.doc-html svg:not(.katex svg) {
+  max-width: 100%;
+  height: auto;
+}
+
+[data-theme="dark"] .doc-html img:not(.katex img) {
+  background: #fff;
+  border-radius: 4px;
+}
+
+.doc-html dl dt { font-weight: 600; }
+.doc-html dl dd { margin: 0 0 0.6em 1.4em; }
+
+.doc-html details {
+  margin: 1em 0;
+  padding: 0.4em 0.8em;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+}
+
+.doc-html summary { cursor: pointer; font-family: var(--ui); }
+
+.doc-html aside,
+.doc-html .footnotes,
+.doc-html .footnote {
+  font-size: 0.9em;
+  color: var(--muted);
+}
+
+.doc-html math[display="block"] {
+  display: block;
+  margin: 1.2em 0;
+  overflow-x: auto;
+}
+
+.doc-html .reader-mjx-display {
+  display: block;
+  margin: 1.2em 0;
+  overflow-x: auto;
+  text-align: center;
+}
+
+/* LaTeXML output (arXiv HTML, lecture notes): equation tables and notes. */
+.doc-html table.ltx_equationgroup,
+.doc-html table.ltx_equation,
+.doc-html table.ltx_eqn_table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 1.2em 0;
+}
+
+.doc-html table.ltx_eqn_table > tbody {
+  display: table;
+  width: 100%;
+}
+
+.doc-html .ltx_eqn_table td,
+.doc-html .ltx_eqn_table th {
+  border: 0;
+  padding: 0.15em 0;
+  background: none;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.doc-html .ltx_eqn_center_padleft,
+.doc-html .ltx_eqn_center_padright { width: 50%; }
+.doc-html .ltx_eqn_eqno {
+  text-align: right;
+  padding-left: 1em !important;
+  color: var(--muted);
+}
+
+.doc-html .ltx_align_right { text-align: right; }
+.doc-html .ltx_align_center { text-align: center; }
+.doc-html .ltx_align_left { text-align: left; }
+
+.doc-html .ltx_note_outer {
+  display: block;
+  margin: 0.4em 0;
+  padding-left: 0.8em;
+  border-left: 2px solid var(--rule);
+  font-size: 0.88em;
+  color: var(--muted);
+}
+
+.doc-html .ltx_note_content > .ltx_note_mark,
+.doc-html .ltx_tag_note { display: none; }
+.doc-html .ltx_itemize > li[style*="list-style-type"] .ltx_tag_item { margin-right: 0.4em; }
+.doc-html .ltx_page_logo { font-size: 0.75em; color: var(--muted); }
+
 .backdrop {
   display: none;
 }

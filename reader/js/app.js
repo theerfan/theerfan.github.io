@@ -11,7 +11,8 @@
     collapsed: new Set(),
     collapsedRepo: "",
     listActivePath: "",
-    listFolder: ""
+    listFolder: "",
+    renderedDoc: ""
   };
 
   function $(id) {
@@ -275,21 +276,8 @@
     els.menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
   }
 
-  function encodePath(path) {
-    return (path || "")
-      .replace(/^\/+|\/+$/g, "")
-      .split("/")
-      .filter(Boolean)
-      .map(encodeURIComponent)
-      .join("/");
-  }
-
-  function hashFor(owner, repo, path) {
-    var hash =
-      "#/" + encodeURIComponent(owner) + "/" + encodeURIComponent(repo);
-    var encoded = encodePath(path);
-    if (encoded) hash += "/" + encoded;
-    return hash;
+  function hashFor(owner, repo, path, anchor) {
+    return ReaderDoc.hashFor(owner, repo, path, anchor);
   }
 
   function joinRepoPath(a, b) {
@@ -314,9 +302,13 @@
     return a === b || a.indexOf(b + "/") === 0;
   }
 
+  /* Routes: #/owner/repo[/folder | /path/to/doc.(md|html)][#anchor] */
   function parseHash() {
-    const raw = (location.hash || "").replace(/^#\/?/, "");
-    if (!raw) return { view: "catalog" };
+    const full = (location.hash || "").replace(/^#\/?/, "");
+    if (!full) return { view: "catalog" };
+    const cut = full.indexOf("#");
+    const raw = cut === -1 ? full : full.slice(0, cut);
+    const anchor = cut === -1 ? "" : ReaderDoc.safeDecode(full.slice(cut + 1));
     const parts = raw.split("/").map(function (p) {
       try {
         return decodeURIComponent(p);
@@ -331,27 +323,58 @@
     const path = parts.slice(2).join("/");
     if (!owner || !repo) return { view: "catalog" };
     if (!path) return { view: "repo", owner: owner, repo: repo };
-    if (/\.md$/i.test(path)) {
-      return { view: "file", owner: owner, repo: repo, path: path };
+    if (ReaderDoc.isDocPath(path)) {
+      return { view: "file", owner: owner, repo: repo, path: path, anchor: anchor };
     }
     return { view: "repo", owner: owner, repo: repo, folder: path };
   }
 
-  function findCatalogEntry(owner, repo) {
-    const list = state.catalog.repos || [];
-    const lowerOwner = owner.toLowerCase();
-    const lowerRepo = repo.toLowerCase();
-    for (let i = 0; i < list.length; i++) {
-      const r = list[i];
-      if (r.owner.toLowerCase() === lowerOwner && r.repo.toLowerCase() === lowerRepo) {
-        return r;
-      }
-    }
-    return null;
+  /* A catalog entry is a library (root folder, "" = whole repo) or, with
+     "path", a single Markdown/HTML document whose folder is its library. */
+  function entryRoot(r) {
+    const root = r.root || (r.path ? ReaderDoc.fileDir(r.path) : "");
+    return root.replace(/^\/+|\/+$/g, "");
   }
 
-  async function resolveMeta(owner, repo) {
-    const listed = findCatalogEntry(owner, repo);
+  function sameRepoEntries(owner, repo) {
+    const lowerOwner = owner.toLowerCase();
+    const lowerRepo = repo.toLowerCase();
+    return (state.catalog.repos || []).filter(function (r) {
+      return r.owner.toLowerCase() === lowerOwner && r.repo.toLowerCase() === lowerRepo;
+    });
+  }
+
+  /* Several catalog entries may share a repo (different roots, or single
+     documents); pick the one whose root best contains the requested path. */
+  function findCatalogEntry(owner, repo, path) {
+    const list = sameRepoEntries(owner, repo);
+    if (!list.length) return null;
+    const target = (path || "").replace(/^\/+|\/+$/g, "");
+    if (!target) return list[0];
+    let best = null;
+    let bestLen = -1;
+    list.forEach(function (r) {
+      const root = entryRoot(r);
+      if (root && !pathIsUnder(target, root)) return;
+      if (root.length > bestLen) {
+        best = r;
+        bestLen = root.length;
+      }
+    });
+    return best;
+  }
+
+  function catalogHref(r) {
+    if (r.path) return hashFor(r.owner, r.repo, r.path);
+    const root = entryRoot(r);
+    if (root && sameRepoEntries(r.owner, r.repo).length > 1) {
+      return hashFor(r.owner, r.repo, root);
+    }
+    return hashFor(r.owner, r.repo);
+  }
+
+  async function resolveMeta(owner, repo, path) {
+    const listed = findCatalogEntry(owner, repo, path);
     if (listed) {
       return {
         title: listed.title || listed.repo,
@@ -359,7 +382,21 @@
         owner: listed.owner,
         repo: listed.repo,
         branch: listed.branch || "main",
-        root: listed.root || ""
+        root: entryRoot(listed),
+        catalogRoot: entryRoot(listed)
+      };
+    }
+    const sibling = sameRepoEntries(owner, repo)[0];
+    if (sibling) {
+      /* Repo is in the catalog, but this path is outside its libraries. */
+      return {
+        title: sibling.owner + "/" + sibling.repo,
+        description: "",
+        owner: sibling.owner,
+        repo: sibling.repo,
+        branch: sibling.branch || "main",
+        root: "",
+        catalogRoot: ""
       };
     }
     const remote = await ReaderGitHub.getRepo(owner, repo);
@@ -401,13 +438,13 @@
     const repos = state.catalog.repos || [];
     if (!repos.length) {
       els.repoList.innerHTML =
-        '<p class="empty">No repos in <code>catalog.json</code> yet.</p>';
+        '<p class="empty">No libraries in <code>catalog.json</code> yet.</p>';
       return;
     }
 
     els.repoList.innerHTML = repos
       .map(function (r) {
-        const href = hashFor(r.owner, r.repo);
+        const href = catalogHref(r);
         const desc = r.description
           ? "<p>" + escapeHtml(r.description) + "</p>"
           : "";
@@ -664,7 +701,7 @@
     }
 
     if (!state.files.length) {
-      bits.push('<li class="muted">No Markdown files in this folder.</li>');
+      bits.push('<li class="muted">No Markdown or HTML files in this folder.</li>');
       state.folderTree = { name: "", path: root || "", dirs: [], files: [] };
       els.fileList.innerHTML = bits.join("");
       els.truncated.hidden = !state.truncated;
@@ -837,9 +874,9 @@
       "</p></div>";
   }
 
-  async function loadRepo(owner, repo, folder) {
-    showStatus("Indexing Markdown files…");
-    const meta = await resolveMeta(owner, repo);
+  async function loadRepo(owner, repo, folder, path) {
+    showStatus("Indexing documents…");
+    const meta = await resolveMeta(owner, repo, path || folder);
     try {
       var stored = sessionStorage.getItem(
         "reader-branch:" + meta.owner + "/" + meta.repo
@@ -853,7 +890,7 @@
     meta.root = urlFolder || catalogRoot;
     state.meta = meta;
     loadCollapsed();
-    const listed = await ReaderGitHub.listMarkdownFiles(
+    const listed = await ReaderGitHub.listDocFiles(
       meta.owner,
       meta.repo,
       meta.branch,
@@ -866,17 +903,63 @@
     return meta;
   }
 
+  function docKey(route) {
+    return [route.owner, route.repo, route.path].join("/").toLowerCase();
+  }
+
+  function scrollDocTo(anchor, smooth) {
+    if (!anchor || !ReaderDoc.scrollToAnchor(els.article, anchor, smooth)) {
+      els.repo.scrollTop = 0;
+      return;
+    }
+    if (smooth) return;
+    /* Web fonts and images can shift the layout after the first jump; follow
+       the anchor until then unless the reader has scrolled meanwhile. */
+    const key = state.renderedDoc;
+    let userMoved = false;
+    function stop() {
+      userMoved = true;
+    }
+    ["wheel", "touchstart", "mousedown", "keydown"].forEach(function (type) {
+      els.repo.addEventListener(type, stop, { once: true, passive: true });
+    });
+    function settle() {
+      if (userMoved || state.renderedDoc !== key) return;
+      ReaderDoc.scrollToAnchor(els.article, anchor, false);
+    }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(settle);
+    setTimeout(settle, 400);
+    setTimeout(settle, 1200);
+    els.article.querySelectorAll("img").forEach(function (img) {
+      if (!img.complete) img.addEventListener("load", settle, { once: true });
+    });
+  }
+
   async function onRoute() {
     const route = parseHash();
+    const previous = state.route;
     state.route = route;
     setSidebar(false);
 
     try {
       if (route.view === "catalog") {
         state.scopedFolder = "";
+        state.renderedDoc = "";
         renderCatalog();
         return;
       }
+
+      /* Same document, different #anchor: just scroll. */
+      if (
+        route.view === "file" &&
+        previous &&
+        previous.view === "file" &&
+        state.renderedDoc === docKey(route)
+      ) {
+        scrollDocTo(route.anchor, true);
+        return;
+      }
+      state.renderedDoc = "";
 
       if (route.view === "repo") {
         state.scopedFolder = route.folder || "";
@@ -885,19 +968,20 @@
       }
 
       const folderFilter = route.folder || state.scopedFolder || "";
-      const meta = await loadRepo(route.owner, route.repo, folderFilter);
+      const meta = await loadRepo(route.owner, route.repo, folderFilter, route.path);
       if (folderFilter) state.scopedFolder = meta.root;
       const folder = folderFilter ? meta.root : "";
       showRepoChrome(meta, route.path || "", folder);
       renderFileList(route.path || "", folder);
 
       if (route.view === "repo") {
-        const heading = folder ? folder.split("/").pop() : meta.title;
+        const heading =
+          folder && folder !== meta.catalogRoot ? folder.split("/").pop() : meta.title;
         setTitle([heading, meta.title, "Reader"]);
         if (!state.files.length) {
           showArticleMessage(
             heading,
-            "No Markdown files showed up under " +
+            "No Markdown or HTML files showed up under " +
               (meta.root ? '"' + meta.root + '"' : "the repo root") +
               "."
           );
@@ -909,25 +993,30 @@
 
       setTitle([relativePath(route.path, meta.root), meta.title, "Reader"]);
       showStatus("Loading " + relativePath(route.path, meta.root) + "…");
-      const text = await ReaderGitHub.fetchMarkdown(
+      const text = await ReaderGitHub.fetchText(
         meta.owner,
         meta.repo,
         meta.branch,
         route.path
       );
-      const rendered = ReaderMarkdown.render(text, {
+      const kind = ReaderDoc.docKind(route.path);
+      const renderer = kind === "html" ? ReaderHTML : ReaderMarkdown;
+      const rendered = renderer.render(text, {
         owner: meta.owner,
         repo: meta.repo,
         branch: meta.branch,
         path: route.path
       });
+      const docTitle = rendered.getAttribute("data-doc-title");
+      if (docTitle) setTitle([docTitle, meta.title, "Reader"]);
       els.article.innerHTML = "";
       const body = document.createElement("div");
-      body.className = "markdown-body";
+      body.className = "markdown-body doc-" + kind;
       while (rendered.firstChild) body.appendChild(rendered.firstChild);
       els.article.appendChild(body);
+      state.renderedDoc = docKey(route);
       showStatus("");
-      els.article.scrollTop = 0;
+      scrollDocTo(route.anchor, false);
     } catch (err) {
       console.error(err);
       showStatus("");

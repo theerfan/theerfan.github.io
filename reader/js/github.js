@@ -1,4 +1,4 @@
-/* Fetch public GitHub repos: file trees and raw Markdown. */
+/* Fetch public GitHub repos: file trees and raw Markdown / HTML documents. */
 (function (global) {
   const API = "https://api.github.com";
   const RAW = "https://raw.githubusercontent.com";
@@ -55,7 +55,9 @@
     return meta;
   }
 
-  async function listMarkdownFiles(owner, repo, branch, root) {
+  const DOC_RE = /\.(md|markdown|html?)$/i;
+
+  async function listDocFiles(owner, repo, branch, root) {
     const key = cacheKey(owner, repo, branch);
     let tree = treeCache.get(key);
     if (!tree) {
@@ -73,7 +75,7 @@
         truncated: !!data.truncated,
         paths: (data.tree || [])
           .filter(function (item) {
-            return item.type === "blob" && /\.md$/i.test(item.path);
+            return item.type === "blob" && DOC_RE.test(item.path);
           })
           .map(function (item) {
             return item.path;
@@ -98,7 +100,7 @@
     return { truncated: tree.truncated, paths: paths };
   }
 
-  async function fetchMarkdown(owner, repo, branch, path) {
+  async function fetchText(owner, repo, branch, path) {
     const url =
       RAW +
       "/" +
@@ -189,7 +191,7 @@
 
     var hashIdx = s.indexOf("#/");
     if (hashIdx !== -1) {
-      var hp = s.slice(hashIdx + 2).split("/").filter(Boolean);
+      var hp = s.slice(hashIdx + 2).split("#")[0].split("/").filter(Boolean);
       if (hp.length >= 2) {
         return {
           owner: decodePart(hp[0]),
@@ -238,8 +240,10 @@
 
   global.ReaderGitHub = {
     getRepo: getRepo,
-    listMarkdownFiles: listMarkdownFiles,
-    fetchMarkdown: fetchMarkdown,
+    listDocFiles: listDocFiles,
+    listMarkdownFiles: listDocFiles,
+    fetchText: fetchText,
+    fetchMarkdown: fetchText,
     rawFileUrl: rawFileUrl,
     githubBlobUrl: githubBlobUrl,
     githubTreeUrl: githubTreeUrl,
