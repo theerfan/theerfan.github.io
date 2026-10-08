@@ -107,13 +107,21 @@
   }
 
   /* Colours the theme itself supplies (inherited text colour, currentColor in
-     MathJax SVG, links): these already follow the theme. */
+     MathJax SVG, links, the reader's rules/borders and surfaces): these
+     already follow the theme, so re-mapping them would only distort them
+     (e.g. a dark --rule border read as near-black ink turned light grey). */
+  const THEME_VARS = [
+    "--ink", "--muted", "--accent", "--accent-ink", "--paper", "--rule",
+    "--sidebar", "--card", "--danger", "--code-bg", "--status-bg", "--status-ink",
+    "--status-border", "--status-error-bg", "--status-error-border", "--hover-border"
+  ];
+
   function themeColors() {
     const probe = document.createElement("span");
     probe.style.display = "none";
     (document.body || document.documentElement).appendChild(probe);
     const out = new Set();
-    ["--ink", "--muted", "--accent", "--accent-ink", "--paper"].forEach(function (v) {
+    THEME_VARS.forEach(function (v) {
       probe.style.color = "var(" + v + ")";
       out.add(getComputedStyle(probe).color);
     });
