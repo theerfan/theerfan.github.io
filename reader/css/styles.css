@@ -794,6 +794,28 @@ body.sidebar-collapsed .truncated,
   font-size: 0.85em;
 }
 
+/* Numbered display equations (\tag): lay the number out beside the formula
+   instead of absolutely positioned on top of it, so wide formulas on phones
+   scroll horizontally rather than overlapping the equation number. */
+.katex-display > .katex > .katex-html:has(> .tag) {
+  display: flex;
+  align-items: baseline;
+}
+.katex-display > .katex > .katex-html:has(> .tag)::before {
+  content: "";
+  flex: 1 1 0;
+}
+.katex-display > .katex > .katex-html:has(> .tag) > .base {
+  flex: 0 0 auto;
+}
+.katex-display > .katex > .katex-html > .tag {
+  position: static;
+  flex: 1 1 0;
+  min-width: max-content;
+  padding-left: 1em;
+  text-align: right;
+}
+
 .backdrop {
   display: none;
 }

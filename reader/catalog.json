@@ -8,6 +8,14 @@
       "repo": "Pauli",
       "branch": "main",
       "root": ""
+    },
+    {
+      "title": "Quantum Field Theory",
+      "description": "David Tong's Cambridge lecture notes (from the HTML edition), with KaTeX math.",
+      "owner": "theerfan",
+      "repo": "theerfan.github.io",
+      "branch": "main",
+      "root": "reader/library/tong-qft"
     }
   ]
 }
