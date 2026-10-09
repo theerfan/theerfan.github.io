@@ -182,6 +182,10 @@ body.view-catalog .jump-bar { display: none; }
   margin: 0 0 12px;
 }
 
+.saved-heading a { color: inherit; }
+.saved-heading a:hover { color: var(--accent-ink); }
+.saved-heading .sep { margin: 0 0.45em; }
+
 .layout {
   flex: 1;
   min-height: 0;

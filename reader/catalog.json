@@ -1,5 +1,13 @@
 {
   "title": "Reader",
+  "folders": [
+    {
+      "id": "self-hosted",
+      "title": "Self-hosted",
+      "repo": "theerfan/theerfan.github.io",
+      "description": "Notes kept in this site."
+    }
+  ],
   "repos": [
     {
       "title": "Pauli",

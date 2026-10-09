@@ -322,6 +322,10 @@
     const owner = parts[0];
     const repo = parts[1];
     const path = parts.slice(2).join("/");
+    /* #/~/folder-id opens a catalog folder, not a GitHub repo. */
+    if (owner === "~") {
+      return { view: "group", group: [repo].concat(parts.slice(2)).filter(Boolean).join("/") };
+    }
     if (!owner || !repo) return { view: "catalog" };
     if (!path) return { view: "repo", owner: owner, repo: repo };
     if (ReaderDoc.isDocPath(path)) {
@@ -420,8 +424,91 @@
     document.title = parts.filter(Boolean).join(" · ");
   }
 
+  function catalogFolders() {
+    return state.catalog.folders || [];
+  }
+
+  function folderById(id) {
+    const want = String(id || "");
+    const folders = catalogFolders();
+    for (let i = 0; i < folders.length; i++) {
+      if (folders[i].id === want) return folders[i];
+    }
+    return null;
+  }
+
+  /* A folder gathers every library that lives in one GitHub repo. */
+  function folderForEntry(entry) {
+    if (!entry || !entry.owner || !entry.repo) return null;
+    const key = (entry.owner + "/" + entry.repo).toLowerCase();
+    const folders = catalogFolders();
+    for (let i = 0; i < folders.length; i++) {
+      if (String(folders[i].repo || "").toLowerCase() === key) return folders[i];
+    }
+    return null;
+  }
+
+  function entriesInFolder(folder) {
+    const key = String(folder.repo || "").toLowerCase();
+    return (state.catalog.repos || []).filter(function (r) {
+      return (r.owner + "/" + r.repo).toLowerCase() === key;
+    });
+  }
+
+  function groupHash(id) {
+    return "#/~/" + encodeURIComponent(id);
+  }
+
+  function repoCardHtml(r, idLine) {
+    const desc = r.description ? "<p>" + escapeHtml(r.description) + "</p>" : "";
+    return (
+      '<a class="repo-card" href="' +
+      catalogHref(r) +
+      '">' +
+      "<h2>" +
+      escapeHtml(r.title || r.repo) +
+      "</h2>" +
+      '<p class="repo-id">' +
+      escapeHtml(idLine) +
+      "</p>" +
+      desc +
+      "</a>"
+    );
+  }
+
+  function folderCardHtml(folder, count) {
+    const desc = folder.description
+      ? "<p>" + escapeHtml(folder.description) + "</p>"
+      : "";
+    const id =
+      "Folder · " + count + (count === 1 ? " library" : " libraries");
+    return (
+      '<a class="repo-card repo-folder" href="' +
+      groupHash(folder.id) +
+      '">' +
+      "<h2>" +
+      escapeHtml(folder.title || folder.id) +
+      "</h2>" +
+      '<p class="repo-id">' +
+      escapeHtml(id) +
+      "</p>" +
+      desc +
+      "</a>"
+    );
+  }
+
+  function savedHeading() {
+    return document.querySelector("#catalogView .saved-heading");
+  }
+
   function renderCatalog() {
-    setTitle([state.catalog.title || "Reader", "Erfan Abedi"]);
+    const groupId = state.route && state.route.view === "group" ? state.route.group : "";
+    const folder = groupId ? folderById(groupId) : null;
+    setTitle(
+      folder
+        ? [folder.title || folder.id, state.catalog.title || "Reader", "Erfan Abedi"]
+        : [state.catalog.title || "Reader", "Erfan Abedi"]
+    );
     document.body.classList.add("view-catalog");
     document.body.classList.remove("view-repo");
     els.catalog.hidden = false;
@@ -436,34 +523,54 @@
     setJumpError("");
     showStatus("");
 
+    const heading = savedHeading();
     const repos = state.catalog.repos || [];
+
+    if (groupId) {
+      if (!folder) {
+        if (heading) heading.textContent = "Saved libraries";
+        els.repoList.innerHTML =
+          '<p class="empty">No folder by that name. <a href="#/">Back to the libraries</a>.</p>';
+        return;
+      }
+      if (heading) {
+        heading.innerHTML =
+          '<a href="#/">Saved libraries</a><span class="sep">/</span>' +
+          escapeHtml(folder.title || folder.id);
+      }
+      const members = entriesInFolder(folder);
+      if (!members.length) {
+        els.repoList.innerHTML = '<p class="empty">Nothing in this folder yet.</p>';
+        return;
+      }
+      els.repoList.innerHTML = members
+        .map(function (r) {
+          return repoCardHtml(r, r.root || r.owner + "/" + r.repo);
+        })
+        .join("");
+      return;
+    }
+
+    if (heading) heading.textContent = "Saved libraries";
     if (!repos.length) {
       els.repoList.innerHTML =
         '<p class="empty">No libraries in <code>catalog.json</code> yet.</p>';
       return;
     }
 
-    els.repoList.innerHTML = repos
-      .map(function (r) {
-        const href = catalogHref(r);
-        const desc = r.description
-          ? "<p>" + escapeHtml(r.description) + "</p>"
-          : "";
-        return (
-          '<a class="repo-card" href="' +
-          href +
-          '">' +
-          "<h2>" +
-          escapeHtml(r.title || r.repo) +
-          "</h2>" +
-          '<p class="repo-id">' +
-          escapeHtml(r.owner + "/" + r.repo) +
-          "</p>" +
-          desc +
-          "</a>"
-        );
-      })
-      .join("");
+    const seenFolder = {};
+    const cards = [];
+    repos.forEach(function (r) {
+      const home = folderForEntry(r);
+      if (!home) {
+        cards.push(repoCardHtml(r, r.owner + "/" + r.repo));
+        return;
+      }
+      if (seenFolder[home.id]) return;
+      seenFolder[home.id] = true;
+      cards.push(folderCardHtml(home, entriesInFolder(home).length));
+    });
+    els.repoList.innerHTML = cards.join("");
   }
 
   function escapeHtml(s) {
@@ -720,8 +827,18 @@
 
   function setCrumb(meta, path, folder) {
     const repoHref = hashFor(meta.owner, meta.repo);
-    let html =
-      '<a href="#/">Catalog</a><span class="sep">/</span><a href="' +
+    const group = folderForEntry(meta);
+    let html = '<a href="#/">Catalog</a>';
+    if (group) {
+      html +=
+        '<span class="sep">/</span><a href="' +
+        groupHash(group.id) +
+        '">' +
+        escapeHtml(group.title || group.id) +
+        "</a>";
+    }
+    html +=
+      '<span class="sep">/</span><a href="' +
       repoHref +
       '">' +
       escapeHtml(meta.title || meta.repo) +
@@ -948,7 +1065,7 @@
     setSidebar(false);
 
     try {
-      if (route.view === "catalog") {
+      if (route.view === "catalog" || route.view === "group") {
         state.scopedFolder = "";
         state.renderedDoc = "";
         renderCatalog();
@@ -1030,7 +1147,7 @@
     } catch (err) {
       console.error(err);
       showStatus("");
-      if (state.route.view === "catalog") {
+      if (state.route.view === "catalog" || state.route.view === "group") {
         els.repoList.innerHTML =
           '<p class="empty error">' + escapeHtml(err.message) + "</p>";
         return;
