@@ -83,6 +83,15 @@
 .markdown-body a { color: var(--accent-ink); text-decoration: none; }
 .markdown-body a:hover { text-decoration: underline; }
 
+/* A term in the lectures that opens a page in notes/. */
+.markdown-body a.note-ref {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  border-radius: 0.15em;
+  padding: 0 0.15em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
 .markdown-body code {
   font-family: var(--mono);
   font-size: 0.86em;

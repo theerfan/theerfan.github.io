@@ -56,3 +56,9 @@
   - <a href="6.%20Quantum%20Electrodynamics.md#SS5">6.5 Feynman Rules</a>
   - <a href="6.%20Quantum%20Electrodynamics.md#SS6">6.6 Scattering in QED</a>
   - <a href="6.%20Quantum%20Electrodynamics.md#SS7">6.7 Afterword</a>
+
+## Notes
+
+Explanations of things that didn’t stick. Each one is linked from the sentence in the lectures where the question came up.
+
+- <a href="notes/Notes.html"><strong>Notes</strong></a>
