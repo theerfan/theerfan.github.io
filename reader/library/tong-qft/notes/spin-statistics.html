@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Spin and statistics</title>
+</head>
+<body>
+  <article>
+    <p><a href="../0.%20Introduction.md#spin-statistics">← 0. Introduction</a> · <a href="Notes.html">Notes</a></p>
+    <h1>Why fermions and bosons differ</h1>
+    <p>In non-relativistic quantum mechanics the difference is put in by hand, and experiment is what tells you which hand. In a relativistic theory with a stable vacuum and no signalling outside the light cone, only one assignment is consistent: integer spin commutes, half-integer spin anticommutes. The experimental rule and the theorem pick the same pairing. This note separates those two statements, then shows the calculation Tong uses to watch the wrong pairing fail.</p>
+
+    <h2>What is actually being chosen</h2>
+    <p>Two particles of the same species are indistinguishable. The state obtained by exchanging them is the same physical state, so the wavefunction can change at most by a phase. Doing the exchange twice is the identity, and in three spatial dimensions the only phases consistent with that, and with the way paths can be deformed, are $+1$ and $-1$.</p>
+    $$
+    \psi(\ldots, x_i, \ldots, x_j, \ldots) = \pm\, \psi(\ldots, x_j, \ldots, x_i, \ldots).
+    $$
+    <p>The plus sign is Bose statistics: any number of particles may occupy the same state, and the wavefunction of $N$ of them is symmetric. The minus sign is Fermi statistics: the wavefunction is antisymmetric, two particles in the same state give zero, and the number in one state is $0$ or $1$.</p>
+    <p>Spin is a different piece of kinematics. It is the representation of rotations on the internal state of one particle. A rotation by $2\pi$ is contractible to nothing for an ordinary vector, so an integer-spin state comes back to itself. The same rotation is not contractible for a spinor: a spin-$1/2$ state comes back as minus itself, and only a rotation by $4\pi$ is the identity. Nothing in that definition mentions what happens when two particles trade places.</p>
+
+    <h2>In quantum mechanics it is an experimental input</h2>
+    <p>The Schrödinger equation for one particle does not know about either sign. For $N$ identical particles you choose the symmetric or the antisymmetric subspace as an extra postulate, and you choose it so that the theory matches what is measured.</p>
+    <p>Photons, pions, $^4\mathrm{He}$ atoms and the Higgs boson have integer spin and are bosons. The blackbody spectrum, lasers, and Bose condensation are that choice written into the counting of states. Electrons, protons, neutrons and neutrinos have half-integer spin and are fermions. The periodic table, the stability of bulk matter, and the difference between liquid $^4\mathrm{He}$ and liquid $^3\mathrm{He}$ are the exclusion principle. The rule “integer spin, no minus sign; half-integer spin, minus sign” is read off this catalogue. A non-relativistic theory with bosonic electrons is internally consistent. It is just not the world we live in, and it has nothing in it that would have forbidden the other catalogue.</p>
+
+    <h2>The signs are locked together by relativity</h2>
+    <p>The spin-statistics theorem says the catalogue is the only one a relativistic quantum theory can have. The assumptions that do the work are Lorentz invariance, a vacuum that is the state of lowest energy, and microcausality: observable quantities built in spacelike-separated regions commute, so neither influences the other. Under those hypotheses a field of integer spin must be a boson and a field of half-integer spin must be a fermion. The other two combinations each break either the lower bound on the energy or the vanishing of spacelike influence.</p>
+    <p>The intuitive link between the two signs is that an exchange of two particles can be deformed into a $2\pi$ rotation of one of them. Rotate particle $A$ by $2\pi$ while swinging it once around particle $B$, and slide the path until the swing has become “$A$ and $B$ have traded places, and $A$ has been rotated.” The phase from the rotation is $+1$ for integer spin and $-1$ for half-integer spin. The phase from the exchange has to be the same number, otherwise the amplitude would depend on which deformation you picked, and a spacelike rearrangement would have physical consequences. This deformation argument is the reason the signs match. The theorem (Pauli in 1940, later in the language of axiomatic field theory) is the statement that the wrong match cannot be repaired by being clever with the Hamiltonian.</p>
+    <p>Dimension counts. The argument uses the topology of rotations in three spatial dimensions, where a $2\pi$ rotation has exactly two classes: trivial, and not. In two spatial dimensions a rotation by an arbitrary angle is its own class, an exchange can contribute any phase, and particles that are neither bosons nor fermions — anyons — occur. The fractional quantum Hall effect is the experimental version. The sharp split Tong is talking about is a fact about relativistic quantum theory in $3+1$ dimensions, not a bare fact about linear algebra.</p>
+
+    <h2>The failure Tong calculates</h2>
+    <p>In <a href="../5.%20Quantizing%20the%20Dirac%20Field.md#SS1">§5.1</a> he quantizes the Dirac field as if it were a scalar, with commutators. Expanding in plane waves, the coefficient operators $b, b^\dagger$ of the positive-frequency spinors behave normally,</p>
+    $$
+    [b^r_{\vec p}, b^{s\dagger}_{\vec q}] = (2\pi)^3 \delta^{rs}\delta^{(3)}(\vec p - \vec q),
+    $$
+    <p>but the coefficients $c, c^\dagger$ of the other spinor come out with a minus sign,</p>
+    $$
+    [c^r_{\vec p}, c^{s\dagger}_{\vec q}] = -(2\pi)^3 \delta^{rs}\delta^{(3)}(\vec p - \vec q).
+    $$
+    <p>That minus sign is the whole disaster, and it leaves two bad options.</p>
+    <p>Call $c^\dagger$ a creation operator, so $c$ annihilates the vacuum. The state $c^\dagger|0\rangle$ then has negative norm, because the commutator that should have been $+1$ is $-1$. The “probability” of a one-particle state is negative. This is the same disease as the Klein–Gordon probability current, moved into the Hilbert space.</p>
+    <p>Or insist on positive norms, and interpret $c$ as the creation operator and $c^\dagger$ as the annihilation operator. The Hamiltonian that comes with the commutators is</p>
+    $$
+    H = \int\frac{d^3p}{(2\pi)^3}\, E_{\vec p}\,\bigl(b^\dagger b - c\, c^\dagger\bigr),
+    $$
+    <p>up to the usual infinite constant from ordering. With this interpretation each quantum created by $c$ contributes $-E_{\vec p}$. The spectrum runs to $-\infty$. There is no ground state.</p>
+    <p>In <a href="../5.%20Quantizing%20the%20Dirac%20Field.md#SS2">§5.2</a> the commutators are replaced by anticommutators, $\{A, B\} = AB + BA$. The minus sign flips. The Hamiltonian becomes $E_{\vec p}(b^\dagger b + c^\dagger c)$, bounded below, norms are positive, and exchanging two quanta produces a minus sign because the operators anticommute. Fermi statistics is not inserted to match the periodic table. It is the unique choice, for this spin, that leaves a stable vacuum and a Hilbert space. Choosing Bose statistics for the Dirac field is not an unlucky guess about nature. It is an inconsistent theory.</p>
+    <p>The scalar field runs the other way, and Tong has already done that half in <a href="../2.%20Free%20Fields.md#SS6.SSS1">§2.6.1</a>. Commutators make $[\phi(x), \phi(y)]$ vanish at spacelike separation, because the particle piece and the antiparticle piece cancel. They also make the scalar Hamiltonian a sum of $E\, a^\dagger a$, bounded below. Anticommutators for a scalar spoil one of those two. Integer spin is the case where the cancelling bracket is a commutator.</p>
+
+    <h2>So which is it, experiment or theorem?</h2>
+    <p>Both, at different layers. If all you have is the Schrödinger equation, the minus sign is an experimental fact you type in. Once Lorentz invariance, a lowest energy, and spacelike commutativity of observables are required, the minus sign is forced by the spin, and the forced sign is the one the experiments measure. Quantum field theory does not explain why spin $1/2$ exists. It explains why a spin-$1/2$ particle is not free to be a boson.</p>
+  </article>
+</body>
+</html>

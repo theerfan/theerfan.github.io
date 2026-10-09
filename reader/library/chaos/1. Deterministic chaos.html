@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>1. Deterministic chaos</title>
+</head>
+<body>
+  <article>
+    <p><a href="README.md">Contents</a></p>
+    <h1>1. Deterministic chaos</h1>
+    <p>Chaos is a property of a deterministic rule. The next state is fixed, with no random term anywhere in the equation, and yet a small error in the state you think you have becomes an error of order one after a short time, inside a region the motion never leaves. The motion is not noisy. It is unpredictable, because the present is never known sharply enough for the rule to be useful far ahead. This chapter says what that means as a definition, computes it on the simplest example where every step is exact, and separates it from several things it is often confused with.</p>
+
+    <h2 id="flows">1.1 Flows and maps</h2>
+    <p>A state is a point $x$ of a set $M$, the state space. For a pendulum, $M$ is a cylinder: an angle and an angular velocity. For three first-order differential equations, $M$ is a region of $\mathbb{R}^3$. The set needs a notion of distance $d(x, y)$, so that “nearby” is defined. A subset of $\mathbb{R}^n$ with the ordinary distance is enough for everything below.</p>
+    <p>A continuous-time dynamical system is a family of maps $\varphi_t: M \to M$, one for each time $t \in \mathbb{R}$, satisfying</p>
+    $$
+    \varphi_0(x) = x, \qquad \varphi_{t+s}(x) = \varphi_t\bigl(\varphi_s(x)\bigr).
+    $$
+    <p>$\varphi_t(x)$ is where $x$ has been carried after time $t$. The two identities say that waiting no time does nothing, and that waiting $s$ and then $t$ is the same as waiting $t+s$. Differentiating at $t = 0$ produces a vector field. If $f(x) = \frac{d}{dt}\varphi_t(x)\big|_{t=0}$, the orbit is the solution of the ordinary differential equation</p>
+    $$
+    \dot x = f(x).
+    $$
+    <p>There is no $\xi(t)$ on the right-hand side. Given $x$ and $f$, the curve $t \mapsto \varphi_t(x)$ is determined. That is determinism.</p>
+    <p>A discrete-time system is a single map $f: M \to M$, iterated. Write $x_{n+1} = f(x_n)$, so $x_n = f^{\circ n}(x_0)$. A flow observed once per unit time, $f = \varphi_1$, is a map. Maps are easier to prove things about, and every phenomenon below already occurs for a map of the unit interval. When a theorem is stated for $f$, the flow version is the same statement with $f^{\circ n}$ replaced by $\varphi_t$.</p>
+
+    <h2 id="sensitive">1.2 Sensitive dependence</h2>
+    <p>Let $d$ be the distance. The map $f$ has sensitive dependence on initial conditions when there exists a fixed $\delta &gt; 0$ with the following property. For every state $x$, and for every neighbourhood $U$ of $x$, however small, some point $y \in U$ and some iterate $n \geq 0$ satisfy</p>
+    $$
+    d\bigl(f^{\circ n}(x),\, f^{\circ n}(y)\bigr) &gt; \delta.
+    $$
+    <p>$\delta$ is not allowed to shrink when $U$ shrinks. Every ball, down to arbitrarily fine precision, contains two states that some later iterate drives a definite distance apart. Knowing the state to any finite precision fails to determine the future to precision $\delta$.</p>
+    <p>Sensitive dependence by itself is not the whole of the word “chaos.” The equation $\dot x = x$ on $\mathbb{R}$ separates nearby points — they move apart like $e^{t}$ — and nobody calls it chaotic. The trajectories run off to infinity and never come back, so the separation is just instability of the origin, visible on a plot without any folding. Chaos asks for that separation inside a set the orbit keeps returning to.</p>
+    <p>One standard way to add the missing half is Devaney’s definition. A continuous map on an infinite metric space is called chaotic when it has all three of:</p>
+    <ol>
+      <li><strong>Transitivity.</strong> For any two nonempty open sets $U$ and $V$, some iterate $f^{\circ n}(U)$ meets $V$. The dynamics cannot be split into two regions that never communicate. Equivalently, some single orbit is dense, in the cases one meets in examples.</li>
+      <li><strong>Dense periodic points.</strong> Every neighbourhood of every point contains a periodic orbit: a $p$ with $f^{\circ k}(p) = p$ for some $k \geq 1$. Exact repetition is sprinkled everywhere, arbitrarily close to states that never repeat.</li>
+      <li><strong>Sensitive dependence.</strong> As above.</li>
+    </ol>
+    <p>On a continuous map of a metric space the third follows from the first two, so it is not an independent requirement. It is still the property you measure. The definition is not the only one in use. Some authors ask for a positive Lyapunov exponent on a set of positive volume, some for a horseshoe, some for mixing of a natural probability measure. They agree on the standard examples and disagree on borderline maps. The disagreements are about which extra properties to bundle in. Sensitive dependence plus recurrence, rather than sensitive dependence alone, is the part they share.</p>
+
+    <h2 id="lyapunov">1.3 Lyapunov exponents</h2>
+    <p>Sensitive dependence is qualitative. The Lyapunov exponent says how fast the separation happens.</p>
+    <p>Suppose $M$ is a piece of $\mathbb{R}^n$ and $f$ is differentiable. A small error $v$ at $x$ is carried, to first order, by the derivative matrix $Df(x)$. After $n$ steps the error is $Df^{\circ n}(x)\, v$, where the chain rule gives</p>
+    $$
+    Df^{\circ n}(x) = Df(x_{n-1})\cdots Df(x_1)\, Df(x_0).
+    $$
+    <p>The maximal Lyapunov exponent at $x$ is</p>
+    $$
+    \lambda(x) = \lim_{n\to\infty} \frac{1}{n}\log \bigl\| Df^{\circ n}(x) \bigr\|,
+    $$
+    <p>when the limit exists. $\bigl\|Df^{\circ n}\bigr\|$ is the largest factor by which the derivative stretches a vector. A positive $\lambda$ means a typical infinitesimal error grows as $e^{\lambda n}$ for as long as it stays infinitesimal. If you know the state to precision $\varepsilon$, the time until the error has grown to size $1$ is</p>
+    $$
+    n_\star \approx \frac{1}{\lambda}\log\frac{1}{\varepsilon}.
+    $$
+    <p>Doubling the number of correct digits adds a fixed increment $n_\star$, rather than squaring the prediction time. That logarithm is the practical content of chaos. A better instrument buys an additive extension of the forecast, paid for at the rate $\lambda$.</p>
+    <p>For a flow the same limit is taken with $\tfrac{1}{t}\log\|D\varphi_t(x)\|$, and $\lambda$ has units of inverse time. A system in dimension $n$ has $n$ exponents, one per independent direction. Chaos in the sense of stretching-and-folding requires the largest to be positive and the motion to stay bounded, so some other exponent must be negative: one direction stretches, another contracts, and the contracting direction is what folds the stretched image back into the region. Their sum, for a flow of an ordinary differential equation, equals the average of $\nabla\cdot f$. A divergence-free field, such as an incompressible fluid or a Hamiltonian flow, has exponents summing to zero.</p>
+
+    <h2 id="doubling">1.4 The doubling map</h2>
+    <p>Everything above can be seen without numerics on the map</p>
+    $$
+    f: [0, 1) \to [0, 1), \qquad f(\theta) = 2\theta \bmod 1.
+    $$
+    <p>In binary, a point is $\theta = 0.b_1 b_2 b_3\ldots = \sum_{k\geq 1} b_k 2^{-k}$. Doubling shifts the point: $f(\theta) = 0.b_2 b_3 b_4\ldots$. Iteration throws away the leading bit at every step. The state is its infinite binary expansion, and the dynamics is “discard the bit you know best.”</p>
+    <p>Periodic points are the expansions that repeat. A period-$k$ point is a repeating block of $k$ bits, $\theta = 0.\overline{b_1\ldots b_k}$, and there are $2^k$ of them, equally spaced on the interval. Every bin of width $2^{-k}$, however it sits, contains one. The periodic points are dense, and they are countable, so almost every point in the sense of length is not periodic.</p>
+    <p>Transitivity: any two binary intervals are specified by a finite list of leading bits. From the interval “starts with block $A$” you can reach “starts with block $B$” by waiting $|A|$ steps and having chosen the later bits of the starting point to be $B$. Some iterate of every interval covers the whole of $[0, 1)$.</p>
+    <p>Sensitive dependence, with room to spare: if $d(\theta, \theta') &lt; 2^{-m}$, then $\theta$ and $\theta'$ share their first $m$ bits. After $m$ shifts those bits are gone and the images can sit anywhere relative to each other. Take $\delta = 1/4$. Every neighbourhood contains a point that, once the shared bits are exhausted, lands more than $1/4$ away. The derivative is $f' = 2$ wherever it exists, so $\|Df^{\circ n}\| = 2^n$ and</p>
+    $$
+    \lambda = \log 2
+    $$
+    <p>at every point where the derivative of the iterate exists, which is everywhere except the dyadic rationals at the moment they hit $0$. An error of $2^{-m}$ becomes an error of order one after about $m$ steps, and $m$ is the number of correct binary digits you had.</p>
+    <p>The logistic map at parameter $4$, $g(x) = 4x(1-x)$ on $[0, 1]$, is this system written in different coordinates. The change of variables $x = \sin^2(\pi\theta)$ conjugates them: $g(x(\theta)) = x(f(\theta))$. Every conclusion about dense periodic points, transitivity and $\lambda = \log 2$ transfers. The logistic map is the example people plot. The doubling map is the reason the plot does what it does.</p>
+    <p>The shape of the argument is the whole geometric picture of chaos. Multiplying by $2$ stretches the interval to length $2$. Taking the result mod $1$ folds it back on top of itself, two-to-one. Stretching produces the positive Lyapunov exponent. Folding keeps the orbit inside $[0, 1)$ forever, so the separation cannot be blamed on escaping to infinity. A horseshoe is the same picture in the plane: a square is stretched into a long thin strip, folded into a U, and laid back across the square. The doubling map is the horseshoe with the transverse direction suppressed.</p>
+
+    <h2 id="not">1.5 What is being excluded</h2>
+    <p>A system can fail to be chaotic in several distinguishable ways, and the distinctions are the definition seen from the outside.</p>
+    <ul>
+      <li><strong>Noise.</strong> A stochastic differential equation has a random increment. Its unpredictability is an input. A chaotic map has none. Run it twice from the same point and you get the same orbit, bit for bit. Run it twice from points you cannot tell apart and you eventually get orbits you can tell apart.</li>
+      <li><strong>Quantum uncertainty.</strong> Nothing here is a statement about $\hbar$, measurement, or Hilbert space. The state is a point, and it has a value. The obstruction is that the value is a real number, and using the rule requires infinitely many digits of it.</li>
+      <li><strong>Mere nonlinearity.</strong> The pendulum $\ddot\theta = -\sin\theta$ is nonlinear. Its Lyapunov exponent, at energies below the separatrix, is zero: nearby trajectories oscillate at slightly different periods and drift apart only linearly in time, not exponentially. Linear drift is not sensitive dependence in the sense that costs you a fixed number of digits per unit time forever.</li>
+      <li><strong>Quasiperiodic motion.</strong> Two incommensurate frequencies on a torus, $\dot\theta_1 = \omega_1$, $\dot\theta_2 = \omega_2$, give an orbit that is dense on the torus if $\omega_1/\omega_2$ is irrational. The orbit is complicated to write down and easy to predict. The Lyapunov exponents vanish. Density of one orbit is not chaos.</li>
+      <li><strong>Escape.</strong> $\dot x = x$ has $\lambda = 1$ and no recurrence. Sensitive dependence without a bounded invariant set that the orbit returns to is instability, and the forecast is actually easy: the point runs away.</li>
+    </ul>
+
+    <h2 id="attractors">1.6 Attractors, mixing, and what a forecast can still say</h2>
+    <p>A set $A \subset M$ is invariant when $\varphi_t(A) = A$ for all $t$. It is an attractor, loosely, when a whole open set of initial conditions approaches it and $A$ itself contains no smaller set with that property. The doubling map has the simplest attractor possible: the whole interval, which is invariant, and every orbit is already on it. The Lorenz equations</p>
+    $$
+    \dot x = \sigma(y-x), \qquad \dot y = x(\rho - z) - y, \qquad \dot z = xy - \beta z,
+    $$
+    <p>with the classical parameters $\sigma = 10$, $\rho = 28$, $\beta = 8/3$, have a bounded attracting set that is not a fixed point, a cycle, or a surface. Orbits on it separate exponentially and fold back. That this set carries a genuine chaotic attractor, in the sense of a compact invariant set with a dense orbit and a positive Lyapunov exponent, was proved by Tucker in 2002 with a computer-assisted estimate. It is a theorem about those equations, not something a plot can establish. A picture of the butterfly is evidence that you have not made a coding error. It is not the definition.</p>
+    <p>On the doubling map there is also a natural probability measure, ordinary length. It is invariant: the preimage of any interval has the same length as the interval, because both halves map onto it. Birkhoff’s ergodic theorem then says that for almost every starting point, time averages equal space averages. For a function $h$ on $[0, 1)$,</p>
+    $$
+    \lim_{N\to\infty}\frac{1}{N}\sum_{n=0}^{N-1} h\bigl(f^{\circ n}(\theta)\bigr) = \int_0^1 h(\theta)\, d\theta,
+    $$
+    <p>for almost every $\theta$ with respect to length. You cannot say where the orbit will be at step $n_\star$. You can say what fraction of its life it spends in a given bin, and for almost every initial condition that fraction is the length of the bin. Chaos removes pointwise forecasts and leaves statistical ones.</p>
+    <p>Mixing is the stronger, and more characteristically chaotic, property that makes the statistics forget their start. Length is mixing for the doubling map: if $A$ is the set of points whose expansion starts with a fixed block, and $B$ is any interval,</p>
+    $$
+    \mathrm{length}\bigl(f^{-n}(B) \cap A\bigr) \to \mathrm{length}(B)\,\mathrm{length}(A) \qquad (n\to\infty).
+    $$
+    <p>Being in $A$ today says nothing about being in $B$ after enough shifts. Correlations decay. Exponential decay of correlations, when it holds, has a rate controlled by the same stretching that produced $\lambda$.</p>
+    <p>One theorem keeps the statistics honest even though every numerical orbit is wrong. A computer iterating the doubling map in floating point is not computing $f^{\circ n}(\theta)$. It computes a nearby map, and the bits it discards are not the true bits. For a hyperbolic system — the doubling map, a horseshoe, and the Lorenz attractor as proved by Tucker — the shadowing lemma says that this noisy computed sequence stays close to some true orbit of the exact system, started at a slightly different point. The plot you see is a real orbit. It is almost certainly not the orbit of the initial condition you typed in. That is why a computed average of $h$ can converge to $\int h$ while the computed position at step $100$ is unrelated to the true position at step $100$.</p>
+    <p>The chapter in one line: a rule $\dot x = f(x)$, or $x \mapsto f(x)$, with no random term; a bounded set the orbit returns to; and a positive Lyapunov exponent, so that finitely many digits of the present determine only finitely much of the future, with the missing digits arriving at an exponential rate.</p>
+  </article>
+</body>
+</html>

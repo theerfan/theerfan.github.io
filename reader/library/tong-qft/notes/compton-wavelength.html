@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Compton wavelength</title>
+</head>
+<body>
+  <article>
+    <p><a href="../0.%20Introduction.md#compton-pairs">← 0. Introduction</a> · <a href="Notes.html">Notes</a></p>
+    <h1>The Compton wavelength</h1>
+    <p>Tong has just estimated that a particle trapped in a box of size $L$ has $\Delta p \geq \hbar/L$. That step is the <a href="heisenberg-inequality.html">Heisenberg inequality</a> plus the finite size of the box. From there he says that energy is uncertain by $\Delta E \geq \hbar c/L$, and that once this exceeds $2mc^2$ the box is small enough to produce particle–antiparticle pairs. The length he writes down,</p>
+    $$
+    \lambda = \frac{\hbar}{mc},
+    $$
+    <p>is the <em>reduced Compton wavelength</em>. This note derives that scale from the mass shell, says what the comparison with $2mc^2$ is actually estimating, and then answers the next sentence: why a region smaller than $\lambda$ is full of pairs.</p>
+
+    <h2 id="pairs">Where $\hbar/(mc)$ comes from</h2>
+    <p>A free particle of mass $m$ lies on the mass shell</p>
+    $$
+    E(\vec p) = \sqrt{(pc)^2 + (mc^2)^2}.
+    $$
+    <p>$E/c$ and $\vec p$ are components of one 4-vector. That is all Tong means by energy and momentum being on an equivalent footing. It does not promote $\Delta p \geq \hbar/L$ into a theorem $\Delta E \geq \hbar c/L$. The momentum bound was proved. The energy step is the mass shell applied to a momentum of that size.</p>
+    <p>Take a state centred at rest, $\langle\vec p\rangle = 0$, with a momentum spread $\Delta p \geq \hbar/L$. The energy belonging to a momentum $\hbar/L$ is</p>
+    $$
+    E(L) = \sqrt{\left(\frac{\hbar c}{L}\right)^2 + (mc^2)^2}.
+    $$
+    <p>The amount by which this sits above the rest energy is the energy the localization has cost:</p>
+    $$
+    \delta E(L) = E(L) - mc^2.
+    $$
+    <p>Two limits are worth writing out. If the box is large, $\hbar/L \ll mc$, the square root expands as a kinetic energy,</p>
+    $$
+    \delta E(L) \approx \frac{\hbar^2}{2m L^2},
+    $$
+    <p>which is much smaller than $mc^2$. If the box is small, $\hbar/L \gg mc$, then $E(L) \approx \hbar c/L$ and</p>
+    $$
+    \delta E(L) \approx \frac{\hbar c}{L}.
+    $$
+    <p>Tong’s $\Delta E \geq \hbar c/L$ is this second regime, copied back down to the crossover as an order-of-magnitude lower bound. The crossover itself is where the two terms under the square root match,</p>
+    $$
+    \frac{\hbar}{L} \sim mc \qquad\Rightarrow\qquad L \sim \frac{\hbar}{mc}.
+    $$
+    <p>That length is $\lambda$.</p>
+
+    <h2>Why the threshold is a pair, and why it is $2mc^2$</h2>
+    <p>Localizing the particle does not by itself create anything. What it does is force the state to contain momentum components $p \gtrsim \hbar/L$, and those components carry energy $E(p)$. Whether that energy can become new particles is a question about the spectrum of the theory.</p>
+    <p>Charge, lepton number and the other additive quantum numbers of the original particle are already accounted for. The lightest excitation that preserves them, on top of the particle you put in, is that particle plus a particle–antiparticle pair. The pair itself costs $2mc^2$ at rest: $mc^2$ for the new particle and $mc^2$ for the antiparticle. One extra particle of the same charge would be cheaper in energy and is forbidden by the conservation law. This is why Tong compares the energy uncertainty with $2mc^2$ rather than with $mc^2$.</p>
+    <p>Set the localization energy equal to that threshold, using his estimate $\delta E \sim \hbar c/L$:</p>
+    $$
+    \frac{\hbar c}{L} \sim 2mc^2 \qquad\Rightarrow\qquad L \sim \frac{\hbar}{2mc} = \frac{\lambda}{2}.
+    $$
+    <p>Using the mass shell instead of $\hbar c/L$, and asking that the whole energy $E(L)$ reach $mc^2 + 2mc^2 = 3mc^2$ (the original particle plus a resting pair), gives</p>
+    $$
+    \sqrt{\left(\frac{\hbar c}{L}\right)^2 + (mc^2)^2} = 3mc^2 \qquad\Rightarrow\qquad L = \frac{\hbar}{\sqrt{8}\,mc} \approx 0.35\,\lambda.
+    $$
+    <p>Both are the same length up to a numerical factor of order one. Tong drops the factor and defines $\lambda = \hbar/(mc)$. Nothing in the paragraph depends on the difference between $\lambda$ and $\lambda/2$.</p>
+
+    <h2>Shorter than this, the pairs are not a small correction</h2>
+    <p>The sentence is an order-of-magnitude claim, not a computed probability. What it says, unpacked, is the following.</p>
+    <p>Suppose $L \gg \lambda$. Then $\hbar/L \ll mc$, the localization energy is the non-relativistic kinetic energy $\hbar^2/(2mL^2) \ll mc^2$, and a real pair is forbidden by energy conservation. A pair can still appear as a virtual fluctuation, but the energy denominator is the full $2mc^2$ while the momentum components that could support the pair are only the far tail of a gentle wavepacket. That amplitude is a small correction to the statement “there is one particle in the box”.</p>
+    <p>Suppose instead $L \lesssim \lambda$. The uncertainty principle no longer puts $p \sim mc$ in a tail. An order-one fraction of the state <em>is</em> those momentum components, because a wavefunction supported on an interval shorter than $\lambda$ cannot be built out of $p \ll mc$. Each such component has energy of order $mc^2$ or larger, which is the pair threshold. The state one was calling “a single particle, localized here” has order-one overlap with energies at which the spectrum contains extra pairs. Finding extra particles in that region is then not a rare correction. That is the “high probability”.</p>
+    <p>If the box is much smaller still, $L = \lambda/N$ with $N \gg 1$, the same estimate gives $\delta E \sim N\, mc^2$. The energy budget now pays for order $N$ pairs, not one. The shorter the distance, the more pairs it can hold. That is the swarm. They are not a classical gas orbiting the original particle. They are the extra particle content that a state this localized is forced to have, once the theory allows pair creation at all.</p>
+    <p>A detector does not evade this by being careful. Resolving a region of size $L$ means coupling to momentum transfers $\gtrsim \hbar/L$. Below the Compton wavelength that transfer is itself above the pair threshold, so the probe creates the pairs it was meant to look past.</p>
+
+    <h2>The factor of $2\pi$, and a pointer</h2>
+    <p>A photon of energy $mc^2$ has wavelength $h/(mc) = 2\pi\hbar/(mc)$, because $E = hf = hc/\lambda_{\gamma}$. That length, $2\pi$ times the $\lambda$ of this paragraph, is the Compton wavelength in the form Compton used for the shift of a scattered photon. Tong records the distinction a little later, in <a href="../0.%20Introduction.md#SS1">§0.1</a>: the conversion factor he uses all course is $\hbar/(mc)$, and the version with the $2\pi$ is the other convention. In natural units both are $1/m$ up to that constant. The pair argument fixes the scale, not the $2\pi$.</p>
+    <p>The comparison with the de Broglie wavelength, including the sense in which $\lambda$ is the shorter of the two, is a separate note: <a href="de-broglie-wavelength.html">the de Broglie wavelength</a>.</p>
+  </article>
+</body>
+</html>

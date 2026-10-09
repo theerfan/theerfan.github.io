@@ -18,6 +18,22 @@
       "root": "reader/library/tong-qft"
     },
     {
+      "title": "Blockchain",
+      "description": "Consensus mechanisms, and which histories a latecomer can verify.",
+      "owner": "theerfan",
+      "repo": "theerfan.github.io",
+      "branch": "main",
+      "root": "reader/library/blockchain"
+    },
+    {
+      "title": "Chaos",
+      "description": "A first chapter on what deterministic chaos means mathematically.",
+      "owner": "theerfan",
+      "repo": "theerfan.github.io",
+      "branch": "main",
+      "root": "reader/library/chaos"
+    },
+    {
       "title": "Quantum Notes",
       "description": "Notes on quantum algorithms, computation and information (UCLA courses), QML, QSVT, MBQC and topological quantum computing, with an interactive surface code.",
       "owner": "theerfan",

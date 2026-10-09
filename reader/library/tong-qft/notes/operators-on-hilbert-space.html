@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Operators on a Hilbert space</title>
+</head>
+<body>
+  <article>
+    <p><a href="../0.%20Introduction.md#operators-on-hilbert-space">← 0. Introduction</a> · <a href="Notes.html">Notes</a></p>
+    <h1>Hilbert space, and operator-valued fields</h1>
+    <p>Tong’s sentence is the entire quantization recipe in one breath: a classical coordinate becomes an operator on a Hilbert space, and a classical field, which is one coordinate at every point, becomes one operator at every point. The recipe is small. The nouns in it are not. This note says what a Hilbert space is, what “promote to an operator” asks you to stop doing, and how to picture a field that takes values in operators rather than in numbers.</p>
+
+    <h2>The space the state lives in</h2>
+    <p>A Hilbert space $\mathcal{H}$ is a vector space over $\mathbb{C}$ with an inner product, in which every Cauchy sequence converges.</p>
+    <p>The vector-space part is the superposition principle. If $|\psi\rangle$ and $|\phi\rangle$ are states, so is $\alpha|\psi\rangle + \beta|\phi\rangle$. The inner product $\langle\phi|\psi\rangle$ is linear in the right slot, conjugate-linear in the left, and $\langle\psi|\psi\rangle \geq 0$, with equality only for the zero vector. From it you get a length, $\|\psi\| = \sqrt{\langle\psi|\psi\rangle}$, and a distance $\|\psi - \phi\|$.</p>
+    <p>Completeness is the part that usually stays invisible. A sequence of vectors is Cauchy when its members get arbitrarily close to each other, whether or not you have yet named the thing they are approaching. Completeness says that if the terms are crowding together, there is a vector in $\mathcal{H}$ that they crowd toward. Finite-dimensional $\mathbb{C}^n$ has this automatically. Infinite-dimensional spaces do not, unless you impose it. You need it because the objects you actually compute with are limits: a wavepacket is a limit of a Fourier series, a continuum position measurement is a limit of finer and finer bins, and the time-evolution operator is a limit of products $(1 - iH\Delta t/\hbar)^N$. If those limits were missing from the space, the formalism would keep producing states it had no name for.</p>
+    <p>Two worked examples cover almost everything in ordinary quantum mechanics.</p>
+    <ul>
+      <li>$\ell^2$, the square-summable sequences $(c_1, c_2, \ldots)$ with $\sum_n |c_n|^2 &lt; \infty$, and $\langle c|d\rangle = \sum_n c_n^* d_n$. A mode expansion lives here. The number $c_n$ is the amplitude to be in mode $n$.</li>
+      <li>$L^2(\mathbb{R}^3)$, the square-integrable functions, $\int |\psi(\vec x)|^2\, d^3x &lt; \infty$, modulo the fact that two functions differing on a set of volume zero are the same vector. One spinless particle lives here. $\psi$ is not the state; the state is the vector whose representation in the position basis is $\psi$.</li>
+    </ul>
+    <p>These two spaces are the same Hilbert space in disguise. Any two infinite-dimensional Hilbert spaces with a countable orthonormal basis are related by a unitary map. There is, up to that equivalence, only one such space. What makes a theory the harmonic oscillator rather than a hydrogen atom is not a different $\mathcal{H}$. It is which operators you pick out as position, momentum and energy, and what commutation relations you impose on them. The habit of treating “Hilbert space” as a single ambient thing is, on this point, correct.</p>
+
+    <h2>Rays, bases, and what an operator is</h2>
+    <p>The vector $|\psi\rangle$ is more information than the physics uses. Multiplying by a phase, $e^{i\alpha}|\psi\rangle$, changes no probability. The physical state is the line through $|\psi\rangle$, a ray. Normalization $\langle\psi|\psi\rangle = 1$ spends the magnitude and leaves the phase conventional. The probability of finding the system in ray $|\phi\rangle$, given that it is in ray $|\psi\rangle$, is $|\langle\phi|\psi\rangle|^2$.</p>
+    <p>An orthonormal basis is a set $\{|n\rangle\}$ with $\langle n|m\rangle = \delta_{nm}$ whose linear combinations are dense: every vector is a limit $\sum_n c_n|n\rangle$ with $\sum |c_n|^2 &lt; \infty$. Expanding in a basis is a unitary map to $\ell^2$. Changing basis is changing which question you ask first, not changing the state.</p>
+    <p>An operator is a linear map $A: \mathcal{H} \to \mathcal{H}$, or, more carefully, from a subspace of $\mathcal{H}$ into $\mathcal{H}$. The subspace is the domain. Bounded operators — those with $\|A\psi\| \leq C\|\psi\|$ for some $C$ and every $\psi$ — are defined everywhere. Most of the operators in this course are not bounded. Position $X\psi(x) = x\psi(x)$ applied to a square-integrable function can fail to be square-integrable, if $\psi$ decays too slowly. Momentum $P = -i\hbar\nabla$ can fail to land back in $L^2$ if $\psi$ is not differentiable enough. The Hamiltonian has the same problem. “$A$ is an operator on $\mathcal{H}$” means $A$ is defined on a dense set of decent states, and the physical states you hand it are in that set. The <a href="heisenberg-inequality.html">uncertainty relation</a> already needed this: $\Delta x$ and $\Delta p$ exist only for states on which $X$, $P$, $X^2$ and $P^2$ make sense.</p>
+    <p>If $A$ is self-adjoint, a real measurement can be associated with it. Self-adjoint is Hermitian plus a condition on the domain that makes the spectral theorem apply. The spectral theorem is the precise version of “$A$ is diagonal in some basis”: there is a measure on the possible outcomes so that $A$ acts as multiplication by the outcome. When the spectrum is discrete, this is the familiar $A|n\rangle = a_n|n\rangle$ with real $a_n$, and the probability of outcome $a_n$ in state $|\psi\rangle$ is $|\langle n|\psi\rangle|^2$. When the spectrum is continuous, as for $X$, there is no normalizable eigenvector. The symbol $|x\rangle$ is a linear functional, not a vector in $L^2$. It is legitimate as a way of writing the resolution of the identity, $\int |x\rangle\langle x|\, dx = 1$, and illegitimate as a state you could prepare. A wavepacket $\int dx\, f(x)|x\rangle$ with $f \in L^2$ is the state. The delta function is the idealization of $f$.</p>
+
+    <h2>What “promote the coordinate to an operator” forbids</h2>
+    <p>Classically, a degree of freedom is a coordinate. A particle in one dimension has a phase-space point $(q, p)$. An observable is a real function $f(q, p)$, and the value of $f$ at the point is what you would measure if you knew the point. Time evolution moves the point along Hamilton’s equations, or equivalently moves the functions by the Poisson bracket, $\dot f = \{f, H\}$.</p>
+    <p>Quantization keeps the menu of observables and throws out the point. There is no state of the system in which $q$ and $p$ both have values. Instead:</p>
+    <ul>
+      <li>The state is a ray in $\mathcal{H}$.</li>
+      <li>The classical coordinate $q$ is replaced by a self-adjoint operator $Q$. The numbers you can get by measuring it are the spectrum of $Q$. The state in which you will certainly get the value $q$, when that state exists, is the corresponding eigenvector.</li>
+      <li>The classical $p$ becomes $P$, and the Poisson bracket becomes a commutator. For the canonical pair,</li>
+    </ul>
+    $$
+    \{q, p\} = 1 \qquad\text{becomes}\qquad [Q, P] = i\hbar.
+    $$
+    <p>A classical function $f(q, p)$ is supposed to become some operator $F(Q, P)$. This step is ambiguous whenever $q$ and $p$ are multiplied, because $QP$ and $PQ$ are different operators. Ordering prescriptions exist; none of them is a theorem. What is a theorem, once you have chosen the operators, is the dynamics in the Heisenberg picture,</p>
+    $$
+    \frac{d}{dt}A = \frac{i}{\hbar}[H, A],
+    $$
+    <p>which is the Poisson-bracket evolution with $\{\ ,\ \}$ replaced by $[\, ,\, ]/(i\hbar)$. “The rules are no different” means this replacement and nothing more. You do not invent a new kind of mechanics for a field. You take every classical coordinate the field gives you and do to it what you did to $q$.</p>
+    <p>The expectation value $\langle\psi|F|\psi\rangle$ is what replaces “the value of $f$.” It is not the value the system has. It is the average of the eigenvalues over the distribution $|\langle n|\psi\rangle|^2$ that the state defines. A state can have $\langle Q\rangle = 0$ with $Q$ nowhere near zero in the sense that $\langle Q^2\rangle$ is large. The classical point has been replaced by a probability measure on the spectrum of each observable, and observables that fail to commute do not have a joint probability measure. That last clause is the content of $[Q, P] \neq 0$.</p>
+
+    <h2>A field is a list of coordinates, one per point</h2>
+    <p>A classical field configuration is a function. At a fixed time it assigns a number $\varphi(\vec x)$ to each point of space. Each $\varphi(\vec x)$ is an independent coordinate, in the same sense that $q$ was, and each has a conjugate momentum $\pi(\vec x)$. The theory has infinitely many degrees of freedom. A lattice makes the infinity countable and is the right way to see the operators. Put oscillators at sites $\vec x_i$, with coordinates $q_i$. The Hilbert space of the whole lattice is the tensor product of the single-oscillator spaces, or any unitarily equivalent picture of it, such as $\ell^2$ of occupation-number lists. The operator for site $i$ is not an operator on a private little space that ignores the others. It is the operator on the big space that acts as $Q$ on factor $i$ and as the identity on every other factor,</p>
+    $$
+    Q_i = I \otimes \cdots \otimes Q \otimes \cdots \otimes I.
+    $$
+    <p>The canonical relations are $[Q_i, P_j] = i\hbar\, \delta_{ij}$. The continuum notation is what this becomes when the sites fill space. The index $i$ becomes a point $\vec x$, the Kronecker delta becomes a Dirac delta, and the family of operators $\{Q_i\}$ becomes a family of operators labelled by $\vec x$:</p>
+    $$
+    \bigl[\varphi(\vec x), \pi(\vec y)\bigr] = i\hbar\, \delta^{(3)}(\vec x - \vec y).
+    $$
+    <p>An operator-valued function is exactly that family. The input is a point. The output is an operator on one and the same $\mathcal{H}$, the Hilbert space of the entire field, not a space that changes from point to point. Writing $\varphi$ for the classical function and for this family is the promotion, applied once per point.</p>
+    <p>In the Heisenberg picture the label grows a time coordinate. $\varphi(\vec x, t) = e^{iHt/\hbar}\, \varphi(\vec x, 0)\, e^{-iHt/\hbar}$ is a different operator at each $t$, still acting on the fixed space $\mathcal{H}$. Tong’s “functions of space and time” means a spacetime point goes in and an operator comes out. The state does not move. The operator you use to ask a question at time $t$ is a different operator from the one you use at time $0$.</p>
+
+    <h2>The picture that matches the calculations</h2>
+    <p>You almost never need the operator $\varphi(\vec x)$ as a matrix. You need what it does to the vacuum, and what its commutators are. The free-field expansion is that description in full. At a fixed time, schematically,</p>
+    $$
+    \varphi(\vec x) = \int\frac{d^3p}{(2\pi)^3}\frac{1}{\sqrt{2E_{\vec p}}}\Bigl(a_{\vec p}\, e^{i\vec p\cdot\vec x} + a_{\vec p}^\dagger\, e^{-i\vec p\cdot\vec x}\Bigr),
+    $$
+    <p>with $[a_{\vec p}, a_{\vec q}^\dagger] = (2\pi)^3\delta^{(3)}(\vec p - \vec q)$. Each $a_{\vec p}^\dagger$ is an ordinary operator, creating one quantum in a definite momentum mode. $\varphi(\vec x)$ is the integral of those operators against a phase. Acting on the vacuum, $a_{\vec p}|0\rangle = 0$, so</p>
+    $$
+    \varphi(\vec x)|0\rangle = \int\frac{d^3p}{(2\pi)^3}\frac{1}{\sqrt{2E_{\vec p}}}\, e^{-i\vec p\cdot\vec x}\, a_{\vec p}^\dagger|0\rangle,
+    $$
+    <p>a superposition, over all momenta, of one-particle states. That is the concrete meaning of “the field at $\vec x$.” It is the operator that plants a particle at $\vec x$, up to the fact that a sharp point is not a normalizable place to plant one.</p>
+    <p>Which brings in the one correction a mathematician would make to Tong’s wording, and it explains a divergence you will meet later rather than a different picture. Evaluated at a single point, $\varphi(\vec x)$ does not map the Hilbert space into itself. $\varphi(\vec x)|0\rangle$ is not normalizable: the integral that would compute its length diverges, because every momentum contributes. What is genuinely an operator is the field smeared against a smooth test function $f$ of compact support, or of rapid decay,</p>
+    $$
+    \varphi(f) = \int d^3x\, f(\vec x)\, \varphi(\vec x).
+    $$
+    <p>$\varphi(f)$ creates a particle whose wavefunction is the Fourier transform of $f/\sqrt{2E}$, and that state has finite length. The mode expansion you actually compute with is this smeared object with the mode function playing the role of $f$. Tong’s “operator-valued function” is the right intuition and the right notation. The object that satisfies the definition of an operator on $\mathcal{H}$ is $\varphi(f)$, an operator-valued distribution. Nothing in the intuition changes. You simply are not allowed to ask for the value of the field at one point with infinite spatial resolution, which is the same refusal as “$|x\rangle$ is not a state.”</p>
+
+    <h2>The infinity he says will bite</h2>
+    <p>A single oscillator has a zero-point energy $\hbar\omega/2$. A field is an oscillator per mode, and there are infinitely many modes. The Hamiltonian of the free field therefore contains $\int d^3p\; \tfrac12 E_{\vec p}\, \delta^{(3)}(0)$, an infinite constant. Products of fields at the same point, which are what interaction terms are, diverge for the same reason: $\varphi(\vec x)$ was never an operator, and $\varphi(\vec x)^2$ is worse. Renormalization is the procedure of saying which of these infinities are unobservable redefinitions of the parameters you started with. The bite is not mystical. It is the statement that a continuum of degrees of freedom, each promoted to an operator, produces sums and products that do not converge until you decide which question you are actually asking.</p>
+  </article>
+</body>
+</html>

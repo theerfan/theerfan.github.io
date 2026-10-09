@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The de Broglie wavelength</title>
+</head>
+<body>
+  <article>
+    <p><a href="../0.%20Introduction.md#de-broglie-wavelength">← 0. Introduction</a> · <a href="Notes.html">Notes</a></p>
+    <h1>The de Broglie wavelength</h1>
+    <p>Tong writes $\lambda_{dB} = h/|\vec p|$ and says the Compton length is always smaller. The formula is de Broglie’s relation. The word “always” needs the regime he is in, which is the regime in which a single particle still makes sense. Both are derived here.</p>
+
+    <h2>A plane wave has to transform like the particle</h2>
+    <p>Start from light, where the relation is measured rather than postulated. A plane electromagnetic wave has phase</p>
+    $$
+    \phi = \vec k\cdot\vec x - \omega t.
+    $$
+    <p>Planck’s law assigns the quantum of that wave an energy $E = \hbar\omega$. The wave propagates at $c$, so $\omega = c|\vec k|$, and the quantum carries energy $E = |\vec p|c$. The two expressions for $E$ agree for every $\vec k$ only if</p>
+    $$
+    |\vec p| = \hbar|\vec k|.
+    $$
+    <p>The wavelength is the distance over which the phase advances by $2\pi$ at fixed time, $\lambda|\vec k| = 2\pi$, so</p>
+    $$
+    \lambda = \frac{2\pi}{|\vec k|} = \frac{2\pi\hbar}{|\vec p|} = \frac{h}{|\vec p|}.
+    $$
+    <p>de Broglie’s step (1924) is to keep this identification for a massive particle. Relativity makes it a requirement rather than an analogy. Observers agree on how many wave crests lie between two events, so the phase $\phi = \vec k\cdot\vec x - \omega t$ is a Lorentz scalar. The coefficients therefore form a 4-vector $(\omega/c, \vec k)$. The particle’s energy and momentum form another, $(E/c, \vec p)$.</p>
+    <p>In the particle’s rest frame $\vec p = 0$ and $E = mc^2$. The wave there is a pure oscillation in time, $\vec k = 0$, with the frequency fixed by Planck’s law once the rest energy is accepted as the energy of the quantum:</p>
+    $$
+    \hbar\omega = mc^2, \qquad \vec k = 0.
+    $$
+    <p>In that frame the wave 4-vector and the energy-momentum 4-vector therefore satisfy</p>
+    $$
+    \left(\frac{\omega}{c}, \vec k\right) = \frac{1}{\hbar}\left(\frac{E}{c}, \vec p\right).
+    $$
+    <p>Both sides are 4-vectors, and they agree in one frame, so they agree in every frame. Therefore</p>
+    $$
+    E = \hbar\omega, \qquad \vec p = \hbar\vec k,
+    $$
+    <p>and the wavelength of a particle with momentum $\vec p$ is</p>
+    $$
+    \lambda_{dB} = \frac{2\pi}{|\vec k|} = \frac{h}{|\vec p|}.
+    $$
+    <p>That is the formula in the notes. It is frame-dependent, because $\vec p$ is. The Compton length $\hbar/(mc)$ is not: $m$ is the rest mass.</p>
+
+    <h2>What the wavelength is for</h2>
+    <p>$\lambda_{dB}$ is the distance on which the phase of this wave repeats. Interference, diffraction and the failure of a classical trajectory show up when a slit, an obstacle or a difference in path is of order $\lambda_{dB}$. For a slow particle $|\vec p|$ is small and that distance is long: electrons at a few electron-volts diffract off a crystal, whose lattice spacing is angstroms. Nothing in the derivation says that $\lambda_{dB}$ is the size of the particle. A faster particle has a shorter wavelength and a sharper wave, and that is all.</p>
+
+    <h2 id="shorter">Why Tong says the Compton length is always smaller</h2>
+    <p>In this paragraph Tong’s Compton length is the reduced one, $\lambda = \hbar/(mc)$, while he writes the de Broglie length with the full Planck constant, $\lambda_{dB} = h/|\vec p| = 2\pi\hbar/|\vec p|$. Their ratio is</p>
+    $$
+    \frac{\lambda}{\lambda_{dB}} = \frac{|\vec p|}{2\pi\, mc}.
+    $$
+    <p>So $\lambda &lt; \lambda_{dB}$ if and only if $|\vec p| &lt; 2\pi\, mc$. Since $|\vec p| = \gamma m v$, this is $\gamma v/c &lt; 2\pi$. It is true for a particle at rest, for every non-relativistic particle, and for every mildly relativistic one. It is false for a particle with $|\vec p| \gg mc$, whose de Broglie wavelength is formally the shorter of the two.</p>
+    <p>The false case is outside the regime the sentence is about. A one-particle wave with $|\vec p|$ of order $mc$ or larger has energy of order $mc^2$ or larger, which is the pair threshold derived in the <a href="compton-wavelength.html">Compton note</a>. The de Broglie wave of a single particle is a consistent description only when pair creation is a small correction, and that requires $|\vec p|$ not large compared with $mc$. Throughout that regime $\lambda_{dB}$ is longer than $\lambda$ by a factor of order one at the boundary, and by a large factor for a slow particle. Tong’s “always” is this statement. It is not a theorem about an arbitrarily large momentum.</p>
+    <p>The boundary is the interesting part. Shorten $\lambda_{dB}$ by raising $|\vec p|$, and you hit $|\vec p| \sim mc$ at the same moment that $\lambda_{dB}$ becomes a few times $\lambda$. The distance at which you would need relativistic momentum to see single-particle interference is the distance at which the single particle has already stopped being single. Below the Compton wavelength there is no clean one-particle diffraction experiment left to perform: the wavelength you would need has already opened the pair continuum.</p>
+  </article>
+</body>
+</html>

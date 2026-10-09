@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Consensus mechanisms</title>
+</head>
+<body>
+  <article>
+    <p><a href="../README.md">← Blockchain</a></p>
+    <h1>Consensus mechanisms</h1>
+    <p>A consensus mechanism is the rule by which a network of machines that do not trust each other decides which history of transactions is the real one, and how expensive it is to publish a different history later. The mechanisms below differ in what they spend to get that agreement, how fast a decision becomes irreversible, and whether a machine that has been switched off for a long time can tell a forged ancient history from the real one. That last question is the long-range attack.</p>
+
+    <h2>What has to be traded off</h2>
+    <p>Three properties pull against each other.</p>
+    <ul>
+      <li><strong>Safety.</strong> Two honest machines should not permanently accept different histories. A confirmation should stay confirmed.</li>
+      <li><strong>Liveness.</strong> New transactions should keep being included even if some machines are slow, offline, or malicious, and even if the network splits for a while.</li>
+      <li><strong>Objectivity for a latecomer.</strong> A machine with no prior contact, given only the genesis block and the protocol rules, should be able to recognize the real history without asking anyone.</li>
+    </ul>
+    <p>Proof of work buys the third property with energy and with finality that is only probabilistic. Byzantine-fault-tolerant protocols and proof of stake buy fast, deterministic finality by giving up objectivity from genesis alone. Once the set of voters can change, a latecomer needs a recent checkpoint that it trusts by the same kind of social fact that made it trust the genesis block. That checkpoint requirement is not a patch on a bug. It is the price of not burning energy.</p>
+
+    <h2>Proof of work</h2>
+    <p>Bitcoin’s rule, due to Nakamoto, is: among valid chains, prefer the one with the most accumulated work. To extend a chain a miner must find a block header whose hash lies below a target. The only known way is to try inputs. Honest miners extend the chain they currently consider heaviest. A block is never formally final. After $k$ further blocks, reversing it requires redoing those $k$ blocks of work faster than the honest network extends the real chain.</p>
+    <p>A new node does not need a checkpoint. It downloads candidate chains and measures their work. Forging a longer history means paying, in electricity and hardware, for every block of the forgery. Matching the real chain from genesis costs on the order of all the energy the real chain has ever spent. That is why proof of work does not have a long-range attack in the sense below. The attack that does exist is a majority of <em>current</em> hash power: a 51% attack can outrun the honest chain from a recent height, censor transactions, and rewrite confirmations that are still shallow. The cost is continuous. When the attacker stops paying for power, the honest chain pulls ahead again. Selfish mining and pools are further centralizing pressures, but they are not long-range forgeries.</p>
+    <p>The trade is energy, slow settlement (merchants wait for depth), and finality that is economic rather than logical. In return the chain stays live as long as some honest hash power is online, and a node that was off for ten years can still decide which history won.</p>
+
+    <h2>Proof of stake, and the long-range attack</h2>
+    <p>Proof of stake replaces burned work with weight: the right to extend or vote on the chain belongs to accounts that have locked coins. Signing a block is cheap. This is the opening the long-range attack uses.</p>
+    <p>Nothing-at-stake is the short-range cousin and should not be confused with it. In a naive stake chain, a validator who sees two competing tips loses nothing by signing both, so forks never die. The fix is slashing: a validator who signs two blocks at the same height, or two contradictory finality votes, loses part of its locked stake, and the evidence of the double signature can be posted by anyone. Slashing assumes the node looking at the evidence knows there were two signatures. It disciplines validators who are still bonded and still care about the coins.</p>
+    <p>A long-range attack, also called posterior corruption, happens after they have left. Take the signing keys of validators who, far in the past, controlled a supermajority of the stake. Those keys may have been sold, leaked, or simply kept by an operator who has since withdrawn the coins and no longer has anything to slash. From that old height, sign an entirely different history. Producing it costs essentially nothing, because there is no work to recompute. A node that has been online the whole time is unimpressed: it saw the original blocks get finalized, and the new history contradicts something it already accepted. A node that is new, or that has been offline since before the fork point, is in a different position. Both histories can be syntactically valid. Both carry signatures from keys that were entitled to sign at that past moment. There is no accumulated-work dial that says which one was expensive. The protocol rule “trust genesis and count signatures” cannot tell them apart.</p>
+    <p>So the attack does not steal coins from a node that stayed in sync. It forges history for anyone whose view of the chain is older than the forgery. Bridges, light clients, and exchanges that bootstrap from genesis with no other information are the targets.</p>
+
+    <h2>How the long-range attack is prevented</h2>
+    <p>The working defence is to stop pretending that genesis is the only fact a node may take from outside the protocol.</p>
+    <ul>
+      <li><strong>Weak subjectivity.</strong> A node must obtain, from any source it trusts as much as it trusted the software and the genesis block, a checkpoint that is recent enough: a finalized block whose age is less than the weak-subjectivity period. Anything conflicting with that checkpoint is rejected, however many old signatures it carries. “Recent enough” is set by how fast stake can withdraw. An attacker who wants a finalized alternative has to use keys that were still bonded, and a client inside the period either saw the original finality or can be shown the equivocation. On Ethereum that period is computed from the churn limit. With current parameters it is a couple of weeks, and clients are built to refresh a checkpoint well inside the window of blocks they retain. Shorten the unbonding delay and you shorten how long a node may sleep before it has to ask someone.</li>
+      <li><strong>The withdrawal delay is the security parameter, not an inconvenience.</strong> Coins that could exit in one slot would let an attacker bond, finalize a secret fork, exit, and hand the keys to a forger, all inside the time an ordinary node spends offline. The queue exists so that the set of signers cannot be replaced faster than observers can notice.</li>
+      <li><strong>Destroying keys on exit.</strong> An honest validator deletes its signing key when it unbonds, so a later theft of a disk does not yield a usable long-range signature. Key-evolving signatures do the same thing cryptographically: a key that has been updated cannot sign for an earlier epoch. This shrinks the set of keys an attacker can buy after the fact. It does nothing about a validator who planned the fork and kept a copy. Hygiene, not the theorem.</li>
+      <li><strong>Slashing evidence is not enough by itself.</strong> The double signature is only damning to a client that can see both histories, or that already trusts a checkpoint on one of them. The client who was handed only the forgery never receives the evidence from the chain it is not on.</li>
+    </ul>
+    <p>What does not work is “pick the chain with the most stake-weighted blocks, measured from genesis.” Stake is not a cost that piles up. An old quorum can sign as long a fake history as it has patience for.</p>
+
+    <h2>BFT protocols</h2>
+    <p>Tendermint (now CometBFT), HotStuff, and the older PBFT family finalize a block when at least two thirds of a known validator set have signed a commit. Finality is deterministic: after the commit, an alternative block at that height is not “less likely,” it is evidence that one third of the set equivocated, and those validators can be identified and punished. The chain prefers to halt rather than fork. Liveness therefore needs the network to eventually deliver messages within some bound, and needs proposers to rotate until an honest one is reached. A network partition stops the chain instead of producing two live histories.</p>
+    <p>The long-range shape of the problem survives the change of algorithm. A light client that knows a recent signed header can jump forward by checking the validator-set changes the protocol has committed to. A light client that knows only genesis, after many rotations, is again looking at signatures from people who may have long since left. The standard light-client protocol therefore bakes in a trust level and a recent header. Joining from nothing but genesis is intentionally not the security model. The gain over Nakamoto is finality in seconds and no energy. The cost is a permissioned-looking validator set (stake still decides who sits on it, but the set is explicit), halted progress under partition, and checkpoints for anyone who was not watching.</p>
+
+    <h2>Ethereum’s mixture</h2>
+    <p>Gasper runs both ideas at once. The fork-choice rule, LMD-GHOST, follows the weight of the latest attestations and keeps producing blocks even when finality is stuck. A finality gadget, Casper FFG, justifies and then finalizes checkpoints once two successive epochs have a two-thirds supermajority. A finalized block is reversed only if at least one third of the stake that finalized it also signed something contradictory, which is a slashable offence.</p>
+    <p>Before finality, confirmations are probabilistic and a reorg is a fork-choice event, closer to proof of work. After finality, the guarantees are the BFT ones. The long-range defence is the weak-subjectivity checkpoint tied to the withdrawal delay, as above. The complexity is the trade: two overlapping rules, and a gap between “in the fork choice” and “final,” in exchange for a chain that degrades to a live-but-not-finalizing network under stress instead of stopping cold.</p>
+
+    <h2>Other families</h2>
+    <p><strong>Delegated proof of stake and proof of authority.</strong> A small, named set produces blocks. Confirmation is fast and cheap, and the trust assumption is essentially the list of names. A long-range forgery is easy once old keys leak; the practical defence is the same checkpointing, usually done socially because users already trusted the operator list out of band. This is a reasonable design for a consortium. It is not a design in which a stranger can audit history from genesis.</p>
+    <p><strong>Proof of space and time.</strong> Chia’s farmers prove they have dedicated disk, and a verifiable delay function orders the blocks in real time. Rewriting a stretch of history means recomputing the delay function across that stretch, which takes about as long as the stretch itself. A forgery from genesis cannot be manufactured over a weekend. This is much closer to proof of work than to proof of stake: history is expensive in time even though it is not expensive in continuous hash power. The costs are storage hardware, concentration of plotting capacity, and finality that is still probabilistic rather than a two-thirds commit.</p>
+    <p><strong>Avalanche.</strong> Each node repeatedly samples a small random subset of the network and adopts the preference it sees, and the protocol is built so that a modest lead snowballs into everyone holding the same preference. There is no mining and no classic signing quorum whose old keys rewrite a chain. Safety is probabilistic and depends on the sampling assumptions holding: an attacker who can bias who you think is a random peer can bias the vote. A node that was off still cannot reconstruct a unique history from genesis by weighing costs. It asks peers for the currently decided state. Bootstrapping is a trusted-peer problem, of a different shape from a stake long-range attack.</p>
+    <p><strong>Hashgraph and similar DAG protocols.</strong> Nodes gossip every transaction they hear, and virtual voting inside a known set reaches a BFT-style decision without a separate proposal round. The safety assumption is again “fewer than one third of this known set are malicious.” Late joiners authenticate a recent signed state. Old members who have left the set do not get to recast virtual votes for a joiner who has a current membership snapshot, which is once more a checkpoint.</p>
+
+    <h2>Side by side</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Mechanism</th>
+          <th>When a block is final</th>
+          <th>Long-range forgery</th>
+          <th>What actually stops it</th>
+          <th>The cost you pay instead</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Proof of work</td>
+          <td>Never, formally. Depth makes a reversal cost more work than the honest network will allow.</td>
+          <td>Not available. A fake ancient chain loses on accumulated work.</td>
+          <td>The energy already spent. A 51% attack is a live hash-power race, not a replay of old blocks.</td>
+          <td>Energy, slow settlement, mining pools.</td>
+        </tr>
+        <tr>
+          <td>Proof of stake</td>
+          <td>Depends on the flavour. Chain-based stake is probabilistic. Finality gadgets are deterministic after a supermajority.</td>
+          <td>Native. Old keys sign a cheap alternative history that looks valid from genesis.</td>
+          <td>A checkpoint newer than the withdrawal delay, plus slashing for anyone still bonded. Deleting keys on exit helps and does not finish the job.</td>
+          <td>Nodes that sleep too long must ask a trusted source. Unbonding is deliberately slow.</td>
+        </tr>
+        <tr>
+          <td>BFT (Tendermint, HotStuff, PBFT)</td>
+          <td>At the commit, once two thirds have signed. Reversal identifies the equivocators.</td>
+          <td>For a joiner who has only genesis, after the validator set has rotated.</td>
+          <td>A recent signed header, and checking the committed changes of validator set from there.</td>
+          <td>The chain halts under partition. The validator set is explicit.</td>
+        </tr>
+        <tr>
+          <td>Proof of space and time</td>
+          <td>Probabilistic, as in proof of work.</td>
+          <td>A forgery must recompute the delay function across the whole gap.</td>
+          <td>Wall-clock time. You cannot fast-forward the delay.</td>
+          <td>Disk, plotting concentration, no instant finality.</td>
+        </tr>
+        <tr>
+          <td>Authority or delegation</td>
+          <td>As soon as the named set signs.</td>
+          <td>Trivial once an old key leaks.</td>
+          <td>Social checkpoints. Users already trusted the names.</td>
+          <td>The named set can censor, and the design admits it.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>The pattern is one sentence. If extending the chain spends an unfakeable resource, a latecomer can score histories from genesis, and you pay for that resource forever. If extending the chain is a signature by whoever currently holds the stake or the seats, finality can be fast and cheap, and a latecomer needs a checkpoint no older than the time it takes those signers to be replaced.</p>
+  </article>
+</body>
+</html>

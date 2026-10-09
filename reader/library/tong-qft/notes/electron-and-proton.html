@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Pointlike electrons, extended protons</title>
+</head>
+<body>
+  <article>
+    <p><a href="../0.%20Introduction.md#pointlike">← 0. Introduction</a> · <a href="Notes.html">Notes</a></p>
+    <h1>Pointlike electrons, extended protons</h1>
+    <p>In the sentence this note is linked from, Tong uses “pointlike” for the Compton breakdown of a one-particle description: below $\hbar/(mc)$ the box fills with pairs, as worked out in the <a href="compton-wavelength.html">Compton note</a>. The question here is a different use of the same word. Scattering says the electron has no measured size, and the proton has a size of about a fermi. Both have spin $\tfrac12$. The spin is not what decides which of them is extended.</p>
+
+    <h2>What “pointlike” means in a scattering experiment</h2>
+    <p>A charge distribution $\rho(\mathbf{r})$ is seen through its form factor, the Fourier transform</p>
+    $$
+    F(\mathbf{q}) = \frac{\int \rho(\mathbf{r})\, e^{i\mathbf{q}\cdot\mathbf{r}}\, d^3r}{\int \rho(\mathbf{r})\, d^3r}.
+    $$
+    <p>A point charge has $F = 1$ at every momentum transfer $\mathbf{q}$. A distribution of size $R$ starts to fall once $|\mathbf{q}| R \gtrsim 1$ (in units $\hbar = 1$). At small $q$ the fall is fixed by one number, the mean-square radius,</p>
+    $$
+    F(q^2) = 1 - \frac{1}{6} q^2 \langle r^2 \rangle + \cdots.
+    $$
+    <p>So “pointlike” is an experimental sentence: $\langle r^2 \rangle$ is consistent with zero, and $F$ has not been seen to fall, up to the largest $q$ that has been measured. It is not a sentence about spin.</p>
+
+    <h2>The proton</h2>
+    <p>Robert Hofstadter’s electron-scattering experiments in the 1950s measured a falling form factor for the proton. The charge radius extracted from the slope at $q^2 = 0$ is about $0.84\,\mathrm{fm}$ ($1\,\mathrm{fm} = 10^{-15}\,\mathrm{m}$). Deep inelastic scattering at SLAC then showed that the proton’s momentum is carried by pointlike constituents, the partons, identified with quarks and gluons. In QCD the proton is a confined state of three valence quarks, glue, and a sea. Confinement sets the size: the scale $\Lambda_{\mathrm{QCD}}$ is a few hundred MeV, and</p>
+    $$
+    \frac{\hbar c}{\Lambda_{\mathrm{QCD}}} \sim 1\,\mathrm{fm},
+    $$
+    <p>using $\hbar c \approx 197\,\mathrm{MeV}\,\mathrm{fm}$. That is why the proton in Tong’s mass table, listed at $1\,\mathrm{GeV}$ next to the electron at $0.5\,\mathrm{MeV}$, occupies a fermi. The mass ratio is about two thousand. The size is the confinement scale, which the electron does not have.</p>
+
+    <h2>The electron</h2>
+    <p>The Standard Model puts the electron in as a Dirac field, with no spatial extent in the Lagrangian. What scattering can check is whether an extra form factor, beyond the radiative corrections of QED, is required. Those QED corrections are calculable: the physical electron is dressed by the pairs the Compton note describes, and the vertex depends on $q^2$ only through logarithms. An intrinsic size $R$ would add a piece of order $q^2 R^2$ with a new scale. Electron-positron scattering at LEP shows no such piece. Read as a strongly coupled contact interaction ($g^2/4\pi \sim 1$), the limit is a compositeness scale above about $10\,\mathrm{TeV}$, a distance</p>
+    $$
+    \frac{\hbar c}{10\,\mathrm{TeV}} \approx 2\times 10^{-20}\,\mathrm{m},
+    $$
+    <p>about $10^{5}$ times smaller than the proton radius. The translation from a cross-section limit into a radius depends on that normalization of the contact operator, so the number is a bound under a stated hypothesis. The electron’s anomalous magnetic moment matches the pointlike QED series to the precision of the measurement; a composite structure at a scale anywhere near the proton’s would have moved it. None of this assigns the electron a radius of exactly zero. It says that no radius has been seen, well below the fermi.</p>
+
+    <h2>The spinning ball</h2>
+    <p>The classical worry is real, and it applies equally to both particles, which is why it cannot be the distinction. Give a ball of mass $m$ and radius $r$ angular momentum $\hbar/2$. With a moment of inertia of order $m r^2$, the speed of the surface is of order</p>
+    $$
+    v \sim \frac{\hbar}{m r}, \qquad \frac{v}{c} \sim \frac{\hbar}{m c\, r}.
+    $$
+    <p>The precise factor depends on how the mass is distributed (a uniform sphere has $I = \tfrac25 m r^2$, which multiplies $v$ by $\tfrac54$). Requiring $v$ below $c$ forces $r$ up to the Compton length $\hbar/(mc)$.</p>
+    <p>There is a second classical radius, from the electrostatic self-energy. Spreading charge $e$ over a ball of radius $r$ costs an energy of order $e^2/(4\pi\varepsilon_0 r)$. Setting that equal to $mc^2$ defines</p>
+    $$
+    r_e = \frac{e^2}{4\pi\varepsilon_0 m c^2} = \alpha\, \frac{\hbar}{mc},
+    $$
+    <p>where $\alpha = e^2/(4\pi\varepsilon_0 \hbar c) \approx 1/137$. For the electron this is about $2.8\,\mathrm{fm}$. It lies under the Compton length by exactly $\alpha$, so the surface of a ball of radius $r_e$ with spin $\hbar/2$ would move at about $137\,c$. The ratio is $1/\alpha$ for any mass: the classical electromagnetic radius is always $\alpha$ times that particle’s Compton length, whenever the whole mass is attributed to the Coulomb field. A proton treated that way would have $r = r_e\, m_e/m_p \approx 1.5\times 10^{-3}\,\mathrm{fm}$ and the same superluminal surface. The measured proton radius, $0.84\,\mathrm{fm}$, is hundreds of times larger than that electromagnetic radius. At the measured radius a rigid ball with angular momentum $\hbar/2$ has a surface speed of order $c/4$, because the proton Compton length $\hbar/(m_p c) \approx 0.21\,\mathrm{fm}$ is only a few times smaller than $0.84\,\mathrm{fm}$. The violent form of the paradox is about identifying the radius with the electrostatic self-energy. The proton simply does not have that radius. Its mass is not Coulomb energy, and its size is the QCD scale of the previous section.</p>
+    <p>The Dirac equation is the way quantum theory assigns spin $\tfrac12$ without a rotating charge distribution. Spin labels the representation of the Lorentz group, and $g = 2$ comes out of the minimal coupling of that field. The same description covers the electron, the muon, and the quarks inside the proton. The proton’s spin $\tfrac12$ is the total angular momentum of those quarks and of the gluons, which is why a rigid-ball picture was never the right one for it either. Scattering, not spin, is what says the proton is extended and the electron, so far, is not.</p>
+  </article>
+</body>
+</html>
