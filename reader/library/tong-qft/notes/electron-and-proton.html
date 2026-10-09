@@ -8,45 +8,65 @@
   <article>
     <p><a href="../0.%20Introduction.md#pointlike">← 0. Introduction</a> · <a href="Notes.html">Notes</a></p>
     <h1>Pointlike electrons, extended protons</h1>
-    <p>In the sentence this note is linked from, Tong uses “pointlike” for the Compton breakdown of a one-particle description: below $\hbar/(mc)$ the box fills with pairs, as worked out in the <a href="compton-wavelength.html">Compton note</a>. The question here is a different use of the same word. Scattering says the electron has no measured size, and the proton has a size of about a fermi. Both have spin $\tfrac12$. The spin is not what decides which of them is extended.</p>
+    <p>The electron and the proton have the same spin, $\tfrac12$, and charges of equal magnitude. Yet the electron is described as pointlike, while the proton has a size of a little under a femtometre ($1\,\mathrm{fm} = 10^{-15}\,\mathrm{m}$). This note explains what “size” means for a quantum particle, how it is measured, what the measurements say about each particle, and why spin — despite the tempting picture of a spinning ball — has nothing to do with the difference.</p>
 
-    <h2>What “pointlike” means in a scattering experiment</h2>
-    <p>A charge distribution $\rho(\mathbf{r})$ is seen through its form factor, the Fourier transform</p>
+    <h2>How a size is measured: scattering and the form factor</h2>
+    <p>Nobody can look at an electron or a proton directly. What can be done is to fire a probe at it and record how the probe is deflected. The size enters through interference.</p>
+    <p>Consider a fast charged probe scattering off a static charge distribution $\rho(\mathbf{r})$, normalized so that $\int\rho\,d^3r$ is the total charge. To first order in the interaction (the Born approximation), the scattering amplitude for a momentum transfer $\hbar\mathbf{q}$ is proportional to the Fourier transform of the potential. The potential of the distribution is the Coulomb potential of a point charge convolved with $\rho$, and the Fourier transform of a convolution is the product of the Fourier transforms. So the amplitude factorizes:</p>
     $$
+    \text{amplitude}(\mathbf{q}) = \text{amplitude}_{\text{point}}(\mathbf{q}) \times F(\mathbf{q}), \qquad
     F(\mathbf{q}) = \frac{\int \rho(\mathbf{r})\, e^{i\mathbf{q}\cdot\mathbf{r}}\, d^3r}{\int \rho(\mathbf{r})\, d^3r}.
     $$
-    <p>A point charge has $F = 1$ at every momentum transfer $\mathbf{q}$. A distribution of size $R$ starts to fall once $|\mathbf{q}| R \gtrsim 1$ (in units $\hbar = 1$). At small $q$ the fall is fixed by one number, the mean-square radius,</p>
+    <p>$F$ is the <em>form factor</em>. Physically, waves scattered from different parts of the charge arrive with different phases $e^{i\mathbf{q}\cdot\mathbf{r}}$, and $F$ is their average. A point charge has $F = 1$ at every momentum transfer. A distribution of size $R$ has $F \approx 1$ while $|\mathbf{q}| R \ll 1$, because all the phases are nearly equal, and $F$ falls once $|\mathbf{q}| R \gtrsim 1$, because the phases start to cancel.</p>
+    <p>The onset of the fall measures the size. Expand the exponential for small $q$:</p>
     $$
-    F(q^2) = 1 - \frac{1}{6} q^2 \langle r^2 \rangle + \cdots.
+    e^{i\mathbf{q}\cdot\mathbf{r}} = 1 + i\mathbf{q}\cdot\mathbf{r} - \tfrac12(\mathbf{q}\cdot\mathbf{r})^2 + \cdots.
     $$
-    <p>So “pointlike” is an experimental sentence: $\langle r^2 \rangle$ is consistent with zero, and $F$ has not been seen to fall, up to the largest $q$ that has been measured. It is not a sentence about spin.</p>
+    <p>For a spherically symmetric distribution the linear term averages to zero, and the average of $(\mathbf{q}\cdot\mathbf{r})^2 = q^2 r^2\cos^2\theta$ over directions is $q^2 r^2/3$. Hence</p>
+    $$
+    F(q^2) = 1 - \frac{1}{6} q^2 \langle r^2 \rangle + \cdots,
+    $$
+    <p>where $\langle r^2\rangle$ is the mean-square radius of the charge. The slope of the form factor at $q^2 = 0$ is the radius. This is the precise sense of “pointlike”: a particle is pointlike, as far as anyone knows, if its form factor has not been seen to deviate from the point-particle prediction up to the largest momentum transfer probed. That is an experimental statement with an experimental limit, and it makes no reference to spin.</p>
+    <p>The resolution of such an experiment is set by the momentum transfer. To see structure of size $R$ one needs $q \gtrsim 1/R$, i.e. a probe momentum $\gtrsim \hbar/R$. Smaller structures require higher energies, which is why the search for substructure is pursued at the highest-energy colliders.</p>
 
     <h2>The proton</h2>
-    <p>Robert Hofstadter’s electron-scattering experiments in the 1950s measured a falling form factor for the proton. The charge radius extracted from the slope at $q^2 = 0$ is about $0.84\,\mathrm{fm}$ ($1\,\mathrm{fm} = 10^{-15}\,\mathrm{m}$). Deep inelastic scattering at SLAC then showed that the proton’s momentum is carried by pointlike constituents, the partons, identified with quarks and gluons. In QCD the proton is a confined state of three valence quarks, glue, and a sea. Confinement sets the size: the scale $\Lambda_{\mathrm{QCD}}$ is a few hundred MeV, and</p>
+    <p>In the 1950s Robert Hofstadter scattered electrons of a few hundred MeV off protons and found that the form factor falls: the proton is extended. The charge radius extracted from the slope at $q^2 = 0$ is about $0.84\,\mathrm{fm}$. In the late 1960s, deep inelastic scattering experiments at SLAC went to much larger momentum transfers and found the opposite behaviour inside the proton: the scattering looked like scattering off <em>pointlike</em> constituents. These constituents, the partons, are the quarks and gluons.</p>
+    <p>In quantum chromodynamics the proton is a bound state of three valence quarks, together with gluons and a “sea” of quark–antiquark pairs. Its size is set by the scale at which the strong interaction becomes strong and confines quarks, $\Lambda_{\mathrm{QCD}}$, a few hundred MeV. Converting an energy to a length with $\hbar c \approx 197\,\mathrm{MeV\,fm}$,</p>
     $$
-    \frac{\hbar c}{\Lambda_{\mathrm{QCD}}} \sim 1\,\mathrm{fm},
+    \frac{\hbar c}{\Lambda_{\mathrm{QCD}}} \sim 1\,\mathrm{fm}.
     $$
-    <p>using $\hbar c \approx 197\,\mathrm{MeV}\,\mathrm{fm}$. That is why the proton in Tong’s mass table, listed at $1\,\mathrm{GeV}$ next to the electron at $0.5\,\mathrm{MeV}$, occupies a fermi. The mass ratio is about two thousand. The size is the confinement scale, which the electron does not have.</p>
+    <p>So the proton’s size is not a property of its spin or of its charge. It is the confinement scale of the force that binds its constituents. The electron does not participate in the strong interaction and has no such scale.</p>
 
     <h2>The electron</h2>
-    <p>The Standard Model puts the electron in as a Dirac field, with no spatial extent in the Lagrangian. What scattering can check is whether an extra form factor, beyond the radiative corrections of QED, is required. Those QED corrections are calculable: the physical electron is dressed by the pairs the Compton note describes, and the vertex depends on $q^2$ only through logarithms. An intrinsic size $R$ would add a piece of order $q^2 R^2$ with a new scale. Electron-positron scattering at LEP shows no such piece. Read as a strongly coupled contact interaction ($g^2/4\pi \sim 1$), the limit is a compositeness scale above about $10\,\mathrm{TeV}$, a distance</p>
+    <p>In the Standard Model the electron is an elementary field, with no spatial extent written into the theory. That does not mean its form factor is exactly $1$: quantum electrodynamics predicts small corrections, because the electron is constantly surrounded by virtual photons and electron–positron pairs. These corrections are calculable, and they depend on $q^2$ only logarithmically. An intrinsic size $R$ would instead add a correction of order $q^2R^2$, governed by a new scale.</p>
+    <p>No such correction has been seen. High-energy electron–positron collisions at LEP, analysed as a possible contact interaction from compositeness with strong coupling ($g^2/4\pi \sim 1$), bound the compositeness scale above roughly $10\,\mathrm{TeV}$. The corresponding distance is</p>
     $$
-    \frac{\hbar c}{10\,\mathrm{TeV}} \approx 2\times 10^{-20}\,\mathrm{m},
+    \frac{\hbar c}{10\,\mathrm{TeV}} \approx \frac{197\,\mathrm{MeV\,fm}}{10^{7}\,\mathrm{MeV}} \approx 2\times 10^{-20}\,\mathrm{m},
     $$
-    <p>about $10^{5}$ times smaller than the proton radius. The translation from a cross-section limit into a radius depends on that normalization of the contact operator, so the number is a bound under a stated hypothesis. The electron’s anomalous magnetic moment matches the pointlike QED series to the precision of the measurement; a composite structure at a scale anywhere near the proton’s would have moved it. None of this assigns the electron a radius of exactly zero. It says that no radius has been seen, well below the fermi.</p>
+    <p>tens of thousands of times smaller than the proton radius. The translation from a cross-section limit into a length depends on how the hypothetical contact interaction is normalized, so the number is a bound under a stated assumption, not a model-independent radius. Independently, the electron’s anomalous magnetic moment agrees with the QED prediction for a pointlike electron to about one part in $10^{12}$ of the moment; structure at anything like the proton’s scale would have spoiled that. None of this proves the electron has zero size. It says no size has been detected, down to distances far below a femtometre.</p>
 
-    <h2>The spinning ball</h2>
-    <p>The classical worry is real, and it applies equally to both particles, which is why it cannot be the distinction. Give a ball of mass $m$ and radius $r$ angular momentum $\hbar/2$. With a moment of inertia of order $m r^2$, the speed of the surface is of order</p>
+    <h2>The spinning-ball worry</h2>
+    <p>A natural objection: how can something with no size have angular momentum? If spin were literally rotation, a small enough ball would need its surface to move faster than light. This worry is worth working through, because the result applies equally to both particles — which is exactly why it cannot be what distinguishes them.</p>
+    <p>Give a uniform ball of mass $m$ and radius $r$ angular momentum $\hbar/2$. Its moment of inertia is $I = \tfrac25 mr^2$, so it spins at $\omega = (\hbar/2)/I$ and the equator moves at</p>
     $$
-    v \sim \frac{\hbar}{m r}, \qquad \frac{v}{c} \sim \frac{\hbar}{m c\, r}.
+    v = \omega r = \frac{5}{4}\,\frac{\hbar}{m r}, \qquad \frac{v}{c} = \frac{5}{4}\,\frac{\hbar}{mc\, r}.
     $$
-    <p>The precise factor depends on how the mass is distributed (a uniform sphere has $I = \tfrac25 m r^2$, which multiplies $v$ by $\tfrac54$). Requiring $v$ below $c$ forces $r$ up to the Compton length $\hbar/(mc)$.</p>
-    <p>There is a second classical radius, from the electrostatic self-energy. Spreading charge $e$ over a ball of radius $r$ costs an energy of order $e^2/(4\pi\varepsilon_0 r)$. Setting that equal to $mc^2$ defines</p>
+    <p>Requiring $v &lt; c$ forces $r &gt; \tfrac54\,\hbar/(mc)$: the ball must be at least about as large as its Compton wavelength. Other mass distributions change the factor $\tfrac54$ but not the conclusion.</p>
+    <p>A second classical length comes from electrostatics. Assembling charge $e$ into a ball of radius $r$ costs energy of order $e^2/(4\pi\varepsilon_0 r)$. If the entire rest energy $mc^2$ were this electrostatic energy, the radius would be</p>
     $$
-    r_e = \frac{e^2}{4\pi\varepsilon_0 m c^2} = \alpha\, \frac{\hbar}{mc},
+    r_{\text{cl}} = \frac{e^2}{4\pi\varepsilon_0 m c^2} = \alpha\, \frac{\hbar}{mc}, \qquad \alpha = \frac{e^2}{4\pi\varepsilon_0 \hbar c} \approx \frac{1}{137}.
     $$
-    <p>where $\alpha = e^2/(4\pi\varepsilon_0 \hbar c) \approx 1/137$. For the electron this is about $2.8\,\mathrm{fm}$. It lies under the Compton length by exactly $\alpha$, so the surface of a ball of radius $r_e$ with spin $\hbar/2$ would move at about $137\,c$. The ratio is $1/\alpha$ for any mass: the classical electromagnetic radius is always $\alpha$ times that particle’s Compton length, whenever the whole mass is attributed to the Coulomb field. A proton treated that way would have $r = r_e\, m_e/m_p \approx 1.5\times 10^{-3}\,\mathrm{fm}$ and the same superluminal surface. The measured proton radius, $0.84\,\mathrm{fm}$, is hundreds of times larger than that electromagnetic radius. At the measured radius a rigid ball with angular momentum $\hbar/2$ has a surface speed of order $c/4$, because the proton Compton length $\hbar/(m_p c) \approx 0.21\,\mathrm{fm}$ is only a few times smaller than $0.84\,\mathrm{fm}$. The violent form of the paradox is about identifying the radius with the electrostatic self-energy. The proton simply does not have that radius. Its mass is not Coulomb energy, and its size is the QCD scale of the previous section.</p>
-    <p>The Dirac equation is the way quantum theory assigns spin $\tfrac12$ without a rotating charge distribution. Spin labels the representation of the Lorentz group, and $g = 2$ comes out of the minimal coupling of that field. The same description covers the electron, the muon, and the quarks inside the proton. The proton’s spin $\tfrac12$ is the total angular momentum of those quarks and of the gluons, which is why a rigid-ball picture was never the right one for it either. Scattering, not spin, is what says the proton is extended and the electron, so far, is not.</p>
+    <p>For the electron this “classical electron radius” is about $2.8\,\mathrm{fm}$. It is smaller than the Compton wavelength $\hbar/(m_e c) \approx 386\,\mathrm{fm}$ by the factor $\alpha$, so a ball of that radius carrying spin $\hbar/2$ would have $v/c = 5/(4\alpha) \approx 170$. The ratio $r_{\text{cl}}/(\hbar/mc) = \alpha$ holds for any particle whose mass is attributed to its Coulomb energy, so a proton treated the same way would have $r_{\text{cl}} \approx 2.8\,\mathrm{fm} \times m_e/m_p \approx 1.5\times 10^{-3}\,\mathrm{fm}$ and the same absurd surface speed.</p>
+    <p>The real proton escapes this only because its mass is not electrostatic energy and its radius is not $r_{\text{cl}}$. At its measured radius of $0.84\,\mathrm{fm}$, with $\hbar/(m_p c) \approx 0.21\,\mathrm{fm}$, a uniform ball carrying $\hbar/2$ would have $v/c \approx \tfrac54 \times 0.21/0.84 \approx 0.3$, comfortably subluminal. But this is not evidence that the proton’s spin is a rotating ball either. Its spin is the total angular momentum — spins and orbital motion — of the quarks and gluons inside it.</p>
+    <p>The resolution of the worry is that spin is not rotation of a body. In relativistic quantum theory spin labels how a particle’s state transforms under rotations and boosts, i.e. which representation of the Lorentz group the particle’s field carries. A spin-$\tfrac12$ particle is described by a Dirac spinor field, and the Dirac equation coupled minimally to electromagnetism predicts a magnetic moment with $g = 2$ without any rotating charge distribution. The same description applies to the electron, the muon, and each quark. Spin is therefore silent on size. Scattering is what tells the two particles apart: the proton’s form factor falls at momentum transfers of order $\hbar/(1\,\mathrm{fm})$, and the electron’s has not been seen to fall at all.</p>
+
+    <h2>Related notes and references</h2>
+    <ul>
+      <li><a href="compton-wavelength.html">The Compton wavelength</a>: the length $\hbar/(mc)$ and its role as the threshold for pair creation.</li>
+      <li>R. Hofstadter, “Electron scattering and nuclear structure,” <em>Rev. Mod. Phys.</em> 28, 214 (1956).</li>
+      <li>E. D. Bloom <em>et al.</em>, “High-energy inelastic e–p scattering at 6° and 10°,” <em>Phys. Rev. Lett.</em> 23, 930 (1969).</li>
+      <li>D. Tong, <em>Quantum Field Theory</em>, University of Cambridge lecture notes, <a href="../0.%20Introduction.md">Introduction</a> (<a href="https://davidtong.org/teaching/quantum-field-theory">course page</a>).</li>
+    </ul>
   </article>
 </body>
 </html>

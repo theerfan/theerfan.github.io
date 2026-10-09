@@ -8,63 +8,98 @@
   <article>
     <p><a href="../0.%20Introduction.md#compton-pairs">← 0. Introduction</a> · <a href="Notes.html">Notes</a></p>
     <h1>The Compton wavelength</h1>
-    <p>Tong has just estimated that a particle trapped in a box of size $L$ has $\Delta p \geq \hbar/L$. That step is the <a href="heisenberg-inequality.html">Heisenberg inequality</a> plus the finite size of the box. From there he says that energy is uncertain by $\Delta E \geq \hbar c/L$, and that once this exceeds $2mc^2$ the box is small enough to produce particle–antiparticle pairs. The length he writes down,</p>
+    <p>Every particle of mass $m$ comes with a length,</p>
     $$
     \lambda = \frac{\hbar}{mc},
     $$
-    <p>is the <em>reduced Compton wavelength</em>. This note derives that scale from the mass shell, says what the comparison with $2mc^2$ is actually estimating, and then answers the next sentence: why a region smaller than $\lambda$ is full of pairs.</p>
+    <p>called the <em>reduced Compton wavelength</em>. It is built from the three ingredients that define the subject: $\hbar$ for quantum mechanics, $c$ for relativity, and $m$ for the particle. This note derives where the length comes from and what it means physically. The short answer is that $\lambda$ is the size of a region below which “one particle, located here” stops being a sensible description: squeezing a particle into a smaller region costs enough energy to create new particles. That is why relativistic quantum theory cannot be a theory of a fixed number of particles.</p>
+
+    <h2>Two facts to combine</h2>
+    <p>The argument uses one fact from quantum mechanics and one from relativity.</p>
+    <p>The quantum fact is the uncertainty principle. A state whose position is confined to a region of size $L$ has a momentum spread of at least</p>
+    $$
+    \Delta p \gtrsim \frac{\hbar}{L}.
+    $$
+    <p>This follows from $\Delta x\,\Delta p \geq \hbar/2$ together with $\Delta x \leq L/2$ for anything confined to an interval of length $L$. The precise numerical factor will not matter below; what matters is that confining a particle forces its state to contain momenta of order $\hbar/L$, and the smaller the region, the larger those momenta.</p>
+    <p>The relativistic fact is the energy–momentum relation of a free particle of mass $m$,</p>
+    $$
+    E(\vec p) = \sqrt{(pc)^2 + (mc^2)^2},
+    $$
+    <p>which follows from $E/c$ and $\vec p$ being the components of a single 4-vector whose invariant length is $mc$. Unlike the non-relativistic $p^2/2m$, this relation contains a rest energy $mc^2$, and it says that energy can be traded for mass. That is the door through which new particles enter.</p>
 
     <h2 id="pairs">Where $\hbar/(mc)$ comes from</h2>
-    <p>A free particle of mass $m$ lies on the mass shell</p>
-    $$
-    E(\vec p) = \sqrt{(pc)^2 + (mc^2)^2}.
-    $$
-    <p>$E/c$ and $\vec p$ are components of one 4-vector. That is all Tong means by energy and momentum being on an equivalent footing. It does not promote $\Delta p \geq \hbar/L$ into a theorem $\Delta E \geq \hbar c/L$. The momentum bound was proved. The energy step is the mass shell applied to a momentum of that size.</p>
-    <p>Take a state centred at rest, $\langle\vec p\rangle = 0$, with a momentum spread $\Delta p \geq \hbar/L$. The energy belonging to a momentum $\hbar/L$ is</p>
+    <p>Take a particle, on average at rest, and confine it to a region of size $L$. Its state must contain momentum components of size $p \sim \hbar/L$, and the energy carried by such a component is</p>
     $$
     E(L) = \sqrt{\left(\frac{\hbar c}{L}\right)^2 + (mc^2)^2}.
     $$
-    <p>The amount by which this sits above the rest energy is the energy the localization has cost:</p>
+    <p>The energy that confinement costs, above the rest energy, is</p>
     $$
     \delta E(L) = E(L) - mc^2.
     $$
-    <p>Two limits are worth writing out. If the box is large, $\hbar/L \ll mc$, the square root expands as a kinetic energy,</p>
+    <p>There are two regimes, according to which term under the square root dominates. If the region is large, $\hbar/L \ll mc$, expand the square root:</p>
     $$
-    \delta E(L) \approx \frac{\hbar^2}{2m L^2},
+    \delta E(L) \approx \frac{\hbar^2}{2m L^2} \ll mc^2.
     $$
-    <p>which is much smaller than $mc^2$. If the box is small, $\hbar/L \gg mc$, then $E(L) \approx \hbar c/L$ and</p>
+    <p>This is the familiar non-relativistic confinement energy, the zero-point energy of a particle in a box. It is small compared with the rest energy, and the particle is slow. If the region is small, $\hbar/L \gg mc$, the momentum term dominates and the particle is ultra-relativistic:</p>
     $$
-    \delta E(L) \approx \frac{\hbar c}{L}.
+    \delta E(L) \approx \frac{\hbar c}{L} \gg mc^2.
     $$
-    <p>Tong’s $\Delta E \geq \hbar c/L$ is this second regime, copied back down to the crossover as an order-of-magnitude lower bound. The crossover itself is where the two terms under the square root match,</p>
+    <p>The changeover between the two happens where the terms under the square root are comparable,</p>
     $$
-    \frac{\hbar}{L} \sim mc \qquad\Rightarrow\qquad L \sim \frac{\hbar}{mc}.
+    \frac{\hbar}{L} \sim mc \qquad\Rightarrow\qquad L \sim \frac{\hbar}{mc} = \lambda.
     $$
-    <p>That length is $\lambda$.</p>
+    <p>So the Compton wavelength is the size of region at which confinement energy becomes comparable to rest energy. Above it, confining a particle is a gentle, non-relativistic affair. Below it, confinement energy exceeds $mc^2$, which is enough energy to make more particles.</p>
 
     <h2>Why the threshold is a pair, and why it is $2mc^2$</h2>
-    <p>Localizing the particle does not by itself create anything. What it does is force the state to contain momentum components $p \gtrsim \hbar/L$, and those components carry energy $E(p)$. Whether that energy can become new particles is a question about the spectrum of the theory.</p>
-    <p>Charge, lepton number and the other additive quantum numbers of the original particle are already accounted for. The lightest excitation that preserves them, on top of the particle you put in, is that particle plus a particle–antiparticle pair. The pair itself costs $2mc^2$ at rest: $mc^2$ for the new particle and $mc^2$ for the antiparticle. One extra particle of the same charge would be cheaper in energy and is forbidden by the conservation law. This is why Tong compares the energy uncertainty with $2mc^2$ rather than with $mc^2$.</p>
-    <p>Set the localization energy equal to that threshold, using his estimate $\delta E \sim \hbar c/L$:</p>
+    <p>Confinement does not by itself create anything. It forces the state to contain high-momentum components, and those components carry energy. Whether that energy can become new particles is decided by the conservation laws.</p>
+    <p>Suppose the particle carries a conserved charge: electric charge, or lepton number, or baryon number. The confined state must still have exactly that charge. Adding one more identical particle would change the charge, so it is forbidden. The cheapest addition that changes no conserved quantity is a particle together with its antiparticle, which carries the opposite charges. That pair costs at least $2mc^2$, one $mc^2$ each, when both are at rest.</p>
+    <p>Setting the confinement energy equal to this threshold, using the small-region estimate $\delta E \sim \hbar c/L$,</p>
     $$
     \frac{\hbar c}{L} \sim 2mc^2 \qquad\Rightarrow\qquad L \sim \frac{\hbar}{2mc} = \frac{\lambda}{2}.
     $$
-    <p>Using the mass shell instead of $\hbar c/L$, and asking that the whole energy $E(L)$ reach $mc^2 + 2mc^2 = 3mc^2$ (the original particle plus a resting pair), gives</p>
+    <p>Using the exact relation instead, and demanding that the total energy $E(L)$ reach the rest energy of the original particle plus a pair, $3mc^2$,</p>
     $$
-    \sqrt{\left(\frac{\hbar c}{L}\right)^2 + (mc^2)^2} = 3mc^2 \qquad\Rightarrow\qquad L = \frac{\hbar}{\sqrt{8}\,mc} \approx 0.35\,\lambda.
+    \sqrt{\left(\frac{\hbar c}{L}\right)^2 + (mc^2)^2} = 3mc^2 \qquad\Rightarrow\qquad \frac{\hbar c}{L} = \sqrt{8}\,mc^2 \qquad\Rightarrow\qquad L = \frac{\hbar}{\sqrt{8}\,mc} \approx 0.35\,\lambda.
     $$
-    <p>Both are the same length up to a numerical factor of order one. Tong drops the factor and defines $\lambda = \hbar/(mc)$. Nothing in the paragraph depends on the difference between $\lambda$ and $\lambda/2$.</p>
+    <p>The two estimates differ by a number of order one, as any estimate of this kind will. The physically meaningful statement is the scale: pair creation becomes possible when a particle is confined to a region of size of order $\hbar/(mc)$. Conventionally one drops the numerical factor and calls $\lambda = \hbar/(mc)$ the threshold.</p>
 
-    <h2>Shorter than this, the pairs are not a small correction</h2>
-    <p>The sentence is an order-of-magnitude claim, not a computed probability. What it says, unpacked, is the following.</p>
-    <p>Suppose $L \gg \lambda$. Then $\hbar/L \ll mc$, the localization energy is the non-relativistic kinetic energy $\hbar^2/(2mL^2) \ll mc^2$, and a real pair is forbidden by energy conservation. A pair can still appear as a virtual fluctuation, but the energy denominator is the full $2mc^2$ while the momentum components that could support the pair are only the far tail of a gentle wavepacket. That amplitude is a small correction to the statement “there is one particle in the box”.</p>
-    <p>Suppose instead $L \lesssim \lambda$. The uncertainty principle no longer puts $p \sim mc$ in a tail. An order-one fraction of the state <em>is</em> those momentum components, because a wavefunction supported on an interval shorter than $\lambda$ cannot be built out of $p \ll mc$. Each such component has energy of order $mc^2$ or larger, which is the pair threshold. The state one was calling “a single particle, localized here” has order-one overlap with energies at which the spectrum contains extra pairs. Finding extra particles in that region is then not a rare correction. That is the “high probability”.</p>
-    <p>If the box is much smaller still, $L = \lambda/N$ with $N \gg 1$, the same estimate gives $\delta E \sim N\, mc^2$. The energy budget now pays for order $N$ pairs, not one. The shorter the distance, the more pairs it can hold. That is the swarm. They are not a classical gas orbiting the original particle. They are the extra particle content that a state this localized is forced to have, once the theory allows pair creation at all.</p>
-    <p>A detector does not evade this by being careful. Resolving a region of size $L$ means coupling to momentum transfers $\gtrsim \hbar/L$. Below the Compton wavelength that transfer is itself above the pair threshold, so the probe creates the pairs it was meant to look past.</p>
+    <h2>Below this length, pairs are not a small correction</h2>
+    <p>The claim that a region smaller than $\lambda$ is “full of pairs” is an order-of-magnitude statement about the structure of the state, and it can be unpacked as follows.</p>
+    <p>Suppose $L \gg \lambda$. Then the typical momentum $\hbar/L$ is much less than $mc$, the confinement energy $\hbar^2/(2mL^2)$ is far below $mc^2$, and there is not enough energy to make a real pair. Quantum mechanics still allows a pair to appear briefly as a virtual fluctuation, but the amplitude for that is suppressed: the energy mismatch is the full $2mc^2$, and only the far tail of a smooth wavepacket has momentum components large enough to help. The description “one particle in the box” is accurate, with small corrections.</p>
+    <p>Suppose instead $L \lesssim \lambda$. Now momenta of order $mc$ are not in the tail; a function confined to a region smaller than $\hbar/(mc)$ cannot be built from momenta much smaller than $mc$, so an order-one fraction of the state <em>consists of</em> such components. Each carries energy at or above the pair threshold. The state that was meant to be “a single particle, localized here” has an order-one overlap with states containing additional pairs. Finding extra particles in the region is then not a rare event but a typical one.</p>
+    <p>Shrink the region further, to $L = \lambda/N$ with $N \gg 1$. The confinement energy grows to $\delta E \sim N\,mc^2$, enough to pay for of order $N$ extra particles. The smaller the region, the more particle–antiparticle pairs the state can contain. These are not a classical gas orbiting the original particle. They are the additional particle content that any sufficiently localized state is forced to have, in any theory where energy can be converted into pairs.</p>
+    <p>The same conclusion appears from the point of view of measurement. To resolve structure on a scale $L$ a probe must transfer momentum of order $\hbar/L$. Below the Compton wavelength that momentum transfer is itself above the pair threshold, so the probe creates pairs in the very region it is trying to examine. No careful experimental design avoids this: it is a statement about what states exist, not about the quality of the apparatus.</p>
+    <p>The consequence for theory is direct. A wave equation for one particle, or for any fixed number of particles, cannot be a complete description at distances below $\lambda$, because the physics there changes the number of particles. A framework in which particle number is not fixed, where particles are excitations that can be created and destroyed, is required. That framework is quantum field theory.</p>
 
-    <h2>The factor of $2\pi$, and a pointer</h2>
-    <p>A photon of energy $mc^2$ has wavelength $h/(mc) = 2\pi\hbar/(mc)$, because $E = hf = hc/\lambda_{\gamma}$. That length, $2\pi$ times the $\lambda$ of this paragraph, is the Compton wavelength in the form Compton used for the shift of a scattered photon. Tong records the distinction a little later, in <a href="../0.%20Introduction.md#SS1">§0.1</a>: the conversion factor he uses all course is $\hbar/(mc)$, and the version with the $2\pi$ is the other convention. In natural units both are $1/m$ up to that constant. The pair argument fixes the scale, not the $2\pi$.</p>
-    <p>The comparison with the de Broglie wavelength, including the sense in which $\lambda$ is the shorter of the two, is a separate note: <a href="de-broglie-wavelength.html">the de Broglie wavelength</a>.</p>
+    <h2>Numbers</h2>
+    <p>For the electron, $m_e c^2 \approx 0.511\,\mathrm{MeV}$, and with $\hbar c \approx 197\,\mathrm{MeV\,fm}$,</p>
+    $$
+    \lambda_e = \frac{\hbar c}{m_e c^2} \approx \frac{197\,\mathrm{MeV\,fm}}{0.511\,\mathrm{MeV}} \approx 386\,\mathrm{fm} \approx 3.9\times 10^{-13}\,\mathrm{m}.
+    $$
+    <p>This is about a hundred times smaller than an atom, which is why atomic physics can be done with the one-particle Schrödinger equation. For the proton, $m_p c^2 \approx 938\,\mathrm{MeV}$ gives $\lambda_p \approx 0.21\,\mathrm{fm}$. In units where $\hbar = c = 1$ the Compton wavelength is just $1/m$: a mass and an inverse length are the same thing.</p>
+
+    <h2>The factor of $2\pi$, and the origin of the name</h2>
+    <p>The name comes from Compton’s 1923 experiment, in which X-rays scattered off electrons come out with a longer wavelength. The shift follows from energy–momentum conservation alone. Let a photon with 4-momentum $k$ hit an electron at rest, $p = (mc, \vec 0)$, and leave with $k'$ at angle $\theta$, while the electron recoils with $p'$. Conservation gives $p' = p + k - k'$. Squaring both sides, using $p^2 = p'^2 = m^2c^2$ and $k^2 = k'^2 = 0$,</p>
+    $$
+    0 = -2\,k\cdot k' + 2\,p\cdot(k - k').
+    $$
+    <p>With photon energies $E$ and $E'$, $k\cdot k' = EE'(1 - \cos\theta)/c^2$ and $p\cdot(k - k') = m(E - E')$. Hence</p>
+    $$
+    \frac{1}{E'} - \frac{1}{E} = \frac{1 - \cos\theta}{mc^2}.
+    $$
+    <p>Since a photon of energy $E$ has wavelength $hc/E$, multiplying by $hc$ gives the Compton formula,</p>
+    $$
+    \lambda'_\gamma - \lambda_\gamma = \frac{h}{mc}\,(1 - \cos\theta).
+    $$
+    <p>The length that appears here is $h/(mc) = 2\pi\hbar/(mc)$, larger than $\lambda$ by $2\pi$. It is also the wavelength of a photon whose energy equals the rest energy $mc^2$. Both conventions are called the Compton wavelength; the reduced form $\hbar/(mc)$ is the natural one in relativistic quantum theory because it is the one that appears in wave equations, as in the factor $e^{-r/\lambda}$ governing how far a virtual particle of mass $m$ can reach. The pair argument fixes the scale, not the factor of $2\pi$.</p>
+
+    <h2>Related notes and references</h2>
+    <ul>
+      <li><a href="heisenberg-inequality.html">The Heisenberg inequality</a>: a derivation of $\Delta p \geq \hbar/L$ for a confined particle.</li>
+      <li><a href="de-broglie-wavelength.html">The de Broglie wavelength</a>: the other wavelength attached to a particle, and how it compares with $\hbar/(mc)$.</li>
+      <li>A. H. Compton, “A quantum theory of the scattering of X-rays by light elements,” <em>Phys. Rev.</em> 21, 483 (1923).</li>
+      <li>D. Tong, <em>Quantum Field Theory</em>, University of Cambridge lecture notes, <a href="../0.%20Introduction.md#SS1">§0.1, Units and Scales</a> (<a href="https://davidtong.org/teaching/quantum-field-theory">course page</a>).</li>
+    </ul>
   </article>
 </body>
 </html>

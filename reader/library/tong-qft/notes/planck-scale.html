@@ -8,28 +8,27 @@
   <article>
     <p><a href="../0.%20Introduction.md#planck-scale">← 0. Introduction</a> · <a href="Notes.html">Notes</a></p>
     <h1>The Planck scale</h1>
-    <p>Tong’s equation (0.2) defines a mass by $G = \hbar c/M_p^2$, quotes $M_p \approx 10^{19}\,\mathrm{GeV}$, and says the corresponding length is $l_p \approx 10^{-33}\,\mathrm{cm}$. Nothing in that paragraph was measured. Max Planck built the units in 1899 out of $G$, $c$, and the two constants in his radiation law. The reading of the length as the smallest distance that makes sense is a later argument, and it is an estimate.</p>
+    <p>Three constants of nature govern three different domains: $\hbar$ sets the scale of quantum effects, $c$ the scale of relativistic effects, and Newton’s $G$ the strength of gravity. Put together, they determine a unique length, time, mass and energy, called the Planck units. The Planck length is about $10^{-35}\,\mathrm{m}$, and the Planck energy is about $10^{19}\,\mathrm{GeV}$. This note derives these units, recounts where they came from, and explains the argument — an estimate, not a theorem — for regarding the Planck length as the shortest distance at which our present theories can be trusted.</p>
 
-    <h2>What Planck did in 1899</h2>
-    <p>The paper is the fifth communication of “Über irreversible Strahlungsvorgänge,” Sitzungsberichte der Königlich Preussischen Akademie der Wissenschaften, 18 May 1899, pages 440–480. He was fitting cavity radiation with Wien’s law, a year before the December 1900 hypothesis that resonator energy comes in elements $h\nu$. At the end he noticed that the constants already in the fit, together with the speed of light and Newton’s constant, fix units of length, mass, time, and temperature. He called them natural units: they do not depend on a particular body or substance, and any other civilization that had found the same laws would build the same rulers.</p>
-    <p>His names were not yet the modern ones. The constant he called $b$ is the one he renamed $h$ the following year. The constant he called $a$ satisfies $k = b/a$, so $a = h/k$, with $k$ Boltzmann’s constant. The gravitational constant he called $f$. The units are therefore built from $h$, $k$, $c$, and $G$. Modern formulas use $\hbar = h/(2\pi)$ in place of $h$, which multiplies every unit by $\sqrt{2\pi}$ or by its inverse. Planck was explicit that the units stay meaningful for as long as gravitation, the propagation of light in vacuum, and the two laws of thermodynamics stay valid. He did not say that the length is a minimum, and he did not mention gravity as a quantum theory. Natural units of this kind were already an idea: in 1874 Stoney had built length, mass, and time from $G$, $c$, and the electron charge. Planck’s new ingredient was the constant of action.</p>
-
-    <h2>The only length you can build</h2>
-    <p>With $\hbar$, $G$, and $c$ in hand, dimensional analysis leaves one combination of each mechanical kind. Their dimensions are</p>
+    <h2>Natural units</h2>
+    <p>Metres, seconds and kilograms are human conventions, tied to the size of the Earth and the properties of water. A unit system built from universal constants instead would be the same for any physicist anywhere. The question is which constants to use and whether they suffice. Mechanical quantities have three independent dimensions — mass M, length L and time T — so three independent dimensionful constants are needed to fix all mechanical units. $\hbar$, $G$ and $c$ are such a triple, with dimensions</p>
     $$
     [\hbar] = \mathrm{M}\,\mathrm{L}^{2}\,\mathrm{T}^{-1}, \qquad
     [G] = \mathrm{M}^{-1}\,\mathrm{L}^{3}\,\mathrm{T}^{-2}, \qquad
     [c] = \mathrm{L}\,\mathrm{T}^{-1}.
     $$
-    <p>A length has to be $\ell = \hbar^{\alpha} G^{\beta} c^{\gamma}$. Matching powers of mass, length, and time gives</p>
+    <p>(The dimension of $G$ follows from Newton’s law: $F = Gm_1m_2/r^2$ with $F$ in $\mathrm{M\,L\,T^{-2}}$.)</p>
+
+    <h2>The only length you can build</h2>
+    <p>Look for a length of the form $\ell = \hbar^{\alpha} G^{\beta} c^{\gamma}$. Its dimensions are $\mathrm{M}^{\alpha-\beta}\,\mathrm{L}^{2\alpha + 3\beta + \gamma}\,\mathrm{T}^{-\alpha - 2\beta - \gamma}$, and matching these to $\mathrm{L}^1$ gives three linear equations:</p>
     $$
     \alpha - \beta = 0, \qquad 2\alpha + 3\beta + \gamma = 1, \qquad -\alpha - 2\beta - \gamma = 0.
     $$
-    <p>The solution is $\alpha = \beta = \tfrac12$, $\gamma = -\tfrac32$, so</p>
+    <p>Adding the second and third gives $\alpha + \beta = 1$, so with the first $\alpha = \beta = \tfrac12$, and then $\gamma = -\tfrac32$. The solution is unique, so there is exactly one length (up to a pure number) that can be built from these constants:</p>
     $$
     \ell_p = \sqrt{\frac{\hbar G}{c^3}}.
     $$
-    <p>Dividing by $c$ produces the time. Asking for a mass instead of a length produces $M_p$, and $E_p = M_p c^2$ is the energy. Temperature needs one more constant, $k_B$, because temperature is not a mechanical dimension: $T_p = E_p/k_B$. The five that carry the name are</p>
+    <p>The same procedure for a time and a mass gives $t_p = \ell_p/c$ and $M_p = \sqrt{\hbar c/G}$, and the corresponding energy is $E_p = M_p c^2$. Temperature is not a mechanical dimension, so it requires one more constant, Boltzmann’s $k_B$, which converts energy to temperature: $T_p = E_p/k_B$. Numerically,</p>
     $$
     \begin{aligned}
     \ell_p &amp;= \sqrt{\frac{\hbar G}{c^3}} &amp;\approx 1.6\times 10^{-35}\,\mathrm{m} = 1.6\times 10^{-33}\,\mathrm{cm}, \\
@@ -39,21 +38,44 @@
     T_p &amp;= \frac{E_p}{k_B} &amp;\approx 1.4\times 10^{32}\,\mathrm{K}.
     \end{aligned}
     $$
-    <p>Tong’s $10^{19}\,\mathrm{GeV}$ and $10^{-33}\,\mathrm{cm}$ are these, to the order of magnitude he is using. The uncertainty in the SI values sits almost entirely in $G$. Two further combinations come up often enough to be worth writing down. The mass density $M_p/\ell_p^3 = c^5/(\hbar G^2)$ is about $5\times 10^{96}\,\mathrm{kg}/\mathrm{m}^3$. The charge $\sqrt{4\pi\varepsilon_0 \hbar c} = e/\sqrt{\alpha} \approx 11.7\,e$ is sometimes called the Planck charge; it is built from $\hbar$, $c$, and $\varepsilon_0$, and $G$ does not enter. In those units the fine-structure constant is the square of the electron charge.</p>
-    <p>$M_p c^2 \approx 1.2\times 10^{19}\,\mathrm{GeV}$ is enormous next to the proton, and $M_p \approx 22\,\mu\mathrm{g}$ is a speck you could imagine weighing. Both are the same mass. From the definition,</p>
+    <p>The uncertainty in these values comes almost entirely from $G$, the least precisely measured of the constants. Two further combinations are occasionally useful. The Planck density $M_p/\ell_p^3 = c^5/(\hbar G^2)$ is about $5\times 10^{96}\,\mathrm{kg}/\mathrm{m}^3$. The charge $\sqrt{4\pi\varepsilon_0 \hbar c} = e/\sqrt{\alpha} \approx 11.7\,e$ is sometimes called the Planck charge; it involves $\hbar$, $c$ and $\varepsilon_0$ but not $G$, and in units based on it the fine-structure constant $\alpha$ is simply the square of the electron’s charge.</p>
+    <p>The Planck mass looks contradictory at first: $M_p c^2 \approx 10^{19}\,\mathrm{GeV}$ is enormous compared with the proton’s $1\,\mathrm{GeV}$, yet $M_p \approx 22\,\mu\mathrm{g}$ is about the mass of a fine grain of sand. Both statements are true. The Planck mass is huge for an elementary particle and tiny for a macroscopic object; it sits between the two worlds.</p>
+
+    <h2>Gravity’s coupling in natural units</h2>
+    <p>Inverting the definition of the Planck mass,</p>
     $$
-    G = \frac{\hbar c}{M_p^2},
+    G = \frac{\hbar c}{M_p^2}.
     $$
-    <p>which is Tong’s (0.2). With $\hbar = c = 1$ one has $G = 1/M_p^2$ and $[G] = -2$, the mass dimension he assigns just above the equation. A second convention divides by $8\pi$, because the Einstein–Hilbert action is often written $\frac{1}{16\pi G}\int R$ and the reduced Planck mass $\sqrt{\hbar c/(8\pi G)} \approx 2.4\times 10^{18}\,\mathrm{GeV}/c^2$ makes the coefficient $M^2/2$. Tong’s numerical value is the one without the $8\pi$.</p>
+    <p>In units with $\hbar = c = 1$, where every quantity is measured in powers of mass (equivalently energy), this reads $G = 1/M_p^2$: Newton’s constant has mass dimension $-2$. That observation explains why gravity is so weak in particle physics. The dimensionless strength of gravity between two particles of energy $E$ is $GE^2 = (E/M_p)^2$, and for a proton, $E/M_p \sim 10^{-19}$. Gravity becomes as strong as the other forces only at energies near $M_p$.</p>
+    <p>A second convention is common. The Einstein–Hilbert action is $\frac{1}{16\pi G}\int d^4x\,\sqrt{-g}\,R$, and defining the reduced Planck mass $\bar M_p = \sqrt{\hbar c/(8\pi G)} \approx 2.4\times 10^{18}\,\mathrm{GeV}/c^2$ makes the prefactor $\bar M_p^2/2$. The value $10^{19}\,\mathrm{GeV}$ quoted above is the one without the $8\pi$.</p>
+
+    <h2>What Planck did in 1899</h2>
+    <p>The units are older than quantum mechanics. They appear at the end of the fifth communication of Max Planck’s “Über irreversible Strahlungsvorgänge,” <em>Sitzungsberichte der Königlich Preussischen Akademie der Wissenschaften</em>, 18 May 1899, pages 440–480. He was fitting cavity radiation with Wien’s law, more than a year before his December 1900 hypothesis that resonator energy comes in elements $h\nu$. The fit contained two constants. Planck noticed that these, together with the speed of light and the gravitational constant, fix units of length, mass, time and temperature. He called them natural units: independent of any particular body or substance, and the same for any civilization that discovered the same laws.</p>
+    <p>His notation differs from the modern one. The constant he called $b$ he renamed $h$ the following year. The constant he called $a$ satisfies $a = h/k$, with $k$ Boltzmann’s constant, and he wrote $f$ for the gravitational constant. His units were thus built from $h$, $k$, $c$ and $G$. Modern formulas use $\hbar = h/(2\pi)$ instead of $h$, which changes each unit by a factor $\sqrt{2\pi}$ or its inverse. Planck stated that the units remain meaningful for as long as gravitation, the propagation of light in vacuum, and the two laws of thermodynamics hold. He did not claim that the length is a minimum, and he did not discuss quantum gravity. The idea of natural units was not new either: in 1874 George Johnstone Stoney had built units of length, mass and time from $G$, $c$ and the electron charge. Planck’s new ingredient was the quantum of action.</p>
 
     <h2>Why it is called the smallest length</h2>
-    <p>The later reading equates two lengths that already appear in these lectures. A mass $M$ has reduced Compton wavelength $\hbar/(Mc)$, the scale in the <a href="compton-wavelength.html">Compton note</a>. The same mass has Schwarzschild radius $2GM/c^2$. Drop the factor of $2$, as every step of this estimate does, and set them equal:</p>
+    <p>The interpretation of $\ell_p$ as a limiting length came later, and rests on combining two lengths that every mass carries.</p>
+    <p>Quantum mechanics gives a mass $M$ its reduced Compton wavelength $\hbar/(Mc)$: confining the mass to a smaller region costs enough energy to create new particles, so the object cannot be localized more sharply. General relativity gives the same mass its Schwarzschild radius $2GM/c^2$: compress it inside that radius and it becomes a black hole. For ordinary particles the Compton wavelength is vastly larger; for ordinary macroscopic objects the Schwarzschild radius is. Setting the two equal (and dropping the factor of $2$, as befits an order-of-magnitude estimate),</p>
     $$
-    \frac{\hbar}{Mc} \sim \frac{GM}{c^2} \qquad\Rightarrow\qquad M \sim \sqrt{\frac{\hbar c}{G}} = M_p.
+    \frac{\hbar}{Mc} \sim \frac{GM}{c^2} \qquad\Rightarrow\qquad M \sim \sqrt{\frac{\hbar c}{G}} = M_p,
     $$
-    <p>The length at which the two expressions agree is $\ell_p$. The same threshold comes from a measurement story. Resolving a distance $L$ takes a probe with $p \gtrsim \hbar/L$, and a relativistic probe has $E \gtrsim \hbar c/L$. Parked in a region of size $L$, that energy has Schwarzschild radius $GE/c^4 \sim \hbar G/(c^3 L)$. The horizon is larger than the region once $L \lesssim \ell_p$: the probe is then a black hole bigger than the interval one was trying to see.</p>
-    <p>This is an order-of-magnitude collision between general relativity and quantum mechanics. It uses the classical horizon formula in the regime where that formula is the thing under suspicion. Factors of $2$, of $8\pi$, and of $2\pi$ move the threshold by amounts that do not matter at the precision of Tong’s $10^{-33}\,\mathrm{cm}$. The estimate says the two theories stop being simultaneously trustworthy there. It does not, by itself, prove that a shorter length is meaningless. String theory has a string length whose ratio to $\ell_p$ depends on the coupling; other approaches treat $\ell_p$ differently again. The historical step from “a convenient unit” to “quantum gravity lives here” was taken long after 1899. In the 1930s Matvei Bronstein argued that a quantum limit on measuring the gravitational field sits at this scale, and in the 1950s John Wheeler argued that geometry itself fluctuates violently there.</p>
-    <p>The large end of Tong’s figure is the same arithmetic. The age of the universe is about $4\times 10^{17}\,\mathrm{s}$, which is about $10^{61}$ Planck times, so a length $ct$ is about $10^{61}\,\ell_p$. His “roughly $10^{60}\,l_p$” for the cosmological horizon is that number, to the order he is keeping.</p>
+    <p>and the common value of the two lengths is then $\hbar/(M_pc) = \ell_p$. At the Planck scale an object is simultaneously as small as quantum mechanics allows and as compact as gravity allows before collapse.</p>
+    <p>The same threshold appears in a measurement argument. To resolve a distance $L$ one needs a probe of momentum $p \gtrsim \hbar/L$, and for a relativistic probe this means energy $E \gtrsim \hbar c/L$. That energy, concentrated in a region of size $L$, has Schwarzschild radius of order $GE/c^4 \sim \hbar G/(c^3 L)$. This exceeds $L$ when</p>
+    $$
+    \frac{\hbar G}{c^3 L} \gtrsim L \qquad\Leftrightarrow\qquad L \lesssim \sqrt{\frac{\hbar G}{c^3}} = \ell_p.
+    $$
+    <p>Below the Planck length, the probe needed to see the region would form a black hole larger than the region itself, hiding what it was meant to reveal. Increasing the energy only makes the horizon bigger.</p>
+    <p>This is an order-of-magnitude collision between general relativity and quantum mechanics, and its limitations should be stated plainly. It uses the classical horizon formula exactly in the regime where classical gravity is suspect. Factors of $2$, $2\pi$ and $8\pi$ move the threshold by amounts that are irrelevant at this precision. What the estimate shows is that the two theories cannot both be trusted at the Planck scale, so a quantum theory of gravity is needed there. It does not prove that shorter distances are meaningless; different approaches to quantum gravity treat the issue differently (in string theory, for example, the string length is related to $\ell_p$ by a power of the coupling). The step from “a convenient unit” to “the scale of quantum gravity” was taken long after 1899: in the 1930s Matvei Bronstein argued that quantum limits on measuring the gravitational field set in at this scale, and in the 1950s John Wheeler argued that the geometry of spacetime itself fluctuates violently there.</p>
+
+    <h2>The other end</h2>
+    <p>The same units measure the largest scales too. The age of the universe is about $4\times 10^{17}\,\mathrm{s}$, which is roughly $10^{61}$ Planck times, so the distance light has travelled in that time is roughly $10^{61}\,\ell_p$. Measured in Planck units, the universe spans about sixty orders of magnitude. Experiments cover only part of that range: the shortest distances probed at the LHC, of order $10^{-19}\,\mathrm{m}$, are still some $10^{16}$ Planck lengths.</p>
+
+    <h2>Related notes and references</h2>
+    <ul>
+      <li><a href="compton-wavelength.html">The Compton wavelength</a>: the length $\hbar/(Mc)$ and why localization below it produces pairs.</li>
+      <li>M. Planck, “Über irreversible Strahlungsvorgänge. Fünfte Mitteilung,” <em>Sitzungsberichte der Königlich Preussischen Akademie der Wissenschaften zu Berlin</em>, 440–480 (1899).</li>
+      <li>D. Tong, <em>Quantum Field Theory</em>, University of Cambridge lecture notes, <a href="../0.%20Introduction.md#SS1">§0.1, Units and Scales</a> (<a href="https://davidtong.org/teaching/quantum-field-theory">course page</a>).</li>
+    </ul>
   </article>
 </body>
 </html>

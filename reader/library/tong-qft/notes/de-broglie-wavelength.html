@@ -8,31 +8,39 @@
   <article>
     <p><a href="../0.%20Introduction.md#de-broglie-wavelength">← 0. Introduction</a> · <a href="Notes.html">Notes</a></p>
     <h1>The de Broglie wavelength</h1>
-    <p>Tong writes $\lambda_{dB} = h/|\vec p|$ and says the Compton length is always smaller. The formula is de Broglie’s relation. The word “always” needs the regime he is in, which is the regime in which a single particle still makes sense. Both are derived here.</p>
+    <p>A particle with momentum $\vec p$ behaves, in interference experiments, like a wave of wavelength</p>
+    $$
+    \lambda_{dB} = \frac{h}{|\vec p|}.
+    $$
+    <p>This note derives that relation rather than postulating it: starting from light, where it can be read off from measured facts, and then showing that relativity forces the same relation on any particle once one accepts that a particle has an associated wave at all. It then asks what the wavelength is a measure of, and compares it with the other length a massive particle carries, the Compton wavelength $\hbar/(mc)$.</p>
 
-    <h2>A plane wave has to transform like the particle</h2>
-    <p>Start from light, where the relation is measured rather than postulated. A plane electromagnetic wave has phase</p>
+    <h2>Light: the relation from two measured facts</h2>
+    <p>A plane wave is described by its phase,</p>
     $$
-    \phi = \vec k\cdot\vec x - \omega t.
+    \phi = \vec k\cdot\vec x - \omega t,
     $$
-    <p>Planck’s law assigns the quantum of that wave an energy $E = \hbar\omega$. The wave propagates at $c$, so $\omega = c|\vec k|$, and the quantum carries energy $E = |\vec p|c$. The two expressions for $E$ agree for every $\vec k$ only if</p>
+    <p>where the wavevector $\vec k$ points along the direction of propagation and $\omega$ is the angular frequency. The wavelength is the distance over which the phase advances by $2\pi$ at fixed time, so $\lambda = 2\pi/|\vec k|$.</p>
+    <p>For light two facts are known. The photoelectric effect and the blackbody spectrum show that light of frequency $\omega$ is exchanged in quanta of energy $E = \hbar\omega$. Electromagnetism says light travels at $c$, so $\omega = c|\vec k|$, and a pulse of electromagnetic radiation carrying energy $E$ carries momentum $|\vec p| = E/c$. Putting these together,</p>
     $$
-    |\vec p| = \hbar|\vec k|.
+    |\vec p| = \frac{E}{c} = \frac{\hbar\omega}{c} = \hbar|\vec k|,
     $$
-    <p>The wavelength is the distance over which the phase advances by $2\pi$ at fixed time, $\lambda|\vec k| = 2\pi$, so</p>
+    <p>and so</p>
     $$
     \lambda = \frac{2\pi}{|\vec k|} = \frac{2\pi\hbar}{|\vec p|} = \frac{h}{|\vec p|}.
     $$
-    <p>de Broglie’s step (1924) is to keep this identification for a massive particle. Relativity makes it a requirement rather than an analogy. Observers agree on how many wave crests lie between two events, so the phase $\phi = \vec k\cdot\vec x - \omega t$ is a Lorentz scalar. The coefficients therefore form a 4-vector $(\omega/c, \vec k)$. The particle’s energy and momentum form another, $(E/c, \vec p)$.</p>
-    <p>In the particle’s rest frame $\vec p = 0$ and $E = mc^2$. The wave there is a pure oscillation in time, $\vec k = 0$, with the frequency fixed by Planck’s law once the rest energy is accepted as the energy of the quantum:</p>
+
+    <h2>Massive particles: relativity forces the same relation</h2>
+    <p>de Broglie’s proposal (1924) was that matter, too, has an associated wave. Granting that, the question is which wave. Relativity answers it with no further assumption beyond $E = \hbar\omega$ in one frame.</p>
+    <p>The first step is to notice that the phase of a wave is a Lorentz scalar. The phase at an event counts how many crests have passed, and all observers agree on whether a given event sits on a crest or a trough. If $\phi = \vec k\cdot\vec x - \omega t$ is the same number in every frame for every event $(t, \vec x)$, then the coefficients $(\omega/c, \vec k)$ must transform exactly like the components of a 4-vector, because their contraction with the position 4-vector $(ct, \vec x)$ is invariant. So $(\omega/c, \vec k)$ is a 4-vector. The particle’s energy and momentum, $(E/c, \vec p)$, form another.</p>
+    <p>The second step is to compare them in one convenient frame. In the particle’s rest frame $\vec p = 0$ and $E = mc^2$. A wave describing a particle at rest has no preferred direction of travel, so it is a pure oscillation in time, $\vec k = 0$. Its frequency is fixed by applying the quantum rule $E = \hbar\omega$ to the rest energy:</p>
     $$
-    \hbar\omega = mc^2, \qquad \vec k = 0.
+    \hbar\omega_0 = mc^2, \qquad \vec k = 0.
     $$
-    <p>In that frame the wave 4-vector and the energy-momentum 4-vector therefore satisfy</p>
+    <p>In this frame, then,</p>
     $$
     \left(\frac{\omega}{c}, \vec k\right) = \frac{1}{\hbar}\left(\frac{E}{c}, \vec p\right).
     $$
-    <p>Both sides are 4-vectors, and they agree in one frame, so they agree in every frame. Therefore</p>
+    <p>Both sides are 4-vectors. Two 4-vectors that are equal in one frame are equal in every frame, because they transform by the same linear map. Therefore, in any frame,</p>
     $$
     E = \hbar\omega, \qquad \vec p = \hbar\vec k,
     $$
@@ -40,19 +48,31 @@
     $$
     \lambda_{dB} = \frac{2\pi}{|\vec k|} = \frac{h}{|\vec p|}.
     $$
-    <p>That is the formula in the notes. It is frame-dependent, because $\vec p$ is. The Compton length $\hbar/(mc)$ is not: $m$ is the rest mass.</p>
+    <p>Two features follow at once. First, $\lambda_{dB}$ depends on the frame, because $\vec p$ does: in the rest frame it is infinite. By contrast the Compton wavelength $\hbar/(mc)$ involves only the rest mass and is the same for every observer. Second, the wave moves with the particle. A wavepacket travels at the group velocity, and using $\omega = E/\hbar$, $\vec k = \vec p/\hbar$ and $E^2 = p^2c^2 + m^2c^4$,</p>
+    $$
+    v_g = \frac{d\omega}{dk} = \frac{dE}{dp} = \frac{pc^2}{E} = v,
+    $$
+    <p>the velocity of the particle. (The phase velocity $\omega/k = E/p = c^2/v$ exceeds $c$, but the phase carries no signal.)</p>
 
-    <h2>What the wavelength is for</h2>
-    <p>$\lambda_{dB}$ is the distance on which the phase of this wave repeats. Interference, diffraction and the failure of a classical trajectory show up when a slit, an obstacle or a difference in path is of order $\lambda_{dB}$. For a slow particle $|\vec p|$ is small and that distance is long: electrons at a few electron-volts diffract off a crystal, whose lattice spacing is angstroms. Nothing in the derivation says that $\lambda_{dB}$ is the size of the particle. A faster particle has a shorter wavelength and a sharper wave, and that is all.</p>
+    <h2>What the wavelength measures</h2>
+    <p>$\lambda_{dB}$ is the distance over which the phase of the particle’s wave repeats. Wave behaviour — interference, diffraction, the failure of a sharp classical trajectory — becomes visible when a slit, an obstacle, or a difference between two path lengths is comparable to $\lambda_{dB}$. For a slow particle $|\vec p|$ is small and the wavelength is long. An electron with a kinetic energy of $50\,\mathrm{eV}$ has $p = \sqrt{2mE_k}$ and $\lambda_{dB} \approx 1.7\times 10^{-10}\,\mathrm{m}$, comparable to the spacing of atoms in a crystal, which is why Davisson and Germer saw electrons diffract off nickel. Nothing in the derivation says that $\lambda_{dB}$ is the size of the particle. It is a property of the particle’s state of motion.</p>
 
-    <h2 id="shorter">Why Tong says the Compton length is always smaller</h2>
-    <p>In this paragraph Tong’s Compton length is the reduced one, $\lambda = \hbar/(mc)$, while he writes the de Broglie length with the full Planck constant, $\lambda_{dB} = h/|\vec p| = 2\pi\hbar/|\vec p|$. Their ratio is</p>
+    <h2 id="shorter">Comparing with the Compton wavelength</h2>
+    <p>A massive particle carries a second length, the reduced Compton wavelength $\lambda = \hbar/(mc)$. It marks the size of region below which confining the particle costs enough energy to create particle–antiparticle pairs. How do the two compare? Using $\lambda_{dB} = h/|\vec p| = 2\pi\hbar/|\vec p|$,</p>
     $$
     \frac{\lambda}{\lambda_{dB}} = \frac{|\vec p|}{2\pi\, mc}.
     $$
-    <p>So $\lambda &lt; \lambda_{dB}$ if and only if $|\vec p| &lt; 2\pi\, mc$. Since $|\vec p| = \gamma m v$, this is $\gamma v/c &lt; 2\pi$. It is true for a particle at rest, for every non-relativistic particle, and for every mildly relativistic one. It is false for a particle with $|\vec p| \gg mc$, whose de Broglie wavelength is formally the shorter of the two.</p>
-    <p>The false case is outside the regime the sentence is about. A one-particle wave with $|\vec p|$ of order $mc$ or larger has energy of order $mc^2$ or larger, which is the pair threshold derived in the <a href="compton-wavelength.html">Compton note</a>. The de Broglie wave of a single particle is a consistent description only when pair creation is a small correction, and that requires $|\vec p|$ not large compared with $mc$. Throughout that regime $\lambda_{dB}$ is longer than $\lambda$ by a factor of order one at the boundary, and by a large factor for a slow particle. Tong’s “always” is this statement. It is not a theorem about an arbitrarily large momentum.</p>
-    <p>The boundary is the interesting part. Shorten $\lambda_{dB}$ by raising $|\vec p|$, and you hit $|\vec p| \sim mc$ at the same moment that $\lambda_{dB}$ becomes a few times $\lambda$. The distance at which you would need relativistic momentum to see single-particle interference is the distance at which the single particle has already stopped being single. Below the Compton wavelength there is no clean one-particle diffraction experiment left to perform: the wavelength you would need has already opened the pair continuum.</p>
+    <p>So $\lambda &lt; \lambda_{dB}$ exactly when $|\vec p| &lt; 2\pi\, mc$. Writing $|\vec p| = \gamma m v$, the condition is $\gamma v/c &lt; 2\pi$. (If both lengths are taken in reduced form, $\hbar/|\vec p|$ against $\hbar/(mc)$, the condition is $|\vec p| &lt; mc$; the factor of $2\pi$ is a convention, not physics.) The Compton length is the shorter one for a particle at rest, for every non-relativistic particle, and for mildly relativistic ones. For a highly relativistic particle, $|\vec p| \gg mc$, the de Broglie wavelength is the shorter.</p>
+    <p>The highly relativistic case is precisely the one in which a single-particle wave stops being a complete description. A particle with $|\vec p| \gtrsim mc$ has energy $\gtrsim mc^2$, which is the scale at which pair creation becomes possible. The de Broglie picture — one particle, one wave, interfering with itself — is self-consistent only when pair creation is a small effect, and that requires $|\vec p|$ not large compared with $mc$. Throughout that regime $\lambda_{dB}$ is longer than the Compton wavelength: by a large factor for a slow particle, and by a factor of order one at the edge of the regime.</p>
+    <p>The edge is where the two ideas meet. Try to probe ever shorter distances with single-particle interference by raising $|\vec p|$. Just as $\lambda_{dB}$ shrinks towards a few times $\hbar/(mc)$, the particle’s energy reaches the pair threshold. The momentum needed for single-particle interference at sub-Compton distances is the same momentum that opens the door to creating new particles. Below the Compton wavelength, there is no clean one-particle diffraction experiment left to perform.</p>
+
+    <h2>Related notes and references</h2>
+    <ul>
+      <li><a href="compton-wavelength.html">The Compton wavelength</a>: why confinement below $\hbar/(mc)$ produces pairs.</li>
+      <li>L. de Broglie, <em>Recherches sur la théorie des quanta</em>, thesis, Paris (1924); <em>Ann. Phys.</em> (Paris) 3, 22 (1925).</li>
+      <li>C. Davisson and L. H. Germer, “Diffraction of electrons by a crystal of nickel,” <em>Phys. Rev.</em> 30, 705 (1927).</li>
+      <li>D. Tong, <em>Quantum Field Theory</em>, University of Cambridge lecture notes, <a href="../0.%20Introduction.md">Introduction</a> (<a href="https://davidtong.org/teaching/quantum-field-theory">course page</a>).</li>
+    </ul>
   </article>
 </body>
 </html>

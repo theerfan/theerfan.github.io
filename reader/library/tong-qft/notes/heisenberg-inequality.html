@@ -8,89 +8,120 @@
   <article>
     <p><a href="../0.%20Introduction.md#heisenberg-inequality">← 0. Introduction</a> · <a href="Notes.html">Notes</a></p>
     <h1>The Heisenberg inequality</h1>
-    <p>Tong’s sentence is the estimate $\Delta p \geq \hbar/L$ for a particle trapped in a box of size $L$. That estimate is the sharp position–momentum inequality $\Delta x\,\Delta p \geq \hbar/2$, plus one fact about a wavefunction that fits inside the box: its position cannot fluctuate by more than $L/2$. Both steps are proved below. $\Delta$ means a root-mean-square deviation in a given state, not a resolution of a measuring device.</p>
+    <p>A particle confined to a region of size $L$ cannot have a sharply defined momentum: its momentum spread obeys $\Delta p \geq \hbar/L$. This bound is one of the most used estimates in physics. It sets the zero-point energy of atoms, the size of nuclei, and the energy scale at which a localized particle starts to produce new particles. This note derives it from nothing more than the structure of quantum states. The argument has two independent steps. The first is a general inequality, valid for any two observables, whose content is that non-commuting operators cannot both have small spreads. The second is an elementary fact about any probability distribution that lives inside an interval. Along the way the meaning of “$\Delta$” is fixed precisely, and at the end the estimate is sharpened to the exact minimum for a box.</p>
 
     <h2>What is being bounded</h2>
-    <p>Take a normalized state $\lvert\psi\rangle$, so $\langle\psi\vert\psi\rangle = 1$. For a Hermitian operator $A$ the expectation value and the variance in that state are</p>
+    <p>In quantum mechanics a state does not assign a value to an observable. It assigns a probability distribution over the possible outcomes. The natural measure of how spread out that distribution is is its standard deviation, and that is what $\Delta$ will mean throughout: a property of the state, not of the precision of some measuring device.</p>
+    <p>Take a normalized state $\lvert\psi\rangle$, so $\langle\psi\vert\psi\rangle = 1$. For a Hermitian operator $A$ the mean and the variance in that state are</p>
     $$
     \langle A\rangle = \langle\psi\vert A\vert\psi\rangle, \qquad (\Delta A)^2 = \big\langle (A - \langle A\rangle)^2 \big\rangle = \langle A^2\rangle - \langle A\rangle^2.
     $$
-    <p>$\Delta A$ is the standard deviation of $A$. Write $\tilde A = A - \langle A\rangle$ for the deviation, and likewise $\tilde B$. Then $\tilde A$ and $\tilde B$ are Hermitian, $\langle\tilde A\rangle = \langle\tilde B\rangle = 0$, and $[\tilde A, \tilde B] = [A, B]$. The variances exist only when $\tilde A\lvert\psi\rangle$ and $\tilde B\lvert\psi\rangle$ lie in the Hilbert space, so the state has to be in the domain of the operators and of their squares. For position and momentum that is the requirement that $\int x^2\lvert\psi\rvert^2$ and $\int \lvert\psi'\rvert^2$ are finite.</p>
+    <p>It is convenient to subtract the mean once and for all. Write $\tilde A = A - \langle A\rangle$ for the deviation, and likewise $\tilde B$ for a second observable $B$. Subtracting a real number times the identity keeps an operator Hermitian, so $\tilde A$ and $\tilde B$ are Hermitian, their means vanish, and, because the identity commutes with everything, $[\tilde A, \tilde B] = [A, B]$. The variance is then simply $(\Delta A)^2 = \langle\tilde A^2\rangle$.</p>
+    <p>One technical condition matters. The variances are finite only when $\tilde A\lvert\psi\rangle$ and $\tilde B\lvert\psi\rangle$ are genuine vectors of finite length, so the state has to lie in the domain of the operators involved. For position and momentum of a wavefunction $\psi(x)$ this means $\int x^2\lvert\psi\rvert^2\,dx$ and $\int \lvert\psi'\rvert^2\,dx$ are finite.</p>
 
-    <h2>Cauchy–Schwarz</h2>
-    <p>On any inner-product space, two vectors $\lvert f\rangle$ and $\lvert g\rangle$ satisfy</p>
+    <h2>Step one: Cauchy–Schwarz</h2>
+    <p>The only geometric input is the Cauchy–Schwarz inequality. On any inner-product space, two vectors $\lvert f\rangle$ and $\lvert g\rangle$ satisfy</p>
     $$
     \lvert\langle f\vert g\rangle\rvert^2 \leq \langle f\vert f\rangle\,\langle g\vert g\rangle.
     $$
-    <p>Apply this to the vectors produced by acting with the deviations,</p>
+    <p>(Proof: the vector $\lvert f\rangle - \lambda\lvert g\rangle$ has non-negative length for every complex $\lambda$; choosing $\lambda = \langle g\vert f\rangle/\langle g\vert g\rangle$ and expanding the length gives exactly this inequality.)</p>
+    <p>Apply it to the vectors obtained by acting on the state with the two deviations,</p>
     $$
     \lvert f\rangle = \tilde A\lvert\psi\rangle, \qquad \lvert g\rangle = \tilde B\lvert\psi\rangle.
     $$
-    <p>Hermiticity gives $\langle f\vert g\rangle = \langle\psi\vert \tilde A\,\tilde B\vert\psi\rangle$, and the two norms are the variances:</p>
+    <p>Because $\tilde A$ is Hermitian, $\langle f\vert g\rangle = \langle\psi\vert \tilde A\,\tilde B\vert\psi\rangle$, and the two lengths are the variances, $\langle f\vert f\rangle = (\Delta A)^2$ and $\langle g\vert g\rangle = (\Delta B)^2$. Therefore</p>
     $$
     \lvert\langle \tilde A\,\tilde B\rangle\rvert^2 \leq (\Delta A)^2\,(\Delta B)^2.
     $$
+    <p>The product of the two spreads is bounded below by the size of a single number, $\langle\tilde A\tilde B\rangle$. The remaining task is to find a part of that number that cannot be made small.</p>
 
     <h2>The commutator is the part that cannot cancel</h2>
-    <p>Split the product into its Hermitian and anti-Hermitian pieces,</p>
+    <p>Any product of two operators splits into a symmetric and an antisymmetric piece,</p>
     $$
     \tilde A\,\tilde B = \frac12\{\tilde A, \tilde B\} + \frac12[\tilde A, \tilde B],
     $$
-    <p>where $\{X, Y\} = XY + YX$. The anticommutator of two Hermitian operators is Hermitian, so $\langle\{\tilde A, \tilde B\}\rangle$ is real. The commutator is anti-Hermitian, $[A, B]^\dagger = -[A, B]$, so $\langle[A, B]\rangle$ is purely imaginary. Real and imaginary parts add in quadrature:</p>
+    <p>where $\{X, Y\} = XY + YX$. The two pieces behave differently under Hermitian conjugation. For Hermitian $\tilde A, \tilde B$, the anticommutator is Hermitian, so its expectation value is real. The commutator is anti-Hermitian, $[\tilde A, \tilde B]^\dagger = [\tilde B, \tilde A] = -[\tilde A, \tilde B]$, so its expectation value is purely imaginary. A complex number whose real and imaginary parts are known has modulus squared equal to the sum of their squares:</p>
     $$
     \lvert\langle \tilde A\,\tilde B\rangle\rvert^2 = \frac14\big\lvert\langle\{\tilde A, \tilde B\}\rangle\big\rvert^2 + \frac14\big\lvert\langle[A, B]\rangle\big\rvert^2.
     $$
-    <p>The anticommutator term is non-negative. Dropping it only weakens the bound. Combined with Cauchy–Schwarz,</p>
+    <p>The anticommutator term depends on correlations in the particular state and can vanish. The commutator term is fixed by the algebra of the two observables. Dropping the first term can only weaken the bound, and combining with Cauchy–Schwarz gives</p>
     $$
     (\Delta A)^2\,(\Delta B)^2 \geq \frac14\big\lvert\langle[A, B]\rangle\big\rvert^2,
     $$
-    <p>which is Robertson’s form of the uncertainty relation:</p>
+    <p>that is, Robertson’s uncertainty relation:</p>
     $$
     \Delta A\,\Delta B \geq \frac12\big\lvert\langle[A, B]\rangle\big\rvert.
     $$
-    <p>Keeping the anticommutator instead of dropping it is the stronger Schrödinger relation. Nothing above used the form of $A$ and $B$, only that they are Hermitian and that the expectations exist.</p>
+    <p>Keeping the anticommutator term gives the slightly stronger Schrödinger relation. Nothing so far used anything about $A$ and $B$ beyond Hermiticity and the existence of the expectation values. Two observables that commute impose no constraint on each other; two that do not commute cannot both be sharp.</p>
 
     <h2>Position and momentum</h2>
-    <p>In the Schrödinger representation on wavefunctions of one coordinate,</p>
+    <p>To apply this to a particle one needs the commutator of position and momentum. In the position representation a state is a wavefunction $\psi(x)$; position multiplies by $x$, and momentum is the generator of translations, $-i\hbar\,d/dx$:</p>
     $$
     (X\psi)(x) = x\,\psi(x), \qquad (P\psi)(x) = -i\hbar\,\frac{d\psi}{dx}.
     $$
-    <p>Acting on a wavefunction in the common domain,</p>
+    <p>Act with the two orderings on a wavefunction in the common domain:</p>
     $$
     \begin{aligned}
     (XP\psi)(x) &amp;= x\bigl(-i\hbar\,\psi'(x)\bigr), \\
     (PX\psi)(x) &amp;= -i\hbar\,\frac{d}{dx}\bigl(x\,\psi(x)\bigr) = -i\hbar\,\psi(x) - i\hbar\,x\,\psi'(x).
     \end{aligned}
     $$
-    <p>Subtracting,</p>
+    <p>Subtracting, the derivative terms cancel and only the term from differentiating $x$ survives:</p>
     $$
-    \bigl([X, P]\psi\bigr)(x) = i\hbar\,\psi(x),
+    \bigl([X, P]\psi\bigr)(x) = i\hbar\,\psi(x).
     $$
-    <p>so $[X, P] = i\hbar$, as an operator identity on that domain, and $\langle[X, P]\rangle = i\hbar$ in every state where the two sides make sense. Robertson’s relation becomes Kennard’s inequality</p>
+    <p>So $[X, P] = i\hbar$ on that domain, and $\langle[X, P]\rangle = i\hbar$ in every state for which both sides make sense. The commutator is a constant, independent of the state, which is exactly what makes the bound universal. Robertson’s relation becomes Kennard’s inequality,</p>
     $$
     \Delta x\,\Delta p \geq \frac{\hbar}{2}.
     $$
-    <p>The same calculation in three dimensions gives $[X_i, P_j] = i\hbar\,\delta_{ij}$, and therefore $\Delta x_i\,\Delta p_i \geq \hbar/2$ for each component separately. Components along different axes are not forced to constrain each other.</p>
-    <p>Equality holds when $\tilde X\lvert\psi\rangle$ and $\tilde P\lvert\psi\rangle$ are linearly dependent over $\mathbb{C}$ in the way Cauchy–Schwarz requires, and the anticommutator term vanishes. The states that do this are the Gaussians. A Gaussian has infinite tails, which matters for the box.</p>
+    <p>In three dimensions the same computation gives $[X_i, P_j] = i\hbar\,\delta_{ij}$, so $\Delta x_i\,\Delta p_i \geq \hbar/2$ for each Cartesian component separately, while position along one axis and momentum along another are unconstrained.</p>
+    <p>Equality requires equality in Cauchy–Schwarz, so $\tilde P\lvert\psi\rangle$ must be a complex multiple of $\tilde X\lvert\psi\rangle$, and it requires the anticommutator term to vanish. Together these give a first-order differential equation, $\psi'(x) = -\bigl[(x - \langle x\rangle)/(2\sigma^2)\bigr]\psi(x) + (i\langle p\rangle/\hbar)\,\psi(x)$ with $\sigma = \Delta x$, whose solutions are Gaussians. A Gaussian has tails extending to infinity. That fact becomes important as soon as the particle is put in a box.</p>
 
-    <h2>Why the box costs $\hbar/L$</h2>
-    <p>Confine the particle to an interval of length $L$: the wavefunction vanishes outside it. Let $m$ be the midpoint of that interval. Every position the particle can be found at satisfies $(x - m)^2 \leq (L/2)^2$, so</p>
+    <h2 id="box">Step two: confinement bounds the position spread</h2>
+    <p>Confine the particle to an interval of length $L$, meaning that the wavefunction vanishes outside it. Intuitively the position spread cannot exceed the size of the interval. The precise statement is $\Delta x \leq L/2$, and it follows from a property of the mean.</p>
+    <p>Let $m$ be the midpoint of the interval. Every point where the particle can be found satisfies $(x - m)^2 \leq (L/2)^2$, so the average of this quantity obeys the same bound:</p>
     $$
     \big\langle (x - m)^2 \big\rangle \leq \Bigl(\frac{L}{2}\Bigr)^2.
     $$
-    <p>The variance is the mean squared deviation about the mean, and the mean is the point that minimizes it. Deviating about $m$ instead can only be larger:</p>
+    <p>Now compare with the variance. For any constant $a$, $\langle (x - a)^2\rangle = (\Delta x)^2 + (\langle x\rangle - a)^2$, which is smallest when $a = \langle x\rangle$. The mean square deviation about the mean is therefore never larger than the mean square deviation about any other point, in particular about $m$:</p>
     $$
-    (\Delta x)^2 = \big\langle (x - \langle x\rangle)^2 \big\rangle \leq \big\langle (x - m)^2 \big\rangle \leq \Bigl(\frac{L}{2}\Bigr)^2.
+    (\Delta x)^2 \leq \big\langle (x - m)^2 \big\rangle \leq \Bigl(\frac{L}{2}\Bigr)^2.
     $$
-    <p>Hence $\Delta x \leq L/2$. Feed that into Kennard’s inequality:</p>
+    <p>Hence $\Delta x \leq L/2$.</p>
+
+    <h2>Combining the steps: $\Delta p \geq \hbar/L$</h2>
+    <p>Kennard’s inequality says the momentum spread is at least $\hbar/(2\Delta x)$, and confinement says $\Delta x$ is at most $L/2$. Together,</p>
     $$
     \Delta p \geq \frac{\hbar}{2\,\Delta x} \geq \frac{\hbar}{2\cdot(L/2)} = \frac{\hbar}{L}.
     $$
-    <p>That is the inequality in the introduction. For a cubic box of side $L$ the same bound holds for each Cartesian component of momentum. If the particle is localized in a small region inside the box, $\Delta x$ is smaller than $L/2$ and the lower bound on $\Delta p$ is stronger than $\hbar/L$. The weakest the bound ever gets, among states that still fit in the box, is $\hbar/L$.</p>
-    <p>The two inequalities become equalities in different states. $\Delta x\,\Delta p = \hbar/2$ needs a Gaussian, which is not supported on a finite interval. $\Delta x = L/2$ needs the particle to sit at the two endpoints and nowhere in between, which is not a normalizable wavefunction in the domain of $P$. A state that is genuinely trapped in the box therefore has $\Delta p &gt; \hbar/L$. Tong’s $\geq$ is the right direction.</p>
+    <p>For a cubic box of side $L$ the same bound holds for each Cartesian component of momentum. If the particle is localized more tightly inside the box, $\Delta x$ is smaller and the bound on $\Delta p$ is stronger; $\hbar/L$ is the weakest the bound can be for any state that fits.</p>
+    <p>Neither inequality in the chain can be saturated by a state that genuinely lives in the box. $\Delta x\,\Delta p = \hbar/2$ needs a Gaussian, which is not supported on a finite interval. $\Delta x = L/2$ needs all the probability concentrated at the two endpoints, which is not a wavefunction with finite $\int\lvert\psi'\rvert^2$. So for every confined state the inequality is strict, $\Delta p &gt; \hbar/L$.</p>
 
-    <h2>The next clause in Tong</h2>
-    <p>The sentence continues with $\Delta E \geq \hbar c/L$. That is not the Heisenberg inequality. It is a separate estimate: once $\Delta p$ is at least $\hbar/L$, the relativistic relation between energy and momentum gives an energy uncertainty of that order times $c$. The derivation above stops at $\Delta p$.</p>
+    <h2>The exact minimum in a box</h2>
+    <p>Since the chain above is never tight, it is natural to ask for the true minimum. It can be found directly. First, remove the mean momentum: multiplying $\psi$ by $e^{-i\langle p\rangle x/\hbar}$ shifts every momentum by $-\langle p\rangle$, leaves $\Delta p$ unchanged, and keeps the wavefunction zero outside the box. So assume $\langle p\rangle = 0$, in which case</p>
+    $$
+    (\Delta p)^2 = \langle P^2\rangle = \hbar^2\int_0^L \lvert\psi'(x)\rvert^2\,dx,
+    $$
+    <p>since $\langle P^2\rangle = \langle P\psi\vert P\psi\rangle$ is the squared length of $P\lvert\psi\rangle$. Expand $\psi$ in the sine functions that vanish at both ends, $\psi(x) = \sum_{n\geq 1} b_n \sin(n\pi x/L)$. These are orthogonal, each with $\int_0^L \sin^2 = L/2$, so</p>
+    $$
+    \int_0^L \lvert\psi\rvert^2\,dx = \frac{L}{2}\sum_n \lvert b_n\rvert^2, \qquad
+    \int_0^L \lvert\psi'\rvert^2\,dx = \frac{L}{2}\sum_n \Bigl(\frac{n\pi}{L}\Bigr)^2 \lvert b_n\rvert^2 \geq \Bigl(\frac{\pi}{L}\Bigr)^2 \int_0^L \lvert\psi\rvert^2\,dx.
+    $$
+    <p>With $\psi$ normalized, this gives the sharp bound</p>
+    $$
+    \Delta p \geq \frac{\pi\hbar}{L},
+    $$
+    <p>attained by the ground state of the infinite square well, $\psi \propto \sin(\pi x/L)$. The general argument gave $\hbar/L$; the exact answer is larger by a factor of $\pi$. For order-of-magnitude reasoning the two are interchangeable: what matters is that the momentum spread grows like $1/L$ as the region shrinks.</p>
+
+    <h2>What the bound is used for</h2>
+    <p>The inequality concerns momentum only. Converting it into an energy requires a separate input, the relation between energy and momentum. For a slow particle the kinetic energy associated with $\Delta p \sim \hbar/L$ is of order $\hbar^2/(2mL^2)$, the familiar confinement energy. For a relativistic particle $E \approx pc$, and the same momentum spread corresponds to an energy spread of order $\hbar c/L$. Each of these is an estimate built on top of the inequality derived here, not part of it.</p>
+
+    <h2>References</h2>
+    <ul>
+      <li>H. P. Robertson, “The uncertainty principle,” <em>Phys. Rev.</em> 34, 163 (1929).</li>
+      <li>E. H. Kennard, “Zur Quantenmechanik einfacher Bewegungstypen,” <em>Z. Phys.</em> 44, 326 (1927).</li>
+      <li>D. Tong, <em>Quantum Field Theory</em>, University of Cambridge lecture notes, <a href="../0.%20Introduction.md">Introduction</a> (<a href="https://davidtong.org/teaching/quantum-field-theory">course page</a>).</li>
+    </ul>
   </article>
 </body>
 </html>

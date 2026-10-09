@@ -8,66 +8,89 @@
   <article>
     <p><a href="../0.%20Introduction.md#relativistic-wave-equation">← 0. Introduction</a> · <a href="Notes.html">Notes</a></p>
     <h1>What goes wrong with a relativistic one-particle wave equation</h1>
-    <p>The non-relativistic Schrödinger equation is first order in time, its Hamiltonian $p^2/2m$ is bounded below, and $\int|\psi|^2$ is a conserved probability. Replacing $p^2/2m$ by a relativistic energy while keeping a wavefunction for one particle spoils at least one of those three properties. Tong’s parenthesis is the list of spoilages. Each one belongs to a definite attempt.</p>
-    <p>Throughout the algebra, $\hbar = c = 1$. Restoring them is a matter of dimensions. The relativistic relation being quantized is</p>
+    <p>The Schrödinger equation $i\hbar\,\partial_t\psi = -\frac{\hbar^2}{2m}\nabla^2\psi + V\psi$ has three properties that make it a sensible description of one particle. It is first order in time, so the wavefunction at one instant determines its future. Its free Hamiltonian $p^2/2m$ is bounded below, so there is a lowest-energy state and the particle cannot radiate away energy forever. And $\int|\psi|^2\,d^3x$ is conserved, so $|\psi|^2$ can be read as a probability density. It is not, however, compatible with special relativity: it is built on the non-relativistic energy $E = p^2/2m$.</p>
+    <p>The natural project is to keep the idea of a wavefunction for a single particle and simply replace $p^2/2m$ by the relativistic energy. This note follows that project through its three natural attempts and shows that each fails, in a different way: negative probabilities, an energy spectrum with no bottom, or propagation faster than light. Seeing exactly how each fails explains why the resolution is not a better wave equation but a different kind of theory.</p>
+    <p>Throughout the algebra, $\hbar = c = 1$; restoring them is a matter of dimensions. The relation to be turned into a wave equation is</p>
     $$
     E^2 = \vec p^{\,2} + m^2.
     $$
 
-    <h2>Negative probabilities: the Klein–Gordon equation</h2>
-    <p>The straightforward attempt is to turn $E^2 = p^2 + m^2$ into an equation by the same substitution that produces the Schrödinger equation, $E \to i\partial_t$ and $\vec p \to -i\nabla$. Because the energy is squared, the result is second order in time:</p>
+    <h2>Attempt one: the Klein–Gordon equation and negative probabilities</h2>
+    <p>The Schrödinger equation arises from $E = p^2/2m$ by the substitutions $E \to i\partial_t$ and $\vec p \to -i\nabla$, which turn a plane wave $e^{-iEt + i\vec p\cdot\vec x}$ into an eigenfunction of both. Applying the same substitutions to $E^2 = p^2 + m^2$ gives an equation that is second order in time:</p>
     $$
     \bigl(\partial_t^2 - \nabla^2 + m^2\bigr)\psi = 0.
     $$
-    <p>This is the Klein–Gordon equation. A second-order equation needs two pieces of initial data, $\psi$ and $\partial_t\psi$, rather than $\psi$ alone. That is already a sign that $|\psi|^2$ is not the conserved density. The density that is conserved comes from the same trick as in Schrödinger theory. Take the equation for $\psi$, multiply by $\psi^*$, subtract the complex conjugate, and rearrange:</p>
+    <p>This is the Klein–Gordon equation. It is manifestly Lorentz invariant, since $\partial_t^2 - \nabla^2$ is the invariant wave operator. But a second-order equation needs two pieces of initial data, $\psi$ and $\partial_t\psi$, rather than $\psi$ alone, which is already a hint that $|\psi|^2$ will not be the conserved quantity.</p>
+    <p>To find what is conserved, use the same trick that produces the probability current in Schrödinger theory. Multiply the equation by $\psi^*$, multiply the complex-conjugate equation by $\psi$, and subtract. The $m^2$ terms cancel, and what remains is a total derivative:</p>
     $$
     \partial_t\bigl(\psi^*\partial_t\psi - \psi\,\partial_t\psi^*\bigr) - \nabla\cdot\bigl(\psi^*\nabla\psi - \psi\,\nabla\psi^*\bigr) = 0.
     $$
-    <p>Multiplying by $i$ makes the conserved density real,</p>
+    <p>The bracket in the time derivative is purely imaginary, so multiplying by $i$ gives a real conserved density and current:</p>
     $$
-    \rho = i\bigl(\psi^*\partial_t\psi - \psi\,\partial_t\psi^*\bigr), \qquad \partial_t\rho + \nabla\cdot\vec\jmath = 0.
+    \rho = i\bigl(\psi^*\partial_t\psi - \psi\,\partial_t\psi^*\bigr), \qquad \vec\jmath = -i\bigl(\psi^*\nabla\psi - \psi\,\nabla\psi^*\bigr), \qquad \partial_t\rho + \nabla\cdot\vec\jmath = 0.
     $$
-    <p>Test it on a plane wave $\psi = e^{-iEt + i\vec p\cdot\vec x}$ with $E = \pm\sqrt{p^2+m^2}$. Then $\partial_t\psi = -iE\psi$, and</p>
+    <p>Is $\rho$ a probability density? Test it on a plane wave $\psi = e^{-iEt + i\vec p\cdot\vec x}$, which solves the equation for $E = \pm\sqrt{p^2+m^2}$. Since $\partial_t\psi = -iE\psi$,</p>
     $$
-    \rho = 2E\,|\psi|^2.
+    \rho = i\bigl(-iE - iE\bigr)|\psi|^2 = 2E\,|\psi|^2.
     $$
-    <p>The negative-energy root makes $\rho$ negative. A negative number cannot be the probability of finding the particle. Superpositions are worse: $\psi$ and $\partial_t\psi$ may be chosen independently at $t = 0$, so $\rho$ can be made negative in any region one likes, and the continuity equation then carries that negative density around.</p>
-    <p>In the non-relativistic limit the same $\rho$ is innocent. Write $\psi = e^{-imt}\varphi$ with $\varphi$ varying slowly compared with the rest frequency $m$. The leading piece of $\rho$ is $2m|\varphi|^2$, proportional to the Schrödinger probability, and the corrections are small. The relativistic theory has kept extra solutions, the negative-energy ones, for which the would-be probability has the wrong sign. That is the “negative probabilities”.</p>
+    <p>For the negative-energy root, $\rho$ is negative. A negative number cannot be a probability. Superpositions make matters worse: because $\psi$ and $\partial_t\psi$ can be chosen independently at $t = 0$, $\rho$ can be made negative in any region one likes.</p>
+    <p>In the non-relativistic limit this density is harmless, which is why the problem is invisible at low energies. Write $\psi = e^{-imt}\varphi$ with $\varphi$ varying slowly compared with the rest frequency $m$. Then $\partial_t\psi \approx -im\psi$ and $\rho \approx 2m|\varphi|^2$, proportional to the Schrödinger probability density. The trouble comes from the extra solutions that the second-order equation admits — the negative-energy ones — for which the would-be probability has the wrong sign.</p>
 
-    <h2>An infinite tower of negative energies</h2>
-    <p>The same square root produces the second item on Tong’s list. Solving $E^2 = p^2 + m^2$ gives two roots for every momentum,</p>
+    <h2>Attempt two: discard the negative root</h2>
+    <p>The negative energies are a problem in their own right, quite apart from the density. The relation $E^2 = p^2 + m^2$ has two roots for every momentum,</p>
     $$
-    E = \pm\sqrt{\vec p^{\,2} + m^2}.
+    E = \pm\sqrt{\vec p^{\,2} + m^2},
     $$
-    <p>The negative branch runs from $-m$ down to $-\infty$ as $|\vec p|$ grows. There is no bottom rung. Couple this particle to the electromagnetic field, even weakly, and it can fall from energy $-m$ to $-m - \omega$ by emitting a photon, then repeat, without bound. The free theory already has the states; the interaction gives it a current to run down them.</p>
-    <p>Throwing the negative root away by hand is the next attempt. Define a one-particle Hamiltonian as the positive square root, promoted to an operator,</p>
+    <p>and the negative branch runs from $-m$ down to $-\infty$ as $|\vec p|$ grows. There is no lowest state. In a free theory this might be ignored, but couple the particle to electromagnetism, however weakly, and a particle in a negative-energy state can emit a photon and drop to a still more negative energy, then do it again, without limit. A theory whose particles can radiate an infinite amount of energy is unstable.</p>
+    <p>The obvious remedy is to keep only the positive root. Define a first-order equation with the positive square root as the Hamiltonian:</p>
     $$
     i\partial_t\psi = \sqrt{-\nabla^2 + m^2}\;\psi.
     $$
-    <p>The square root is defined by the Fourier transform: on a plane wave of momentum $\vec p$ it multiplies by $+\sqrt{p^2+m^2}$. The spectrum is then $[m, \infty)$, so the tower has been cut off, and the evolution is unitary on the ordinary $L^2$ inner product, so $\int|\psi|^2$ is a perfectly good probability. Two of the three diseases are gone. The third, in the next section, is not, and the equation has also given up being local. $\sqrt{-\nabla^2+m^2}$ is not a differential operator. Acting with it at one point uses the value of $\psi$ everywhere.</p>
-    <p>Dirac’s attempt, which Tong works through in <a href="../5.%20Quantizing%20the%20Dirac%20Field.md#SS3">§5.3</a>, is to factor the square root with matrices instead of discarding a root. One looks for matrices $\vec\alpha$ and $\beta$ such that</p>
-    $$
-    H = \vec\alpha\cdot\vec p + \beta m, \qquad H^2 = \vec p^{\,2} + m^2.
-    $$
-    <p>Such matrices exist; they are built from the Dirac $\gamma$-matrices, and $H$ is first order, so there is a positive conserved density $\psi^\dagger\psi$. What does not exist is a version whose eigenvalues are only the positive root. The spectrum of this $H$ is still both branches, $+\sqrt{p^2+m^2}$ and $-\sqrt{p^2+m^2}$. The tower is back. Dirac’s repair was to fill every negative level, appealing to the exclusion principle, and to reinterpret a hole in that sea as a positron. A filled sea of infinitely many electrons is not a one-particle theory. It is an early, awkward statement of the fact that the vacuum is a many-particle state. The one-particle Dirac equation does not remove the tower. It relocates it.</p>
+    <p>The square root of an operator is defined through the Fourier transform: on a plane wave of momentum $\vec p$, $\sqrt{-\nabla^2+m^2}$ multiplies by $+\sqrt{p^2+m^2}$. The spectrum is then $[m, \infty)$, bounded below. The Hamiltonian is Hermitian on the usual inner product, so evolution is unitary and $\int|\psi|^2$ is a conserved, positive probability. Two of the three problems are gone.</p>
+    <p>The price is locality. $\sqrt{-\nabla^2+m^2}$ is not a differential operator: expanding it in powers of $\nabla^2/m^2$ gives an infinite series of ever-higher derivatives, and in position space it acts as an integral operator whose kernel spreads over a distance of order $1/m$. The rate of change of $\psi$ at one point depends on the values of $\psi$ elsewhere. The consequence of this is the third problem, examined below.</p>
 
-    <h2>Causality</h2>
-    <p>Keep the positive square root, so probabilities are positive and energies are positive, and ask whether a particle can show up outside the light cone.</p>
+    <h2>Attempt three: Dirac’s first-order equation</h2>
+    <p>Dirac sought a Hamiltonian that is first order in derivatives — hence local — and whose square is the relativistic energy. Try a linear form,</p>
+    $$
+    H = \vec\alpha\cdot\vec p + \beta m.
+    $$
+    <p>Squaring it gives $\sum_{i,j}\alpha_i\alpha_j p_ip_j + m\sum_i(\alpha_i\beta + \beta\alpha_i)p_i + \beta^2m^2$. For this to equal $\vec p^{\,2} + m^2$ for every $\vec p$, the coefficients must satisfy</p>
+    $$
+    \alpha_i\alpha_j + \alpha_j\alpha_i = 2\delta_{ij}, \qquad \alpha_i\beta + \beta\alpha_i = 0, \qquad \beta^2 = 1.
+    $$
+    <p>No numbers satisfy these, but $4\times 4$ matrices do, and the wavefunction becomes a four-component spinor. The equation is first order in time, and the density $\psi^\dagger\psi$ is positive and conserved. Two problems seem solved while keeping locality.</p>
+    <p>But the eigenvalues of $H$ are fixed by $H^2 = p^2 + m^2$: they are $\pm\sqrt{p^2+m^2}$. Taking the trace shows both signs occur equally: each $\alpha_i$ and $\beta$ is traceless (for instance $\beta = \beta\alpha_1^2$, and cycling $\alpha_1$ through the trace with the anticommutation relation gives $\mathrm{tr}\,\beta = -\mathrm{tr}\,\beta$), so $\mathrm{tr}\,H = 0$. The negative-energy tower has returned. Dirac’s response was to suppose that every negative-energy state is already filled, with the exclusion principle forbidding further electrons from falling in, and to interpret a vacancy in this “sea” as a positively charged particle, the positron. A sea of infinitely many electrons is not a one-particle theory. It is an early, awkward statement of the fact that the vacuum of a relativistic quantum theory is a many-particle state. The one-particle Dirac equation does not remove the tower; it relocates it.</p>
+
+    <h2>The third problem: propagation outside the light cone</h2>
+    <p>Return to the positive-root equation of attempt two, where energies and probabilities are both positive, and ask whether a particle initially confined to a region can be found outside the light cone of that region a moment later.</p>
     <p>Suppose at $t = 0$ the wavefunction vanishes outside some ball. Its Fourier transform</p>
     $$
     \tilde\psi(0, \vec p) = \int d^3x\, e^{-i\vec p\cdot\vec x}\,\psi(0, \vec x)
     $$
-    <p>then extends to an analytic function of complex $\vec p$. Shifting $\vec p$ by an imaginary amount only multiplies the integrand by an exponential of the coordinates, and the integral still converges because $\psi$ is zero far away. Time evolution multiplies each mode by a phase,</p>
+    <p>is then an entire analytic function of complex $\vec p$: giving $\vec p$ an imaginary part multiplies the integrand by a real exponential in $\vec x$, and the integral still converges because it runs over a bounded region. Conversely (the Paley–Wiener theorem), a function whose Fourier transform is entire and of bounded exponential growth vanishes outside a ball. Time evolution multiplies each Fourier mode by a phase,</p>
     $$
     \tilde\psi(t, \vec p) = e^{-it\sqrt{\vec p^{\,2}+m^2}}\,\tilde\psi(0, \vec p).
     $$
-    <p>The square root $\sqrt{p^2+m^2}$ cannot be made analytic on the whole complex plane. It has branch points where $p^2 + m^2 = 0$, at momenta of order $im$. A generic Fourier transform, for instance the transform of a function that is simply $1$ on a ball and $0$ outside, does not vanish at those points, so it does not cancel the branch points. The product is therefore not analytic. But the Fourier transform of a function that vanishes outside a ball would have to be analytic. So $\psi(t, \vec x)$ does not vanish outside any ball.</p>
-    <p>In particular it does not vanish outside the ball of radius $t$, which is the light cone of the original support. Amplitude has appeared at spacelike separation. A detector firing there, outside the causal future of the region where the particle was known to be, is a signal faster than light. This is the breakdown of causality.</p>
-    <p>The leak is not uniform. Pushing the contour past the branch point gives a tail that falls as $e^{-m\sqrt{r^2-t^2}}$ for $r &gt; t$. The range of the exponential is $1/m$, the Compton length from the <a href="compton-wavelength.html">previous note</a>. Across a laboratory the probability is negligible. Across a few Compton wavelengths it is not, and the principle is already broken: the amplitude is not identically zero.</p>
-    <p>The same tail is what a one-particle reading of the Klein–Gordon propagator produces. Restricting to positive energies removes the negative probabilities and the downward tower, and leaves the acausal tail. No choice of which root to keep disposes of all three problems at once.</p>
+    <p>The factor $e^{-it\sqrt{p^2+m^2}}$ is not entire: the square root has branch points where $\vec p^{\,2} + m^2 = 0$, at imaginary momenta of size $m$, and going around one flips its sign. For a generic initial wavefunction, multiplying by this factor produces a function that is not entire, so $\psi(t, \vec x)$ cannot vanish outside any ball. In particular it does not vanish outside the ball enlarged by $ct$, the region that the light cone permits. Some probability has appeared at spacelike separation from where the particle was. A detector there could fire, which is a signal faster than light.</p>
+    <p>This is not an artefact of the particular argument. Hegerfeldt showed that for any Hamiltonian bounded below, a state that is strictly localized at one instant immediately develops tails extending to infinity. Positivity of the energy alone forces the leak. So the very step that cured the negative-energy problem guarantees the causality problem.</p>
+    <p>The leak is small but not zero. The amplitude for the particle to travel from the origin to a point at distance $r$ in time $t$, at spacelike separation $r &gt; t$, falls off as</p>
+    $$
+    e^{-m\sqrt{r^2 - t^2}}.
+    $$
+    <p>Its range is $1/m$, the reduced Compton wavelength. Across a laboratory the effect is negligible; across a few Compton wavelengths it is not, and in principle causality is already violated because the amplitude is not exactly zero.</p>
+    <p>Taken together: keeping both roots gives negative probabilities or an unbounded-below spectrum; keeping only the positive root gives faster-than-light propagation. No choice of which root to keep disposes of all three problems at once.</p>
 
-    <h2>What quantum field theory changes</h2>
-    <p>The repair is to stop asking a one-particle wavefunction to be the observable. In the theory Tong builds, the objects that can be measured in a region are built from fields in that region. Causality becomes the statement that those observables commute when the regions are spacelike separated, so a measurement on one cannot change the statistics of the other. He proves the free-field version in <a href="../2.%20Free%20Fields.md#SS6.SSS1">§2.6.1</a>. The one-particle amplitude is still non-zero outside the light cone. It cancels, in any actual measurement, against the amplitude for the antiparticle to cross the interval in the other order. Pair creation is not an optional extra glued onto the wave equation. It is the other half of that cancellation, and it is why the equation for a fixed number of particles could not be causal and stable at the same time.</p>
+    <h2>What changes in quantum field theory</h2>
+    <p>The way out is to stop asking a one-particle wavefunction to be the fundamental object. In quantum field theory the observables are built from fields, and the observables associated with a region of spacetime are built from fields in that region. Causality is then the requirement that observables in spacelike-separated regions commute, so that a measurement in one cannot change the statistics of a measurement in the other. For a free scalar field this can be checked directly. The commutator $[\phi(x), \phi(y)]$ equals the amplitude for a particle to propagate from $y$ to $x$ minus the amplitude to propagate from $x$ to $y$. Outside the light cone each of these is the nonzero tail just computed, but at spacelike separation there is a Lorentz transformation that exchanges which event comes first, so the two amplitudes are equal and the commutator vanishes.</p>
+    <p>In a theory with a conserved charge the second amplitude is naturally read as an antiparticle travelling the other way. The leak of a particle outside the light cone is cancelled, in every measurable quantity, by the corresponding antiparticle process. Pair creation is therefore not an optional extra added to a wave equation. It is half of the cancellation that makes the theory causal, and the reason that an equation for a fixed number of particles could not be causal, positive-probability, and stable all at once. The negative-frequency solutions, which were the problem in every attempt above, reappear in the field theory as positive-energy antiparticles.</p>
+
+    <h2>Related notes and references</h2>
+    <ul>
+      <li><a href="compton-wavelength.html">The Compton wavelength</a>: the length $1/m$ that sets the range of the acausal tail, and the scale at which pairs appear.</li>
+      <li>P. A. M. Dirac, “The quantum theory of the electron,” <em>Proc. R. Soc. Lond. A</em> 117, 610 (1928).</li>
+      <li>G. C. Hegerfeldt, “Remark on causality and particle localization,” <em>Phys. Rev. D</em> 10, 3320 (1974).</li>
+      <li>D. Tong, <em>Quantum Field Theory</em>, University of Cambridge lecture notes: <a href="../2.%20Free%20Fields.md#SS6.SSS1">§2.6.1, Causality</a>; <a href="../5.%20Quantizing%20the%20Dirac%20Field.md#SS3">§5.3, Dirac’s Hole Interpretation</a> (<a href="https://davidtong.org/teaching/quantum-field-theory">course page</a>).</li>
+    </ul>
   </article>
 </body>
 </html>

@@ -8,46 +8,84 @@
   <article>
     <p><a href="../0.%20Introduction.md#spin-statistics">← 0. Introduction</a> · <a href="Notes.html">Notes</a></p>
     <h1>Why fermions and bosons differ</h1>
-    <p>In non-relativistic quantum mechanics the difference is put in by hand, and experiment is what tells you which hand. In a relativistic theory with a stable vacuum and no signalling outside the light cone, only one assignment is consistent: integer spin commutes, half-integer spin anticommutes. The experimental rule and the theorem pick the same pairing. This note separates those two statements, then shows the calculation Tong uses to watch the wrong pairing fail.</p>
+    <p>Every known particle with integer spin is a boson, and every known particle with half-integer spin is a fermion. This pairing between how a particle behaves under rotation and how many identical copies can share a state is the spin–statistics connection. It can be approached at two levels. In non-relativistic quantum mechanics the pairing is an experimental input: the theory is consistent either way, and one chooses the assignment that matches the world. In relativistic quantum field theory it becomes a theorem: with a stable vacuum and no influence outside the light cone, the opposite pairing is inconsistent. This note builds up both levels from the definitions, and then does the calculation that shows the wrong pairing failing.</p>
 
-    <h2>What is actually being chosen</h2>
-    <p>Two particles of the same species are indistinguishable. The state obtained by exchanging them is the same physical state, so the wavefunction can change at most by a phase. Doing the exchange twice is the identity, and in three spatial dimensions the only phases consistent with that, and with the way paths can be deformed, are $+1$ and $-1$.</p>
+    <h2>Two separate definitions</h2>
+    <p><strong>Statistics</strong> is about exchange. Two particles of the same species are indistinguishable: no measurement can tell which is which. The state obtained by swapping them must therefore describe the same physics, so the wavefunction can change at most by a phase,</p>
     $$
-    \psi(\ldots, x_i, \ldots, x_j, \ldots) = \pm\, \psi(\ldots, x_j, \ldots, x_i, \ldots).
+    \psi(\ldots, x_j, \ldots, x_i, \ldots) = e^{i\theta}\, \psi(\ldots, x_i, \ldots, x_j, \ldots).
     $$
-    <p>The plus sign is Bose statistics: any number of particles may occupy the same state, and the wavefunction of $N$ of them is symmetric. The minus sign is Fermi statistics: the wavefunction is antisymmetric, two particles in the same state give zero, and the number in one state is $0$ or $1$.</p>
-    <p>Spin is a different piece of kinematics. It is the representation of rotations on the internal state of one particle. A rotation by $2\pi$ is contractible to nothing for an ordinary vector, so an integer-spin state comes back to itself. The same rotation is not contractible for a spinor: a spin-$1/2$ state comes back as minus itself, and only a rotation by $4\pi$ is the identity. Nothing in that definition mentions what happens when two particles trade places.</p>
+    <p>Which phases are allowed is a question about topology. Think of an exchange as a path in which the two particles move around each other and end up in each other’s places. Doing the exchange twice brings each particle back to its start, and in three spatial dimensions the resulting closed path can always be continuously shrunk to “no motion at all” (the loop one particle makes around the other can be lifted over it). A continuous deformation cannot change a phase that takes discrete values, so a double exchange contributes $e^{2i\theta} = 1$, leaving $e^{i\theta} = \pm 1$.</p>
+    <p>The sign $+1$ is Bose statistics: the wavefunction is symmetric, and any number of particles may occupy the same single-particle state. The sign $-1$ is Fermi statistics: the wavefunction is antisymmetric, so if two particles are in the same state the wavefunction equals minus itself and vanishes. At most one fermion can occupy a given state. That is the Pauli exclusion principle.</p>
+    <p><strong>Spin</strong> is about rotation of a single particle. It labels how the particle’s internal state transforms when the system is rotated. A rotation by $2\pi$ returns every vector to itself, and a particle of integer spin comes back to exactly the same state. For half-integer spin the state is a spinor, and a rotation by $2\pi$ multiplies it by $-1$; only a rotation by $4\pi$ is the identity. This is possible because quantum states are defined only up to phase, and the group of rotations has a double cover, $SU(2)$, whose element “rotation by $2\pi$” is $-1$.</p>
+    <p>Notice that neither definition mentions the other. Spin concerns one particle being rotated; statistics concerns two particles trading places. A priori, any combination might occur.</p>
 
-    <h2>In quantum mechanics it is an experimental input</h2>
-    <p>The Schrödinger equation for one particle does not know about either sign. For $N$ identical particles you choose the symmetric or the antisymmetric subspace as an extra postulate, and you choose it so that the theory matches what is measured.</p>
-    <p>Photons, pions, $^4\mathrm{He}$ atoms and the Higgs boson have integer spin and are bosons. The blackbody spectrum, lasers, and Bose condensation are that choice written into the counting of states. Electrons, protons, neutrons and neutrinos have half-integer spin and are fermions. The periodic table, the stability of bulk matter, and the difference between liquid $^4\mathrm{He}$ and liquid $^3\mathrm{He}$ are the exclusion principle. The rule “integer spin, no minus sign; half-integer spin, minus sign” is read off this catalogue. A non-relativistic theory with bosonic electrons is internally consistent. It is just not the world we live in, and it has nothing in it that would have forbidden the other catalogue.</p>
+    <h2>In quantum mechanics: an experimental input</h2>
+    <p>The Schrödinger equation for $N$ identical particles is symmetric under exchange, so it preserves both the symmetric and the antisymmetric subspaces. Which subspace describes nature is an extra postulate, and nothing inside non-relativistic quantum mechanics forces it. A world of bosonic electrons with spin $\tfrac12$ would be a perfectly consistent non-relativistic theory.</p>
+    <p>Experiment decides. Photons, pions, $^4\mathrm{He}$ atoms and the Higgs boson have integer spin and are bosons; the blackbody spectrum, lasers, superfluid $^4\mathrm{He}$ and Bose–Einstein condensation are consequences of the symmetric counting of states. Electrons, protons, neutrons and neutrinos have half-integer spin and are fermions; the shell structure of atoms, the periodic table, the stability and incompressibility of ordinary matter, and the very different low-temperature behaviour of $^3\mathrm{He}$ (two protons, one neutron, two electrons: an odd number of fermions, so a fermion overall) are consequences of exclusion. The rule “integer spin, symmetric; half-integer spin, antisymmetric” is read off this catalogue.</p>
 
-    <h2>The signs are locked together by relativity</h2>
-    <p>The spin-statistics theorem says the catalogue is the only one a relativistic quantum theory can have. The assumptions that do the work are Lorentz invariance, a vacuum that is the state of lowest energy, and microcausality: observable quantities built in spacelike-separated regions commute, so neither influences the other. Under those hypotheses a field of integer spin must be a boson and a field of half-integer spin must be a fermion. The other two combinations each break either the lower bound on the energy or the vanishing of spacelike influence.</p>
-    <p>The intuitive link between the two signs is that an exchange of two particles can be deformed into a $2\pi$ rotation of one of them. Rotate particle $A$ by $2\pi$ while swinging it once around particle $B$, and slide the path until the swing has become “$A$ and $B$ have traded places, and $A$ has been rotated.” The phase from the rotation is $+1$ for integer spin and $-1$ for half-integer spin. The phase from the exchange has to be the same number, otherwise the amplitude would depend on which deformation you picked, and a spacelike rearrangement would have physical consequences. This deformation argument is the reason the signs match. The theorem (Pauli in 1940, later in the language of axiomatic field theory) is the statement that the wrong match cannot be repaired by being clever with the Hamiltonian.</p>
-    <p>Dimension counts. The argument uses the topology of rotations in three spatial dimensions, where a $2\pi$ rotation has exactly two classes: trivial, and not. In two spatial dimensions a rotation by an arbitrary angle is its own class, an exchange can contribute any phase, and particles that are neither bosons nor fermions — anyons — occur. The fractional quantum Hall effect is the experimental version. The sharp split Tong is talking about is a fact about relativistic quantum theory in $3+1$ dimensions, not a bare fact about linear algebra.</p>
+    <h2>In relativistic quantum theory: a theorem</h2>
+    <p>The spin–statistics theorem (Fierz 1939, Pauli 1940, with general proofs in axiomatic field theory in the 1950s and 1960s) states that in any relativistic quantum field theory satisfying</p>
+    <ul>
+      <li>Lorentz invariance,</li>
+      <li>a vacuum that is the state of lowest energy, with all energies bounded below,</li>
+      <li>a Hilbert space with positive norms, so that probabilities are positive, and</li>
+      <li>microcausality: observables at spacelike separation commute, so a measurement in one region cannot affect the statistics of a measurement in a causally disconnected region,</li>
+    </ul>
+    <p>fields of integer spin must be quantized as bosons and fields of half-integer spin as fermions. Each wrong combination violates at least one of the assumptions.</p>
+    <p>There is a heuristic picture of why the two signs should match. An exchange of two particles can be continuously deformed, through the motion of the particles and their orientations, into a rotation of one of them by $2\pi$. (A physical model: tie the two particles together with a ribbon; swapping them and then untwisting leaves one particle rotated by a full turn. This is related to Dirac’s “belt trick”.) If the amplitude is to be insensitive to such continuous deformations, the phase acquired under exchange must equal the phase acquired under a $2\pi$ rotation: $+1$ for integer spin and $-1$ for half-integer spin. This picture captures the topology but is not a proof; in particular, it does not by itself show what goes wrong in a theory with the opposite assignment. The field-theory calculation below does.</p>
+    <p>The topology also explains why the number of dimensions matters. In two spatial dimensions a double exchange is <em>not</em> deformable to no motion (a loop in the plane around another particle cannot be lifted over it), so the exchange phase $e^{i\theta}$ can take any value. Particles with such intermediate statistics, anyons, exist as quasiparticles in the fractional quantum Hall effect. The sharp boson/fermion dichotomy is a feature of three spatial dimensions.</p>
 
-    <h2>The failure Tong calculates</h2>
-    <p>In <a href="../5.%20Quantizing%20the%20Dirac%20Field.md#SS1">§5.1</a> he quantizes the Dirac field as if it were a scalar, with commutators. Expanding in plane waves, the coefficient operators $b, b^\dagger$ of the positive-frequency spinors behave normally,</p>
+    <h2>Watching the wrong choice fail: the Dirac field</h2>
+    <p>Consider a free spin-$\tfrac12$ field $\psi(\vec x)$ obeying the Dirac equation, $i\partial_t\psi = h\,\psi$ with the one-particle Dirac Hamiltonian $h = -i\vec\alpha\cdot\nabla + \beta m$ (units $\hbar = c = 1$). The field’s energy is</p>
     $$
-    [b^r_{\vec p}, b^{s\dagger}_{\vec q}] = (2\pi)^3 \delta^{rs}\delta^{(3)}(\vec p - \vec q),
+    H = \int d^3x\; \psi^\dagger\, h\, \psi.
     $$
-    <p>but the coefficients $c, c^\dagger$ of the other spinor come out with a minus sign,</p>
+    <p>Here is the crucial structural fact. The Dirac equation is first order in time, and the Hamiltonian is <em>linear</em> in $h$. But $h$ has eigenvalues $\pm E_{\vec p}$, with $E_{\vec p} = \sqrt{\vec p^{\,2} + m^2}$, for every momentum. Expand $\psi$ in the eigenmodes of $h$: positive-energy spinors $u^s(\vec p)$ with coefficients $b^s_{\vec p}$, and negative-energy spinors with coefficients that we will call $d^s_{\vec p}$. With the modes orthonormalized, the energy becomes</p>
     $$
-    [c^r_{\vec p}, c^{s\dagger}_{\vec q}] = -(2\pi)^3 \delta^{rs}\delta^{(3)}(\vec p - \vec q).
+    H = \sum_s\int\frac{d^3p}{(2\pi)^3}\, E_{\vec p}\,\bigl(b^{s\dagger}_{\vec p} b^s_{\vec p} - d^{s\dagger}_{\vec p} d^s_{\vec p}\bigr).
     $$
-    <p>That minus sign is the whole disaster, and it leaves two bad options.</p>
-    <p>Call $c^\dagger$ a creation operator, so $c$ annihilates the vacuum. The state $c^\dagger|0\rangle$ then has negative norm, because the commutator that should have been $+1$ is $-1$. The “probability” of a one-particle state is negative. This is the same disease as the Klein–Gordon probability current, moved into the Hilbert space.</p>
-    <p>Or insist on positive norms, and interpret $c$ as the creation operator and $c^\dagger$ as the annihilation operator. The Hamiltonian that comes with the commutators is</p>
+    <p>Classically this is unbounded below: the negative-energy modes contribute $-E|d|^2$. (Contrast a scalar field, whose energy $\tfrac12\int(\pi^2 + (\nabla\phi)^2 + m^2\phi^2)$ is a sum of squares and positive by construction.) Quantization has to cure this, and the only freedom is the algebra imposed on $b$ and $d$.</p>
+    <p>The negative-energy coefficient $d$ must be reinterpreted. Physically, removing a negative-energy excitation should cost positive energy, so define $c^s_{\vec p}$ by $d^s_{\vec p} = c^{s\dagger}_{-\vec p}$ (the momentum label flips because removing momentum $\vec p$ is adding $-\vec p$): the operator that lowered the negative-energy mode now creates an antiparticle. Then</p>
     $$
-    H = \int\frac{d^3p}{(2\pi)^3}\, E_{\vec p}\,\bigl(b^\dagger b - c\, c^\dagger\bigr),
+    H = \sum_s\int\frac{d^3p}{(2\pi)^3}\, E_{\vec p}\,\bigl(b^{s\dagger}_{\vec p} b^s_{\vec p} - c^s_{\vec p}\, c^{s\dagger}_{\vec p}\bigr).
     $$
-    <p>up to the usual infinite constant from ordering. With this interpretation each quantum created by $c$ contributes $-E_{\vec p}$. The spectrum runs to $-\infty$. There is no ground state.</p>
-    <p>In <a href="../5.%20Quantizing%20the%20Dirac%20Field.md#SS2">§5.2</a> the commutators are replaced by anticommutators, $\{A, B\} = AB + BA$. The minus sign flips. The Hamiltonian becomes $E_{\vec p}(b^\dagger b + c^\dagger c)$, bounded below, norms are positive, and exchanging two quanta produces a minus sign because the operators anticommute. Fermi statistics is not inserted to match the periodic table. It is the unique choice, for this spin, that leaves a stable vacuum and a Hilbert space. Choosing Bose statistics for the Dirac field is not an unlucky guess about nature. It is an inconsistent theory.</p>
-    <p>The scalar field runs the other way, and Tong has already done that half in <a href="../2.%20Free%20Fields.md#SS6.SSS1">§2.6.1</a>. Commutators make $[\phi(x), \phi(y)]$ vanish at spacelike separation, because the particle piece and the antiparticle piece cancel. They also make the scalar Hamiltonian a sum of $E\, a^\dagger a$, bounded below. Anticommutators for a scalar spoil one of those two. Integer spin is the case where the cancelling bracket is a commutator.</p>
+    <p>Now try each algebra, requiring that $c^\dagger$ create states of positive norm, i.e. that $c\,c^\dagger$ have a positive c-number part (for a single mode, $\langle 0|c\,c^\dagger|0\rangle = \|c^\dagger|0\rangle\|^2 &gt; 0$).</p>
+    <p><strong>Commutators.</strong> With $[c^r_{\vec p}, c^{s\dagger}_{\vec q}] = +(2\pi)^3\delta^{rs}\delta^{(3)}(\vec p - \vec q)$, we have $c\,c^\dagger = c^\dagger c + (\text{positive constant})$, so</p>
+    $$
+    H = \sum_s\int\frac{d^3p}{(2\pi)^3}\, E_{\vec p}\,\bigl(b^{s\dagger} b^s - c^{s\dagger} c^s\bigr) - (\text{constant}).
+    $$
+    <p>Each antiparticle created by $c^\dagger$ lowers the energy by $E_{\vec p}$. Adding more and more antiparticles lowers the energy without bound: there is no ground state. The only way to make the $c$-quanta carry positive energy with commutators is to take $[c, c^\dagger]$ negative, but then $\|c^\dagger|0\rangle\|^2 &lt; 0$, a state of negative norm and negative probability. Either way, one of the assumptions fails. (Carrying out canonical quantization honestly, starting from the Dirac Lagrangian, one finds exactly this: imposing canonical commutators forces $[c, c^\dagger]$ to come out negative.)</p>
+    <p><strong>Anticommutators.</strong> With $\{c^r_{\vec p}, c^{s\dagger}_{\vec q}\} = +(2\pi)^3\delta^{rs}\delta^{(3)}(\vec p - \vec q)$, we have $c\,c^\dagger = -c^\dagger c + (\text{positive constant})$, so the minus sign is flipped:</p>
+    $$
+    H = \sum_s\int\frac{d^3p}{(2\pi)^3}\, E_{\vec p}\,\bigl(b^{s\dagger} b^s + c^{s\dagger} c^s\bigr) + (\text{constant}).
+    $$
+    <p>Every particle and every antiparticle carries positive energy $E_{\vec p}$, the vacuum is the lowest state, and all norms are positive. As a by-product, $c^{s\dagger}_{\vec p}c^{s\dagger}_{\vec p} = 0$ (since $\{c^\dagger, c^\dagger\} = 0$), so no two quanta can occupy the same mode, and multi-particle states are antisymmetric under exchange. Fermi statistics is not inserted to match the periodic table; it is the unique choice that gives this spin-$\tfrac12$ field a stable vacuum and a positive Hilbert space.</p>
+    <p>Microcausality does not discriminate here. Observables such as the charge density are bilinear in $\psi$, and bilinears commute at spacelike separation whether the fields themselves commute or anticommute there. It is the energy that decides for the Dirac field.</p>
 
-    <h2>So which is it, experiment or theorem?</h2>
-    <p>Both, at different layers. If all you have is the Schrödinger equation, the minus sign is an experimental fact you type in. Once Lorentz invariance, a lowest energy, and spacelike commutativity of observables are required, the minus sign is forced by the spin, and the forced sign is the one the experiments measure. Quantum field theory does not explain why spin $1/2$ exists. It explains why a spin-$1/2$ particle is not free to be a boson.</p>
+    <h2>The other half: the scalar field</h2>
+    <p>For a free real scalar field of spin $0$ the roles reverse. Its mode expansion $\phi(x) = \int\frac{d^3p}{(2\pi)^3}\frac{1}{\sqrt{2E_{\vec p}}}\bigl(a_{\vec p}e^{-ip\cdot x} + a^\dagger_{\vec p}e^{ip\cdot x}\bigr)$ has energy $\int\frac{d^3p}{(2\pi)^3}\,\tfrac12 E_{\vec p}(a^\dagger_{\vec p}a_{\vec p} + a_{\vec p}a^\dagger_{\vec p})$, positive by construction, so energy does not single out an algebra. Causality does.</p>
+    <p>Define $D(x - y) = \langle 0|\phi(x)\phi(y)|0\rangle$, the amplitude for a quantum to propagate from $y$ to $x$. A direct computation gives</p>
+    $$
+    D(x - y) = \int\frac{d^3p}{(2\pi)^3}\,\frac{1}{2E_{\vec p}}\,e^{-ip\cdot(x - y)},
+    $$
+    <p>which is Lorentz invariant, and for spacelike separation $|\vec x - \vec y| = r$ it is nonzero, decaying like $e^{-mr}$. At spacelike separation a Lorentz transformation can reverse the time order of the two points, so $D(x - y) = D(y - x)$ there.</p>
+    <ul>
+      <li>With commutators, $[\phi(x), \phi(y)] = D(x - y) - D(y - x) = 0$ at spacelike separation. The field, which is itself an observable, commutes with itself outside the light cone. Causality holds.</li>
+      <li>With anticommutators, $\{\phi(x), \phi(y)\} = D(x - y) + D(y - x) = 2D(x - y) \neq 0$ at spacelike separation. Since this is not zero, observables built from the field fail to commute outside the light cone, and a measurement here can influence one there. Causality fails. (The energy also collapses: $a\,a^\dagger + a^\dagger a$ becomes a constant, so $H$ is a number and the field has no dynamics.)</li>
+    </ul>
+    <p>So for integer spin the consistent bracket is the commutator, and for half-integer spin it is the anticommutator. The general theorem extends these two examples to every spin.</p>
+
+    <h2>Experiment or theorem?</h2>
+    <p>Both, at different levels of description. With only the Schrödinger equation, the sign under exchange is an experimental fact that must be put in by hand. Once Lorentz invariance, a stable vacuum, positive probabilities and microcausality are required, the sign is forced by the spin, and the forced sign is the one experiments observe. Quantum field theory does not explain why spin-$\tfrac12$ particles exist. It explains why a spin-$\tfrac12$ particle cannot be a boson.</p>
+
+    <h2>References</h2>
+    <ul>
+      <li>M. Fierz, “Über die relativistische Theorie kräftefreier Teilchen mit beliebigem Spin,” <em>Helv. Phys. Acta</em> 12, 3 (1939).</li>
+      <li>W. Pauli, “The connection between spin and statistics,” <em>Phys. Rev.</em> 58, 716 (1940).</li>
+      <li>R. F. Streater and A. S. Wightman, <em>PCT, Spin and Statistics, and All That</em> (Benjamin, 1964).</li>
+      <li>D. Tong, <em>Quantum Field Theory</em>, University of Cambridge lecture notes: <a href="../2.%20Free%20Fields.md#SS6.SSS1">§2.6.1, Causality</a>; <a href="../5.%20Quantizing%20the%20Dirac%20Field.md#SS1">§5.1, A Glimpse at the Spin-Statistics Theorem</a>; <a href="../5.%20Quantizing%20the%20Dirac%20Field.md#SS2">§5.2, Fermionic Quantization</a> (<a href="https://davidtong.org/teaching/quantum-field-theory">course page</a>).</li>
+    </ul>
   </article>
 </body>
 </html>
