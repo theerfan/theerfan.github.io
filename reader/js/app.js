@@ -1142,6 +1142,7 @@
       state.framed = framed;
       if (!framed && window.ReaderInk) ReaderInk.scan(body);
       if (!framed) ReaderDoc.fitMath(body);
+      if (kind === "markdown") ReaderDoc.lazySections(body);
       state.renderedDoc = docKey(route);
       showStatus("");
       scrollDocTo(route.anchor, false);

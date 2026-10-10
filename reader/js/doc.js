@@ -293,6 +293,59 @@
     }
   }
 
+  function isEmptyAnchor(el) {
+    return !!el && !el.firstChild && el.hasAttribute("id");
+  }
+
+  /* Long documents are slow to scroll on iPad: Safari keeps the whole page laid
+     out and painted. Group the top-level blocks into one section per h2/h3 and
+     let the browser skip sections far from the viewport (content-visibility).
+     Each section's placeholder is its measured height, so skipped sections keep
+     their real size and the scrollbar and anchors don't jump. Call it once the
+     document is in the page. */
+  function lazySections(root) {
+    if (!global.CSS || !global.CSS.supports || !global.CSS.supports("content-visibility", "auto")) {
+      return;
+    }
+    const kids = Array.prototype.slice.call(root.children);
+    if (kids.filter(function (el) { return /^H[23]$/.test(el.tagName); }).length < 4) return;
+    const sections = [];
+    let section = null;
+    kids.forEach(function (el) {
+      if (!section || /^H[23]$/.test(el.tagName)) {
+        const next = document.createElement("section");
+        next.className = "reader-section";
+        root.insertBefore(next, el);
+        /* Empty anchors just above the heading (<div id="SS1"></div>) open the
+           new section with it rather than end the previous one. */
+        while (section && isEmptyAnchor(section.lastElementChild)) {
+          next.insertBefore(section.lastElementChild, next.firstChild);
+        }
+        if (section && !section.firstChild) {
+          section.remove();
+          sections.pop();
+        }
+        section = next;
+        sections.push(section);
+      }
+      section.appendChild(el);
+    });
+    /* Measure once the fonts are in, or the placeholders would be stale. */
+    const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    fontsReady.then(function () {
+      global.requestAnimationFrame(function () {
+        if (!root.isConnected) return;
+        const heights = sections.map(function (sec) {
+          return sec.getBoundingClientRect().height;
+        });
+        sections.forEach(function (sec, i) {
+          sec.style.containIntrinsicSize = "auto " + heights[i] + "px";
+          sec.classList.add("reader-lazy");
+        });
+      });
+    });
+  }
+
   global.ReaderDoc = {
     docKind: docKind,
     isDocPath: isDocPath,
@@ -308,6 +361,7 @@
     scrollToAnchor: scrollToAnchor,
     renderLatex: renderLatex,
     fitMath: fitMath,
+    lazySections: lazySections,
     finalize: finalize
   };
 })(window);

@@ -80,6 +80,18 @@
 
 .markdown-body p { margin: 1em 0; }
 
+/* One per h2/h3 in long documents (js/doc.js lazySections). Margins don't
+   collapse across a section edge (flow-root, as content-visibility would make
+   it anyway), so drop the last block's bottom margin to keep the spacing
+   before the next heading as it was (also where it collapses up from inside:
+   display math in a paragraph, a list's last item). !important: figures carry
+   their margins inline. */
+.reader-section { display: flow-root; }
+.reader-section > :last-child,
+.reader-section > :last-child > :last-child,
+.reader-section > :last-child > :last-child > :last-child { margin-bottom: 0 !important; }
+.reader-section.reader-lazy { content-visibility: auto; }
+
 .markdown-body a { color: var(--accent-ink); text-decoration: none; }
 .markdown-body a:hover { text-decoration: underline; }
 
