@@ -10,27 +10,48 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css">
   <link rel="stylesheet" href="css/doc.css?v=14">
-  <link rel="stylesheet" href="css/styles.css?v=13">
+  <link rel="stylesheet" href="css/styles.css?v=14">
   <script src="js/prefs.js?v=12"></script>
 </head>
 <body>
   <header class="topbar">
-    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="sidebar">Notes</button>
-    <button type="button" class="icon-btn topbar-files" id="filesBtn" data-action="toggle-sidebar" aria-controls="sidebar" aria-expanded="true">Hide files</button>
-    <a class="brand" href="#/">Reader <span>notes</span></a>
+    <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="sidebar" aria-label="Show files" title="Files">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="11" rx="2"/><path d="M6 2.5v11"/></svg>
+    </button>
+    <button type="button" class="icon-btn topbar-files" id="filesBtn" data-action="toggle-sidebar" aria-controls="sidebar" aria-expanded="true" aria-label="Hide files" title="Hide files">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="11" rx="2"/><path d="M6 2.5v11"/></svg>
+    </button>
+    <a class="brand" href="#/">Reader</a>
     <nav class="crumb" id="crumb" aria-label="Breadcrumb"></nav>
-    <form class="jump-bar" id="jumpFormBar" action="#" method="get" role="search">
-      <input id="jumpInputBar" type="search" placeholder="owner/repo, folder, or GitHub URL" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository or folder">
-    </form>
     <div class="topbar-actions">
       <div class="seg" id="alignGroup" role="group" aria-label="Page alignment">
-        <button type="button" data-align="left" title="Align left">Left</button>
-        <button type="button" data-align="center" title="Align center">Center</button>
-        <button type="button" data-align="right" title="Align right">Right</button>
+        <button type="button" data-align="left" title="Align left" aria-label="Align left">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3.5h12M2 6.5h8M2 9.5h12M2 12.5h8"/></svg>
+        </button>
+        <button type="button" data-align="center" title="Align center" aria-label="Align center">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3.5h12M4 6.5h8M2 9.5h12M4 12.5h8"/></svg>
+        </button>
+        <button type="button" data-align="right" title="Align right" aria-label="Align right">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3.5h12M6 6.5h8M2 9.5h12M6 12.5h8"/></svg>
+        </button>
       </div>
-      <button type="button" class="icon-btn" id="themeBtn" aria-label="Toggle dark mode">Dark</button>
-      <a id="githubLink" hidden href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a class="home-link" href="/">Home</a>
+      <button type="button" class="icon-btn" id="themeBtn" aria-label="Toggle dark mode">
+        <svg class="theme-moon" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7z"/></svg>
+        <svg class="theme-sun" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M3.05 12.95l1.06-1.06M11.89 4.11l1.06-1.06"/></svg>
+      </button>
+      <details class="more" id="moreMenu">
+        <summary class="icon-btn" aria-label="More" title="More">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="3" cy="8" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="13" cy="8" r="1.2"/></svg>
+        </summary>
+        <div class="more-panel">
+          <form class="jump-bar" id="jumpFormBar" action="#" method="get" role="search">
+            <input id="jumpInputBar" type="search" placeholder="owner/repo, folder, or GitHub URL" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository or folder">
+          </form>
+          <a id="githubLink" hidden href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="#/">Catalog</a>
+          <a href="/">Home</a>
+        </div>
+      </details>
     </div>
   </header>
 
@@ -78,11 +99,11 @@
   <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
   <script src="js/github.js?v=12"></script>
-  <script src="js/doc.js?v=14"></script>
+  <script src="js/doc.js?v=15"></script>
   <script src="js/ink.js?v=12"></script>
   <script src="js/frame-host.js?v=12"></script>
   <script src="js/markdown.js?v=12"></script>
   <script src="js/html.js?v=12"></script>
-  <script src="js/app.js?v=15"></script>
+  <script src="js/app.js?v=16"></script>
 </body>
 </html>

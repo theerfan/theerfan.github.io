@@ -39,6 +39,7 @@
     els.jumpFormBar = $("jumpFormBar");
     els.jumpInputBar = $("jumpInputBar");
     els.themeBtn = $("themeBtn");
+    els.moreMenu = $("moreMenu");
     els.alignGroup = $("alignGroup");
     els.sidebarToggle = $("sidebarToggle");
     els.filesBtn = $("filesBtn");
@@ -55,6 +56,13 @@
     els.jumpForm.addEventListener("submit", onJump);
     els.jumpFormBar.addEventListener("submit", onJump);
     els.themeBtn.addEventListener("click", toggleTheme);
+    /* The ⋯ menu closes on a pick, an outside click or Escape. */
+    els.moreMenu.addEventListener("click", function (ev) {
+      if (ev.target.closest(".more-panel a")) els.moreMenu.open = false;
+    });
+    document.addEventListener("click", function (ev) {
+      if (els.moreMenu.open && !els.moreMenu.contains(ev.target)) els.moreMenu.open = false;
+    });
     els.alignGroup.addEventListener("click", onAlignClick);
     document.addEventListener("click", function (ev) {
       var btn = ev.target.closest("[data-action='toggle-sidebar']");
@@ -83,7 +91,10 @@
     }
     window.addEventListener("hashchange", onRoute);
     window.addEventListener("keydown", function (ev) {
-      if (ev.key === "Escape") setSidebar(false);
+      if (ev.key === "Escape") {
+        setSidebar(false);
+        els.moreMenu.open = false;
+      }
       if (ev.key === "/" && !isTypingIntoField(ev.target)) {
         ev.preventDefault();
         focusJump();
@@ -101,9 +112,9 @@
   }
 
   function focusJump() {
-    var input = document.body.classList.contains("view-catalog")
-      ? els.jumpInput
-      : els.jumpInputBar;
+    var catalog = document.body.classList.contains("view-catalog");
+    if (!catalog) els.moreMenu.open = true;
+    var input = catalog ? els.jumpInput : els.jumpInputBar;
     if (input) input.focus();
   }
 
@@ -155,12 +166,9 @@
   }
 
   function syncThemeButton() {
-    var dark = currentTheme() === "dark";
-    els.themeBtn.textContent = dark ? "Light" : "Dark";
-    els.themeBtn.setAttribute(
-      "aria-label",
-      dark ? "Switch to light mode" : "Switch to dark mode"
-    );
+    var label = currentTheme() === "dark" ? "Switch to light mode" : "Switch to dark mode";
+    els.themeBtn.setAttribute("aria-label", label);
+    els.themeBtn.setAttribute("title", label);
   }
 
   function onAlignClick(ev) {
@@ -207,6 +215,7 @@
       return;
     }
     setJumpError("");
+    els.moreMenu.open = false;
     if (parsed.branch) {
       try {
         sessionStorage.setItem(
@@ -264,7 +273,8 @@
       );
     }
     if (els.filesBtn) {
-      els.filesBtn.textContent = filesLabel;
+      els.filesBtn.setAttribute("aria-label", filesLabel);
+      els.filesBtn.setAttribute("title", filesLabel);
       els.filesBtn.setAttribute("aria-expanded", expanded);
     }
   }
@@ -825,40 +835,49 @@
     if (els.folderTools) els.folderTools.hidden = tree.dirs.length === 0;
   }
 
+  /* Library (and its group), then the path inside the library's root; the
+     root's own folders are already named by the library. On narrow screens
+     only the current file is shown (CSS). */
   function setCrumb(meta, path, folder) {
     const repoHref = hashFor(meta.owner, meta.repo);
     const group = folderForEntry(meta);
-    let html = '<a href="#/">Catalog</a>';
+    const sep = '<span class="sep">/</span>';
+    let html = "";
     if (group) {
       html +=
-        '<span class="sep">/</span><a href="' +
+        '<a class="crumb-up" href="' +
         groupHash(group.id) +
         '">' +
         escapeHtml(group.title || group.id) +
-        "</a>";
+        "</a>" +
+        sep;
     }
+    const trail = (path || folder || "").replace(/^\/+|\/+$/g, "");
+    const root = (meta.root || "").replace(/^\/+|\/+$/g, "");
+    const lower = trail.toLowerCase();
+    let rest = trail;
+    let acc = [];
+    if (root && (lower === root.toLowerCase() || lower.indexOf(root.toLowerCase() + "/") === 0)) {
+      rest = trail.slice(root.length + 1);
+      acc = trail.slice(0, root.length).split("/");
+    }
+    const parts = rest.split("/").filter(Boolean);
+    const libClass = parts.length ? "crumb-up" : "here";
     html +=
-      '<span class="sep">/</span><a href="' +
+      '<a class="' + libClass + '" href="' +
       repoHref +
       '">' +
       escapeHtml(meta.title || meta.repo) +
       "</a>";
-    const trail = path || folder || "";
-    if (!trail) {
-      els.crumb.innerHTML = html;
-      return;
-    }
-    const parts = trail.split("/").filter(Boolean);
-    let acc = [];
     parts.forEach(function (part, i) {
       acc.push(part);
       const isLast = i === parts.length - 1;
-      html += '<span class="sep">/</span>';
+      html += sep;
       if (isLast) {
         html += '<span class="here">' + escapeHtml(part) + "</span>";
       } else {
         html +=
-          '<a href="' +
+          '<a class="crumb-up" href="' +
           hashFor(meta.owner, meta.repo, acc.join("/")) +
           '">' +
           escapeHtml(part) +
@@ -893,7 +912,7 @@
     } else {
       els.githubLink.href =
         "https://github.com/" + meta.owner + "/" + meta.repo;
-      els.githubLink.textContent = "Repo";
+      els.githubLink.textContent = "Repo on GitHub";
     }
     setCrumb(meta, path, folder);
     const folderName = folder ? folder.split("/").pop() : "";

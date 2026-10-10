@@ -96,12 +96,31 @@
     );
   }
 
+  function scrollerOf(el) {
+    for (let p = el.parentElement; p; p = p.parentElement) {
+      const y = global.getComputedStyle(p).overflowY;
+      if ((y === "auto" || y === "scroll") && p.scrollHeight > p.clientHeight) return p;
+    }
+    return null;
+  }
+
+  /* Scroll only the document's own scroller: scrollIntoView also scrolls every
+     ancestor, the page itself included, which pushed the top bar off screen. */
   function scrollToAnchor(root, id, smooth) {
     const target = findAnchor(root, id);
-    if (target) {
-      target.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
+    if (!target) return false;
+    const scroller = scrollerOf(target);
+    const behavior = smooth ? "smooth" : "auto";
+    if (!scroller) {
+      target.scrollIntoView({ behavior: behavior, block: "start" });
+      return true;
     }
-    return !!target;
+    const top =
+      scroller.scrollTop +
+      target.getBoundingClientRect().top -
+      scroller.getBoundingClientRect().top;
+    scroller.scrollTo({ top: top, behavior: behavior });
+    return true;
   }
 
   function rawUrl(ctx, repoPath) {

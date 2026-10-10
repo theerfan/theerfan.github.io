@@ -48,58 +48,79 @@ code {
 }
 .brand:hover { text-decoration: none; color: var(--accent-ink); }
 
-.brand span {
-  font-weight: 400;
-  color: var(--muted);
-}
-
+/* Parent links give way first (they shrink far faster), so the current file
+   keeps its name for as long as possible. */
 .crumb {
   flex: 1;
   min-width: 0;
+  display: flex;
+  align-items: baseline;
   font-size: 0.88rem;
   color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.crumb > * {
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
-
+.crumb .crumb-up {
+  flex: 0 100 auto;
+  min-width: 1.6em;
+}
+.crumb .here {
+  flex: 0 1 auto;
+  min-width: 0;
+  color: var(--ink);
+}
 .crumb .sep {
+  flex-shrink: 0;
   margin: 0 0.4em;
   color: var(--rule);
 }
 
-.crumb .here { color: var(--ink); }
-
 .topbar-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin-left: auto;
   flex-shrink: 0;
 }
 
-.topbar-actions a,
-.home-link {
-  font-size: 0.85rem;
-  color: var(--muted);
-  white-space: nowrap;
-}
-
-.menu-btn,
 .icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   border: 1px solid var(--rule);
   background: var(--card);
   color: var(--ink);
   border-radius: 8px;
-  padding: 6px 10px;
   font: inherit;
-  font-size: 0.8rem;
   cursor: pointer;
+  flex-shrink: 0;
 }
+
+.icon-btn:hover { border-color: var(--accent); }
+
+.topbar svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.topbar circle[r="1.2"] { fill: currentColor; stroke: none; }
 
 .menu-btn { display: none; }
 
-.icon-btn:hover { border-color: var(--accent); }
+/* The theme button shows where it will take you. */
+[data-theme="dark"] .theme-moon,
+html:not([data-theme="dark"]) .theme-sun { display: none; }
 
 .seg {
   display: inline-flex;
@@ -109,13 +130,16 @@ code {
 }
 
 .seg button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
   border: 0;
   border-right: 1px solid var(--rule);
   background: transparent;
   color: var(--muted);
-  padding: 6px 10px;
-  font: inherit;
-  font-size: 0.75rem;
   cursor: pointer;
 }
 
@@ -124,15 +148,39 @@ code {
 .seg button[aria-pressed="true"] {
   background: var(--sidebar);
   color: var(--ink);
-  font-weight: 600;
 }
 
-.jump-bar {
-  flex: 1;
-  min-width: 140px;
-  max-width: 380px;
-  margin: 0 12px;
+/* ⋯ menu: opening another repo, GitHub, catalog, home. */
+.more { position: relative; }
+.more > summary { list-style: none; }
+.more > summary::-webkit-details-marker { display: none; }
+.more[open] > summary { border-color: var(--accent); }
+
+.more-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  width: min(300px, calc(100vw - 32px));
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
 }
+
+.more-panel a {
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  color: var(--ink);
+}
+.more-panel a:hover { background: var(--sidebar); text-decoration: none; }
+
+.jump-bar { margin: 0 0 6px; }
 
 body.view-catalog .jump-bar { display: none; }
 
@@ -674,9 +722,13 @@ body.sidebar-collapsed .truncated,
     z-index: 25;
   }
   .article { padding: 20px 18px 64px; }
-  .crumb { display: none; }
-  .seg button { padding: 6px 8px; font-size: 0.7rem; }
-  .home-link { display: none; }
+  .topbar { gap: 8px; padding: 0 12px; }
+  .crumb .crumb-up,
+  .crumb .sep { display: none; }
+}
+
+@media (max-width: 560px) {
+  .brand { display: none; }
 }
 
 @media print {
