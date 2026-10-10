@@ -261,6 +261,38 @@
     }
   }
 
+  /* Display equations are horizontal scroll boxes so wide formulas scroll on
+     phones instead of breaking the column. On iOS WebKit every scroll box is a
+     native scroll view, and a chapter holds a hundred or more, which makes the
+     whole page scroll badly; equations that fit are marked so CSS drops their
+     overflow. Re-checked when a box resizes and when the math fonts arrive. */
+  let fitObserver = null;
+
+  function checkFit(el) {
+    el.classList.toggle("reader-fits", el.scrollWidth <= el.clientWidth + 1);
+  }
+
+  function fitMath(root) {
+    if (fitObserver) fitObserver.disconnect();
+    fitObserver = null;
+    const displays = root.querySelectorAll(".katex-display");
+    if (!displays.length || !global.ResizeObserver) return;
+    const observer = new global.ResizeObserver(function (entries) {
+      entries.forEach(function (entry) {
+        checkFit(entry.target);
+      });
+    });
+    displays.forEach(function (el) {
+      observer.observe(el);
+    });
+    fitObserver = observer;
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        if (fitObserver === observer) displays.forEach(checkFit);
+      });
+    }
+  }
+
   global.ReaderDoc = {
     docKind: docKind,
     isDocPath: isDocPath,
@@ -275,6 +307,7 @@
     rawUrl: rawUrl,
     scrollToAnchor: scrollToAnchor,
     renderLatex: renderLatex,
+    fitMath: fitMath,
     finalize: finalize
   };
 })(window);

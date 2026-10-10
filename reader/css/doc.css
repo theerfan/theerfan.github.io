@@ -210,6 +210,10 @@
   overflow-y: hidden;
   padding: 0.2em 0;
 }
+/* Fits the column (js/doc.js fitMath): no scroll box, which is costly on iOS. */
+.katex-display.reader-fits {
+  overflow: visible;
+}
 
 .katex-error {
   color: var(--danger);

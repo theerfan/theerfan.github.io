@@ -1141,6 +1141,7 @@
       els.article.appendChild(body);
       state.framed = framed;
       if (!framed && window.ReaderInk) ReaderInk.scan(body);
+      if (!framed) ReaderDoc.fitMath(body);
       state.renderedDoc = docKey(route);
       showStatus("");
       scrollDocTo(route.anchor, false);
