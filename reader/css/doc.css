@@ -49,6 +49,13 @@
   color-scheme: dark;
 }
 
+/* Warm text (dark mode only): text and secondary text take an amber tint,
+   easier on the eyes than near-white for long reading. */
+[data-theme="dark"][data-warm="on"] {
+  --ink: #f2d4ad;
+  --muted: #b9a083;
+}
+
 .markdown-body {
   font-family: var(--body);
   font-size: 1.05rem;

@@ -37,6 +37,10 @@
     return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
   }
 
+  function warm() {
+    return document.documentElement.getAttribute("data-warm") === "on" ? "on" : "off";
+  }
+
   function escapeAttr(s) {
     return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
   }
@@ -175,7 +179,7 @@
     switch (d.type) {
       case "ready":
         state.ready = true;
-        send({ type: "theme", theme: theme() });
+        send({ type: "theme", theme: theme(), warm: warm() });
         if (state.pending) send({ type: "locate", id: state.pending.id, seq: state.pending.seq });
         break;
       case "height": {
@@ -199,10 +203,10 @@
     }
   });
 
-  /* Live theme: follow the reader's data-theme into the frame. */
+  /* Live theme: follow the reader's data-theme and data-warm into the frame. */
   new MutationObserver(function () {
-    send({ type: "theme", theme: theme() });
-  }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    send({ type: "theme", theme: theme(), warm: warm() });
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "data-warm"] });
 
   global.ReaderFrame = {
     prologue: prologue,

@@ -118,6 +118,10 @@ code {
 
 .menu-btn { display: none; }
 
+/* Warm text toggle: dark mode only; amber while on. */
+html:not([data-theme="dark"]) .warm-btn { display: none; }
+.warm-btn[aria-pressed="true"] { color: #f2a65a; border-color: #8a5a2b; }
+
 /* The theme button shows where it will take you. */
 [data-theme="dark"] .theme-moon,
 html:not([data-theme="dark"]) .theme-sun { display: none; }

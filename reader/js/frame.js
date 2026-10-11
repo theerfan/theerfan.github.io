@@ -105,6 +105,7 @@
     if (!d || typeof d !== "object" || d.reader !== "doc-host") return;
     if (d.type === "theme" && (d.theme === "dark" || d.theme === "light")) {
       root.setAttribute("data-theme", d.theme);
+      root.setAttribute("data-warm", d.warm === "on" ? "on" : "off");
     } else if (d.type === "locate") {
       locate(String(d.id || ""), d.seq);
     }

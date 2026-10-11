@@ -40,6 +40,7 @@
     els.jumpInputBar = $("jumpInputBar");
     els.themeBtn = $("themeBtn");
     els.moreMenu = $("moreMenu");
+    els.warmBtn = $("warmBtn");
     els.alignGroup = $("alignGroup");
     els.sidebarToggle = $("sidebarToggle");
     els.filesBtn = $("filesBtn");
@@ -56,6 +57,7 @@
     els.jumpForm.addEventListener("submit", onJump);
     els.jumpFormBar.addEventListener("submit", onJump);
     els.themeBtn.addEventListener("click", toggleTheme);
+    els.warmBtn.addEventListener("click", toggleWarm);
     /* The ⋯ menu closes on a pick, an outside click or Escape. */
     els.moreMenu.addEventListener("click", function (ev) {
       if (ev.target.closest(".more-panel a")) els.moreMenu.open = false;
@@ -101,6 +103,7 @@
       }
     });
     syncThemeButton();
+    syncWarmButton();
     syncAlignButtons();
     setSidebarRail(document.documentElement.getAttribute("data-sidebar") === "collapsed");
   }
@@ -144,6 +147,7 @@
     if (
       key === "reader-theme" ||
       key === "reader-align" ||
+      key === "reader-warm" ||
       key === "reader-sidebar"
     ) {
       try {
@@ -163,6 +167,19 @@
     document.documentElement.setAttribute("data-theme", next);
     persist("reader-theme", next);
     syncThemeButton();
+  }
+
+  function toggleWarm() {
+    var next = document.documentElement.getAttribute("data-warm") === "on" ? "off" : "on";
+    document.documentElement.setAttribute("data-warm", next);
+    persist("reader-warm", next);
+    syncWarmButton();
+  }
+
+  function syncWarmButton() {
+    var on = document.documentElement.getAttribute("data-warm") === "on";
+    els.warmBtn.setAttribute("aria-pressed", on ? "true" : "false");
+    els.warmBtn.setAttribute("title", on ? "Warm text: on" : "Warm text: off");
   }
 
   function syncThemeButton() {
