@@ -40,7 +40,9 @@
     els.jumpInputBar = $("jumpInputBar");
     els.themeBtn = $("themeBtn");
     els.moreMenu = $("moreMenu");
-    els.warmBtn = $("warmBtn");
+    els.warmMenu = $("warmMenu");
+    els.warmRange = $("warmRange");
+    els.warmValue = $("warmValue");
     els.alignGroup = $("alignGroup");
     els.sidebarToggle = $("sidebarToggle");
     els.filesBtn = $("filesBtn");
@@ -57,13 +59,30 @@
     els.jumpForm.addEventListener("submit", onJump);
     els.jumpFormBar.addEventListener("submit", onJump);
     els.themeBtn.addEventListener("click", toggleTheme);
-    els.warmBtn.addEventListener("click", toggleWarm);
-    /* The ⋯ menu closes on a pick, an outside click or Escape. */
+    els.warmRange.addEventListener("input", function () {
+      setWarmth(els.warmRange.value, false);
+    });
+    els.warmRange.addEventListener("change", function () {
+      setWarmth(els.warmRange.value, true);
+    });
+    /* Top-bar popovers (⋯ menu, warm text): one open at a time; they close on
+       a pick, an outside click or Escape. */
+    var popovers = [els.moreMenu, els.warmMenu];
+    popovers.forEach(function (menu) {
+      menu.addEventListener("toggle", function () {
+        if (!menu.open) return;
+        popovers.forEach(function (other) {
+          if (other !== menu) other.open = false;
+        });
+      });
+    });
     els.moreMenu.addEventListener("click", function (ev) {
       if (ev.target.closest(".more-panel a")) els.moreMenu.open = false;
     });
     document.addEventListener("click", function (ev) {
-      if (els.moreMenu.open && !els.moreMenu.contains(ev.target)) els.moreMenu.open = false;
+      popovers.forEach(function (menu) {
+        if (menu.open && !menu.contains(ev.target)) menu.open = false;
+      });
     });
     els.alignGroup.addEventListener("click", onAlignClick);
     document.addEventListener("click", function (ev) {
@@ -96,6 +115,7 @@
       if (ev.key === "Escape") {
         setSidebar(false);
         els.moreMenu.open = false;
+        els.warmMenu.open = false;
       }
       if (ev.key === "/" && !isTypingIntoField(ev.target)) {
         ev.preventDefault();
@@ -147,7 +167,7 @@
     if (
       key === "reader-theme" ||
       key === "reader-align" ||
-      key === "reader-warm" ||
+      key === "reader-warmth" ||
       key === "reader-sidebar"
     ) {
       try {
@@ -169,17 +189,24 @@
     syncThemeButton();
   }
 
-  function toggleWarm() {
-    var next = document.documentElement.getAttribute("data-warm") === "on" ? "off" : "on";
-    document.documentElement.setAttribute("data-warm", next);
-    persist("reader-warm", next);
+  function currentWarmth() {
+    var n = parseInt(document.documentElement.style.getPropertyValue("--warmth"), 10);
+    return n >= 0 && n <= 100 ? n : 0;
+  }
+
+  /* Live while dragging; saved when the slider is released. */
+  function setWarmth(value, save) {
+    var n = Math.max(0, Math.min(100, parseInt(value, 10) || 0));
+    document.documentElement.style.setProperty("--warmth", String(n));
+    if (save) persist("reader-warmth", String(n));
     syncWarmButton();
   }
 
   function syncWarmButton() {
-    var on = document.documentElement.getAttribute("data-warm") === "on";
-    els.warmBtn.setAttribute("aria-pressed", on ? "true" : "false");
-    els.warmBtn.setAttribute("title", on ? "Warm text: on" : "Warm text: off");
+    var n = currentWarmth();
+    els.warmRange.value = String(n);
+    els.warmValue.textContent = n ? n + "%" : "Off";
+    els.warmMenu.classList.toggle("is-warm", n > 0);
   }
 
   function syncThemeButton() {

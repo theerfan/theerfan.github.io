@@ -37,8 +37,8 @@
     return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
   }
 
-  function warm() {
-    return document.documentElement.getAttribute("data-warm") === "on" ? "on" : "off";
+  function warmth() {
+    return document.documentElement.style.getPropertyValue("--warmth") || "0";
   }
 
   function escapeAttr(s) {
@@ -179,7 +179,7 @@
     switch (d.type) {
       case "ready":
         state.ready = true;
-        send({ type: "theme", theme: theme(), warm: warm() });
+        send({ type: "theme", theme: theme(), warmth: warmth() });
         if (state.pending) send({ type: "locate", id: state.pending.id, seq: state.pending.seq });
         break;
       case "height": {
@@ -203,10 +203,11 @@
     }
   });
 
-  /* Live theme: follow the reader's data-theme and data-warm into the frame. */
+  /* Live theme: follow the reader's data-theme and --warmth (an inline style)
+     into the frame. */
   new MutationObserver(function () {
-    send({ type: "theme", theme: theme(), warm: warm() });
-  }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "data-warm"] });
+    send({ type: "theme", theme: theme(), warmth: warmth() });
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "style"] });
 
   global.ReaderFrame = {
     prologue: prologue,

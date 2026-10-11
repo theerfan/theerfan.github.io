@@ -118,9 +118,28 @@ code {
 
 .menu-btn { display: none; }
 
-/* Warm text toggle: dark mode only; amber while on. */
-html:not([data-theme="dark"]) .warm-btn { display: none; }
-.warm-btn[aria-pressed="true"] { color: #f2a65a; border-color: #8a5a2b; }
+/* Warm text slider: dark mode only; the flame is amber while warmth > 0. */
+html:not([data-theme="dark"]) .warm-menu { display: none; }
+.warm-menu.is-warm > summary { color: #f2a65a; border-color: #8a5a2b; }
+.warm-panel { width: min(260px, calc(100vw - 32px)); padding: 12px 14px; gap: 8px; }
+.warm-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+.warm-label output { color: var(--muted); font-variant-numeric: tabular-nums; }
+.warm-panel input[type="range"] {
+  width: 100%;
+  margin: 4px 0;
+  accent-color: #f2a65a;
+}
+.warm-ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
 
 /* The theme button shows where it will take you. */
 [data-theme="dark"] .theme-moon,

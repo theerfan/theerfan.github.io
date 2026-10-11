@@ -55,7 +55,8 @@
   var storedTheme = readPref("reader-theme");
   var storedAlign = readPref("reader-align");
   var storedSidebar = readPref("reader-sidebar");
-  var storedWarm = readPref("reader-warm");
+  var storedWarmth = readPref("reader-warmth");
+  var legacyWarm = readPref("reader-warm");
   var theme;
   var align;
   var sidebar;
@@ -83,7 +84,10 @@
   document.documentElement.setAttribute("data-theme", theme);
   document.documentElement.setAttribute("data-align", align);
   document.documentElement.setAttribute("data-sidebar", sidebar);
-  document.documentElement.setAttribute("data-warm", storedWarm === "on" ? "on" : "off");
+  /* Warm text, 0..100; the old on/off setting maps to 40, its former tint. */
+  var warmth = parseInt(storedWarmth, 10);
+  if (!(warmth >= 0 && warmth <= 100)) warmth = legacyWarm === "on" ? 40 : 0;
+  document.documentElement.style.setProperty("--warmth", String(warmth));
   if (document.body) {
     document.body.classList.toggle("sidebar-collapsed", sidebar === "collapsed");
   }
@@ -91,5 +95,5 @@
   if (rememberedTheme) writePref("reader-theme", theme);
   if (storedAlign === align) writePref("reader-align", align);
   if (storedSidebar === sidebar) writePref("reader-sidebar", sidebar);
-  if (storedWarm === "on") writePref("reader-warm", "on");
+  if (warmth > 0) writePref("reader-warmth", String(warmth));
 })();

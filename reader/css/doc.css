@@ -49,11 +49,14 @@
   color-scheme: dark;
 }
 
-/* Warm text (dark mode only): text and secondary text take an amber tint,
-   easier on the eyes than near-white for long reading. */
-[data-theme="dark"][data-warm="on"] {
-  --ink: #f2d4ad;
-  --muted: #b9a083;
+/* Warm text (dark mode only): --warmth, 0 to 100 (set from the reader's
+   slider, js/prefs.js and js/app.js), blends text and secondary text from
+   their neutral colours toward orange, easier on the eyes for long reading. */
+@supports (color: color-mix(in srgb, red 50%, blue)) {
+  [data-theme="dark"] {
+    --ink: color-mix(in srgb, #f7a35c calc(var(--warmth, 0) * 1%), #f5f2eb);
+    --muted: color-mix(in srgb, #c98d5a calc(var(--warmth, 0) * 1%), #a8a29e);
+  }
 }
 
 .markdown-body {
