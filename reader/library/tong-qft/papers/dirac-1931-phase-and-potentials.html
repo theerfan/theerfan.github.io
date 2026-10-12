@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dirac 1931: a phase that acts as a field</title>
+</head>
+<body>
+  <article>
+    <p><a href="../README.md">← Contents</a> · <a href="Papers.html">Papers</a></p>
+    <h1>Dirac 1931: a phase that acts as a field</h1>
+    <p>A reading note on P. A. M. Dirac, “Quantised Singularities in the Electromagnetic Field,” <em>Proc. R. Soc. Lond. A</em> <strong>133</strong> (1931) 60–72, <a href="https://doi.org/10.1098/rspa.1931.0130">doi:10.1098/rspa.1931.0130</a>. On page 65, between equations (5) and (6), Dirac says that if $\psi$ satisfies the usual wave equation for a free particle, then $\psi_1$ satisfies the wave equation for a particle of charge $-e$ moving in an electromagnetic field with potentials</p>
+    $$
+    \vec{A} = \frac{\hbar c}{e}\,\vec\kappa, \qquad A_0 = -\frac{\hbar}{e}\,\kappa_0 .
+    $$
+    <p>This note fills in the steps behind that sentence. Dirac writes $h$ for what is now called $\hbar$; here it is $\hbar$ throughout, in Gaussian units.</p>
+
+    <h2>Step 1: split off the phase</h2>
+    <p>Dirac writes the wavefunction as</p>
+    $$
+    \psi = \psi_1\, e^{i\beta}.
+    $$
+    <p>Here $\beta$ is a <em>non-integrable</em> phase. It has no definite value at a point, because going around a closed loop can change it. Its derivatives are well defined, though, and they get names:</p>
+    $$
+    \vec\kappa = \nabla\beta, \qquad \kappa_0 = \frac{\partial \beta}{\partial t}.
+    $$
+
+    <h2>Step 2: push the operators past the phase factor</h2>
+    <p>This step is just the product rule. Apply the momentum operator $\vec p = -i\hbar\nabla$ to $\psi$:</p>
+    $$
+    -i\hbar\nabla\left(e^{i\beta}\psi_1\right) = e^{i\beta}\left(-i\hbar\nabla\psi_1 + \hbar\vec\kappa\,\psi_1\right) = e^{i\beta}\left(\vec p + \hbar\vec\kappa\right)\psi_1 .
+    $$
+    <p>Do the same with the energy operator $W = i\hbar\,\frac{\partial}{\partial t}$:</p>
+    $$
+    i\hbar\frac{\partial}{\partial t}\left(e^{i\beta}\psi_1\right) = e^{i\beta}\left(i\hbar\frac{\partial\psi_1}{\partial t} - \hbar\kappa_0\,\psi_1\right) = e^{i\beta}\left(W - \hbar\kappa_0\right)\psi_1 .
+    $$
+    <p>So acting on $\psi$ gives the same result as acting on $\psi_1$ with shifted operators, with an overall factor of $e^{i\beta}$ in front. The same holds when the operators are applied repeatedly, because the factor $e^{i\beta}$ comes out the front every time. For example,</p>
+    $$
+    \vec p^{\,2}\psi = \vec p\cdot\left[e^{i\beta}(\vec p + \hbar\vec\kappa)\psi_1\right] = e^{i\beta}(\vec p + \hbar\vec\kappa)^2\psi_1 .
+    $$
+    <p>That is the sentence just before the passage: any wave equation $F(W, \vec p)\,\psi = 0$ becomes</p>
+    $$
+    e^{i\beta}\,F\left(W - \hbar\kappa_0,\; \vec p + \hbar\vec\kappa\right)\psi_1 = 0,
+    $$
+    <p>and the factor $e^{i\beta}$, which is never zero, cancels.</p>
+
+    <h2>Step 3: use the free-particle equation</h2>
+    <p>Suppose $\psi$ obeys the free Schrödinger equation,</p>
+    $$
+    \left(\frac{\vec p^{\,2}}{2m} - W\right)\psi = 0 .
+    $$
+    <p>By step 2, $\psi_1$ then obeys</p>
+    $$
+    \left[\frac{(\vec p + \hbar\vec\kappa)^2}{2m} - (W - \hbar\kappa_0)\right]\psi_1 = 0 .
+    $$
+    <p>Nothing here depends on the Schrödinger equation in particular. The relativistic equations work the same way, since they are also built from $W$ and $\vec p$.</p>
+
+    <h2>Step 4: recognise minimal coupling</h2>
+    <p>In Gaussian units, a particle of charge $q$ in potentials $(A_0, \vec A)$ obeys the free equation with the substitutions</p>
+    $$
+    \vec p \longrightarrow \vec p - \frac{q}{c}\vec A, \qquad W \longrightarrow W - qA_0 ,
+    $$
+    <p>so that the Schrödinger equation reads</p>
+    $$
+    \left[\frac{1}{2m}\left(\vec p - \frac{q}{c}\vec A\right)^2 + qA_0\right]\psi_1 = W\psi_1 .
+    $$
+    <p>With $q = -e$ the substitutions are $\vec p + \frac{e}{c}\vec A$ and $W + eA_0$. Compare these with step 3:</p>
+    $$
+    \frac{e}{c}\vec A = \hbar\vec\kappa \;\Longrightarrow\; \vec A = \frac{\hbar c}{e}\,\vec\kappa, \qquad\qquad eA_0 = -\hbar\kappa_0 \;\Longrightarrow\; A_0 = -\frac{\hbar}{e}\,\kappa_0 .
+    $$
+    <p>These are exactly Dirac’s potentials. The charge $-e$ is a choice that makes the particle an electron. The argument only fixes the product of charge and potential, so any other charge would do with rescaled potentials.</p>
+
+    <h2>Why this matters</h2>
+    <p>The usual logic of gauge invariance runs from a field to a phase: given potentials, a gauge transformation changes the wavefunction by a phase factor. Dirac runs it backwards. He starts with a free particle carrying an arbitrary phase, and finds that the phase is indistinguishable from an electromagnetic field.</p>
+    <p>Whether that field is real depends on whether $\beta$ is integrable. The fields built from these potentials are</p>
+    $$
+    \vec B = \nabla\times\vec A = \frac{\hbar c}{e}\,\nabla\times\vec\kappa, \qquad \vec E = -\nabla A_0 - \frac{1}{c}\frac{\partial \vec A}{\partial t} = \frac{\hbar}{e}\left(\nabla\kappa_0 - \frac{\partial\vec\kappa}{\partial t}\right).
+    $$
+    <ul>
+      <li><strong>Integrable phase.</strong> If $\beta$ is an ordinary function, then $\vec\kappa = \nabla\beta$ has zero curl, and $\nabla\kappa_0 = \frac{\partial\vec\kappa}{\partial t}$ because derivatives commute. Both fields vanish. The potentials are a pure gauge transformation, the same thing as the shift by $\lambda$ in <a href="../1.%20Classical%20Field%20Theory.md#SS1">Section 1.1</a>.</li>
+      <li><strong>Non-integrable phase.</strong> Then $\nabla\times\vec\kappa \neq 0$ and $\vec B \neq 0$. By Stokes’ theorem, the change in phase around a closed loop $C$ bounding a surface $S$ is</li>
+    </ul>
+    $$
+    \Delta\beta = \oint_C \vec\kappa\cdot d\vec\ell = \int_S (\nabla\times\vec\kappa)\cdot d\vec S = \frac{e}{\hbar c}\,\Phi_B ,
+    $$
+    <p>where $\Phi_B$ is the magnetic flux through $S$. This relation is what Dirac uses next. The wavefunction itself must be single-valued, so the phase change around any closed loop is a multiple of $2\pi$. Shrinking a loop around a point where the field could be singular then forces the flux out of that point to come in units of $2\pi\hbar c/e$. That is a magnetic monopole, and its strength $g$ must satisfy $eg = \frac{n}{2}\hbar c$ for an integer $n$.</p>
+  </article>
+</body>
+</html>
