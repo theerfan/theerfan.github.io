@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dirac 1931: a companion</title>
+</head>
+<body>
+  <article>
+    <p><a href="../README.md">← Contents</a> · <a href="Papers.html">Papers</a> · <a href="../1.%20Classical%20Field%20Theory.md">1. Classical Field Theory</a></p>
+    <h1>Dirac 1931: a companion</h1>
+    <p>A section-by-section companion to P. A. M. Dirac, “Quantised Singularities in the Electromagnetic Field,” <em>Proc. R. Soc. Lond. A</em> <strong>133</strong> (1931) 60–72, <a href="https://doi.org/10.1098/rspa.1931.0130">doi:10.1098/rspa.1931.0130</a>. The paper is short, but it moves fast: steps that Dirac calls obvious are written out here, his equations are restated in modern notation with their original numbers, and the page numbers are those of the journal, so the two can be read side by side.</p>
+    <p>In one sentence, the paper argues this: the phase of a wavefunction only needs to be defined between neighbouring points; allowing that is the same thing as putting the particle in an electromagnetic field; and because a phase is only defined up to multiples of $2\pi$, the field is allowed to have isolated magnetic poles, provided their strength $\mu$ and the electron charge $e$ satisfy $e\mu = \frac{n}{2}\hbar c$.</p>
+
+    <h2>Notation</h2>
+    <p>Dirac’s notation is close to modern notation, with a few differences that are easy to trip over.</p>
+    <ul>
+      <li>He writes $h$ for what is now $\hbar$ (his footnote on page 62 says so). This companion writes $\hbar$.</li>
+      <li>Units are Gaussian. The magnetic field is $\vec H$ (in vacuum this is the modern $\vec B$), and the potentials are $A_0$ and $\vec A$, with $\vec H = \nabla\times\vec A$ and $\vec E = -\nabla A_0 - \frac{1}{c}\frac{\partial\vec A}{\partial t}$. A magnetic pole of strength $\mu$ has field $\vec H = \mu\,\hat r/r^2$, so its total flux is $4\pi\mu$.</li>
+      <li>$(\vec a, \vec b)$ is the dot product $\vec a\cdot\vec b$.</li>
+      <li>A “6-vector” is an antisymmetric tensor in four dimensions, which has six independent components. The electromagnetic field $(\vec E, \vec H)$ is one, and so is the element $dS$ of a two-dimensional surface in spacetime.</li>
+      <li>$-e$ is the electron charge, so $e &gt; 0$. Dirac’s equation (1) is $\hbar c/e^2 = 137$, the inverse fine-structure constant.</li>
+    </ul>
+
+    <h2>§1 Introduction (pp. 60–62)</h2>
+    <p>The introduction has three parts, and only the last is needed for the rest of the paper.</p>
+    <p><strong>A view of method.</strong> Dirac argues that progress in physics will come less from fitting experimental data and more from generalising the mathematics that physics already uses, then asking what the new mathematical features mean physically. The rest of the paper is an instance: §2 takes one assumption of quantum mechanics, that the phase of a wavefunction is defined at each point, and drops it.</p>
+    <p><strong>Antimatter.</strong> As an earlier example of the method, he revisits his hole theory. The Dirac equation has negative-energy states; he had proposed that they are all filled, and that a missing one, a hole, behaves as a positively charged particle. He had hoped the hole was the proton. By 1931 Weyl, Oppenheimer and Tamm had shown that the hole must have the electron’s mass, and would annihilate with electrons far too fast for matter to be stable. So Dirac gives up the proton and predicts a new particle, the <em>anti-electron</em>, with the electron’s mass and opposite charge, produced in pairs by colliding $\gamma$-rays. This is the prediction of the positron, which Anderson found the next year. He adds that protons should likewise have anti-protons.</p>
+    <p><strong>The question of the paper.</strong> Electric charge comes in a smallest unit $e$, with $\hbar c/e^2 = 137$. Why? The theory below looks at first as if it will produce a value for $e$. Instead it produces a relation between the smallest electric charge and the smallest magnetic pole. It does not fix $e$ by itself, but it does give a reason why electric charge should be quantized at all.</p>
+
+    <h2>§2 Non-integrable phases (pp. 62–66)</h2>
+
+    <h3>The starting point</h3>
+    <p>Write the wavefunction as amplitude times phase,</p>
+    $$
+    \psi = A\,e^{i\gamma}, \tag{2}
+    $$
+    <p>with $A$ and $\gamma$ real. A normalised state determines $\psi$ only up to a constant factor of modulus one, so $\gamma$ is only determined up to an added constant. Its value at a single point therefore means nothing; only differences $\gamma(Q) - \gamma(P)$ between two points matter. Dirac’s move is to weaken this further: assume that only differences between <em>neighbouring</em> points are defined. To find the phase difference between two distant points one then has to add up the small differences along a curve joining them, and different curves may give different answers.</p>
+
+    <h3>What a non-integrable phase is</h3>
+    <p>This is the central idea of the paper, so it is worth slowing down.</p>
+    <p><strong>A rule for small steps.</strong> Suppose that all we are given is a rule for how the phase changes over a small step. At each point there is a vector $\vec\kappa$, and moving by a small displacement $d\vec x$ changes the phase by</p>
+    $$
+    d\beta = \vec\kappa\cdot d\vec x = \kappa_x\,dx + \kappa_y\,dy + \kappa_z\,dz .
+    $$
+    <p>To get the change along a whole curve $C$ from $P$ to $Q$, add up the steps: $\Delta\beta_C = \int_C \vec\kappa\cdot d\vec x$.</p>
+    <p><strong>Integrable means “comes from a function”.</strong> The rule is <em>integrable</em> if there is an ordinary function $\beta(\vec x)$ whose gradient is $\vec\kappa$. Then $\int_C\vec\kappa\cdot d\vec x = \beta(Q) - \beta(P)$ for every curve, the answer depends only on the endpoints, and every closed loop gives zero. If no such function exists, the rule is <em>non-integrable</em>: the change depends on the route, and going around a closed loop can leave a net change. The phase then has no value at a point, only a rule for transporting it.</p>
+    <p><strong>The test.</strong> If $\vec\kappa = \nabla\beta$, then mixed partial derivatives of $\beta$ commute, so</p>
+    $$
+    \frac{\partial\kappa_x}{\partial y} = \frac{\partial^2\beta}{\partial y\,\partial x} = \frac{\partial^2\beta}{\partial x\,\partial y} = \frac{\partial\kappa_y}{\partial x},
+    $$
+    <p>and similarly for the other pairs. These are Dirac’s “conditions of integrability”, and together they say $\nabla\times\vec\kappa = 0$. Conversely, a $\vec\kappa$ with zero curl in a region with no holes is a gradient. So the curl of $\vec\kappa$ measures exactly how non-integrable the phase is. Stokes’ theorem makes this quantitative: the change around a closed curve equals the flux of the curl through any surface it bounds,</p>
+    $$
+    \oint (\vec\kappa, d\vec s) = \int (\nabla\times\vec\kappa, d\vec S). \tag{4}
+    $$
+    <p>Dirac states (4) in four dimensions, with $d\vec s$ a step in spacetime and $d\vec S$ a surface element in spacetime; the three-dimensional version carries all the ideas.</p>
+    <p><strong>An example.</strong> Take $\vec\kappa = \frac{k}{2}(-y,\, x,\, 0)$ for a constant $k$. The test fails: $\frac{\partial\kappa_x}{\partial y} = -\frac{k}{2}$ but $\frac{\partial\kappa_y}{\partial x} = +\frac{k}{2}$. Go from the origin to $(a, a)$ in two ways.</p>
+    <ul>
+      <li>Along $x$ first, then up $y$. On the first leg $y = 0$, so $\kappa_x = 0$ and nothing accumulates. On the second leg $x = a$, and $\int_0^a \kappa_y\,dy = \frac{k a}{2}\cdot a = \frac{k a^2}{2}$.</li>
+      <li>Up $y$ first, then along $x$. On the first leg $x = 0$, so $\kappa_y = 0$. On the second leg $y = a$, and $\int_0^a \kappa_x\,dx = -\frac{k a}{2}\cdot a = -\frac{k a^2}{2}$.</li>
+    </ul>
+    <p>The two routes disagree by $k a^2$. Going out by one route and back by the other is a loop around the square, so the phase picked up around the square is $k a^2$, which is $\nabla\times\vec\kappa = k\hat z$ times the area, as (4) says. In §2 this $\vec\kappa$ will turn out to describe a uniform magnetic field along $z$.</p>
+    <p><strong>Familiar cases.</strong> The same structure appears elsewhere in physics.</p>
+    <ul>
+      <li><em>Work.</em> The work done by a force along a path is $\int \vec F\cdot d\vec x$. For a conservative force there is a potential energy, and the work depends only on the endpoints. For friction there is no such function: the work depends on the route.</li>
+      <li><em>Heat.</em> In thermodynamics, internal energy is a function of the state, but heat absorbed is not. A cycle can return a gas to its starting state with net heat absorbed. This is why heat is written $\delta Q$, an inexact differential.</li>
+      <li><em>Carrying an arrow on a sphere.</em> Walk around a loop on a globe carrying an arrow, never rotating it relative to the surface. On returning, the arrow has turned by an angle equal to the area enclosed (on a unit sphere). There is no global rule for “the same direction” at distant points, only between neighbours. Weyl’s gauge idea, which Dirac cites on page 66, was built on this analogy, with the phase in place of the arrow and the electromagnetic field in place of curvature.</li>
+    </ul>
+    <p><strong>A loop phase without a curl.</strong> One more example matters for §3. Take $\vec\kappa = \nabla\varphi$, where $\varphi$ is the azimuthal angle around the $z$-axis, so $\vec\kappa = \frac{(-y,\, x,\, 0)}{x^2 + y^2}$. The curl is zero everywhere off the axis, yet a loop around the axis gives $\oint\vec\kappa\cdot d\vec x = 2\pi$. The reason is that $\varphi$ is a function only up to multiples of $2\pi$, and there is a line, the axis, where it is undefined. The wavefunction $\psi = x + iy = \rho\,e^{i\varphi}$ has exactly this phase. It vanishes on the axis, and its phase winds by $2\pi$ around it. Since $e^{i\cdot 2\pi} = 1$, this phase is invisible everywhere except at the line itself. §3 is about such lines.</p>
+
+    <h3>Why every wavefunction must share the same loop phase (pp. 63–64)</h3>
+    <p>Can a phase like this be allowed without making physics ambiguous? The density $\lvert\psi\rvert^2$ does not care about phases. But an overlap does:</p>
+    $$
+    \int \psi_m^{\,*}\,\psi_n\;dx\,dy\,dz
+    $$
+    <p>is a number whose modulus squared is the probability that state $n$ is found in state $m$. For the modulus to be definite, the integrand $\psi_m^{\,*}\psi_n$ must have a definite phase difference between any two points, so its phase change around every closed curve must be zero. The phase change of $\psi_m^{\,*}$ is minus that of $\psi_m$. Hence</p>
+    <blockquote><p>The change in phase of a wave function round any closed curve must be the same for all the wave functions.</p></blockquote>
+    <p>That is Dirac’s general result, in his words. On page 64 he checks that the same rule keeps transformation functions and matrix elements of observables unambiguous, so all of quantum mechanics goes through unchanged. Then comes the physical point. A loop phase that is the same for every state cannot be a property of the state. It is a property of the setting the particle moves in, and for a single particle that means the field of force acting on it.</p>
+
+    <h3>Separating the shared phase (pp. 64–65)</h3>
+    <p>Since the non-integrable part is common to all states, put it in a common factor:</p>
+    $$
+    \psi = \psi_1\,e^{i\beta}. \tag{3}
+    $$
+    <p>Here $\psi_1$ is an ordinary wavefunction, with a definite phase at each point and $\lvert\psi_1\rvert = \lvert\psi\rvert$. The factor $e^{i\beta}$ carries the non-integrability: $\beta$ has no value at a point, but it has definite derivatives</p>
+    $$
+    \kappa_x = \frac{\partial\beta}{\partial x}, \quad \kappa_y = \frac{\partial\beta}{\partial y}, \quad \kappa_z = \frac{\partial\beta}{\partial z}, \quad \kappa_0 = \frac{\partial\beta}{\partial t},
+    $$
+    <p>which need not satisfy the integrability conditions. Since $\psi_1$ has a definite phase, all the loop phase comes from $e^{i\beta}$, which gives (4).</p>
+    <p>This is consistent with superposition. If $\psi_m$ and $\psi_n$ are both written with the same $e^{i\beta}$, then $c_m\psi_m + c_n\psi_n = (c_m\psi_{1m} + c_n\psi_{1n})\,e^{i\beta}$ has the same form, so it has the same loop phases. Only $\nabla\times\vec\kappa$ is fixed by the loop phases, so the $\kappa$’s may be changed by the gradient of an ordinary function without changing anything physical. That freedom will turn out to be gauge freedom.</p>
+
+    <h3>The phase acts as a field: equations (5) and (6) (p. 65)</h3>
+    <p>This passage is the heart of §2. Dirac derives it in two lines; here are the steps.</p>
+    <p><strong>Push the operators past the phase factor.</strong> This step is just the product rule. Apply the momentum operator $\vec p = -i\hbar\nabla$ to $\psi$:</p>
+    $$
+    -i\hbar\frac{\partial}{\partial x}\psi = e^{i\beta}\left(-i\hbar\frac{\partial}{\partial x} + \hbar\kappa_x\right)\psi_1 . \tag{5}
+    $$
+    <p>Do the same with the energy operator $W = i\hbar\,\frac{\partial}{\partial t}$:</p>
+    $$
+    i\hbar\frac{\partial}{\partial t}\left(e^{i\beta}\psi_1\right) = e^{i\beta}\left(i\hbar\frac{\partial\psi_1}{\partial t} - \hbar\kappa_0\,\psi_1\right) = e^{i\beta}\left(W - \hbar\kappa_0\right)\psi_1 .
+    $$
+    <p>So acting on $\psi$ gives the same result as acting on $\psi_1$ with shifted operators, $\vec p + \hbar\vec\kappa$ and $W - \hbar\kappa_0$, with an overall factor of $e^{i\beta}$ in front. The same holds when the operators are applied repeatedly, because the factor $e^{i\beta}$ comes out the front every time. For example,</p>
+    $$
+    \vec p^{\,2}\psi = \vec p\cdot\left[e^{i\beta}(\vec p + \hbar\vec\kappa)\psi_1\right] = e^{i\beta}(\vec p + \hbar\vec\kappa)^2\psi_1 .
+    $$
+    <p>So any wave equation $F(W, \vec p)\,\psi = 0$ becomes</p>
+    $$
+    e^{i\beta}\,F\left(W - \hbar\kappa_0,\; \vec p + \hbar\vec\kappa\right)\psi_1 = 0,
+    $$
+    <p>and the factor $e^{i\beta}$, which is never zero, cancels.</p>
+    <p><strong>Use the free-particle equation.</strong> Suppose $\psi$ obeys the free Schrödinger equation, $\left(\frac{\vec p^{\,2}}{2m} - W\right)\psi = 0$. Then $\psi_1$ obeys</p>
+    $$
+    \left[\frac{(\vec p + \hbar\vec\kappa)^2}{2m} - (W - \hbar\kappa_0)\right]\psi_1 = 0 .
+    $$
+    <p>Nothing here depends on the Schrödinger equation in particular. Dirac stresses that the form of the wave equation, relativistic or not, does not matter (p. 62), since every wave equation is built from $W$ and $\vec p$.</p>
+    <p><strong>Recognise minimal coupling.</strong> In Gaussian units, a particle of charge $q$ in potentials $(A_0, \vec A)$ obeys the free equation with the substitutions</p>
+    $$
+    \vec p \longrightarrow \vec p - \frac{q}{c}\vec A, \qquad W \longrightarrow W - qA_0 ,
+    $$
+    <p>so that the Schrödinger equation reads</p>
+    $$
+    \left[\frac{1}{2m}\left(\vec p - \frac{q}{c}\vec A\right)^2 + qA_0\right]\psi_1 = W\psi_1 .
+    $$
+    <p>With $q = -e$ the substitutions are $\vec p + \frac{e}{c}\vec A$ and $W + eA_0$. Comparing with the equation for $\psi_1$:</p>
+    $$
+    \vec A = \frac{\hbar c}{e}\,\vec\kappa, \qquad A_0 = -\frac{\hbar}{e}\,\kappa_0 . \tag{6}
+    $$
+    <p>These are Dirac’s potentials. The charge $-e$ is a choice that makes the particle an electron. The argument only fixes the product of charge and potential, so any other charge would do with rescaled potentials.</p>
+    <p>Dirac’s reading of this: $\psi$ always satisfies the <em>free</em> wave equation, field or no field, and the entire effect of a field is to make the phase non-integrable. The usual description, with an ordinary $\psi_1$ in a field, is recovered by moving the phase into the potentials. The usual logic of gauge invariance runs from a field to a phase. Dirac runs it backwards, from a phase to a field.</p>
+
+    <h3>Fields as the curl of $\kappa$: equation (7) (p. 65)</h3>
+    <p>Putting (6) into the definitions of the fields gives</p>
+    $$
+    \nabla\times\vec\kappa = \frac{e}{\hbar c}\,\vec H, \qquad \nabla\kappa_0 - \frac{\partial\vec\kappa}{\partial t} = \frac{e}{\hbar}\,\vec E . \tag{7}
+    $$
+    <p>The first is $\vec H = \nabla\times\vec A = \frac{\hbar c}{e}\nabla\times\vec\kappa$. For the second, $\vec E = -\nabla A_0 - \frac{1}{c}\frac{\partial\vec A}{\partial t} = \frac{\hbar}{e}\nabla\kappa_0 - \frac{\hbar}{e}\frac{\partial\vec\kappa}{\partial t}$. Together these are the six components of the four-dimensional curl of $\kappa$, which is why Dirac calls it a 6-vector. Compare the integrable case:</p>
+    <ul>
+      <li><strong>Integrable phase.</strong> If $\beta$ is an ordinary function, then $\nabla\times\vec\kappa = \nabla\times\nabla\beta = 0$ and $\nabla\kappa_0 = \frac{\partial\vec\kappa}{\partial t}$, because derivatives commute. Both fields vanish. The potentials are a pure gauge transformation, the shift by $\lambda$ in the gauge freedom paragraph of <a href="../1.%20Classical%20Field%20Theory.md#SS1">Section 1.1</a>.</li>
+      <li><strong>Non-integrable phase.</strong> The fields are nonzero, and (4) with (7) says the phase change around a closed curve in space is $\frac{e}{\hbar c}$ times the magnetic flux through it.</li>
+    </ul>
+    <p>In the example above, $\vec\kappa = \frac{k}{2}(-y, x, 0)$ gives $\vec H = \frac{\hbar c}{e}k\,\hat z$, a uniform magnetic field; the phase $k a^2$ around the square is $\frac{e}{\hbar c}$ times the flux $H a^2$.</p>
+    <p>On page 66 Dirac says plainly that none of this is new: it is Weyl’s principle of gauge invariance (1929) in its modern form, and is also in work of Iwanenko and Fock. He includes it to show that non-integrable phases fit all the principles of quantum mechanics. So far, the theory is just the ordinary electron in an ordinary field. The new physics is in §3.</p>
+
+    <h2>§3 Nodal singularities (pp. 66–68)</h2>
+
+    <h3>The $2\pi$ loophole</h3>
+    <p>A phase is only defined up to multiples of $2\pi$, since $e^{i(\gamma + 2\pi n)} = e^{i\gamma}$. So the rule of §2 must be relaxed: the phase change around a closed curve only needs to agree between wavefunctions up to multiples of $2\pi$.</p>
+    <p>For a very small curve this changes nothing. The wavefunction is continuous, so its phase changes only slightly around a small curve, and two small changes cannot differ by $2\pi$. The small-loop phase is therefore a single definite number, which equals $\frac{e}{\hbar c}$ times the small flux through the loop.</p>
+
+    <h3>Nodal lines</h3>
+    <p>The exception is where $\psi = 0$, since there the phase has no meaning. A complex $\psi$ vanishes only when its real and imaginary parts both vanish. That is two conditions on three coordinates, so in general the zeros form a line, a <em>nodal line</em>. (In spacetime they form a two-dimensional surface; Dirac notes in a footnote that this changes nothing.)</p>
+    <p>Around a small curve that encircles a nodal line, continuity no longer forces the phase change to be small. It must be close to $2\pi n$ for some integer $n$, which characterises the nodal line. The example $\psi = x + iy$ above has a nodal line along the $z$-axis with $n = 1$. The sign of $n$ goes with a direction of travel around the line, and so with a direction along it. What remains after subtracting $2\pi n$ is the field contribution, so around a small curve</p>
+    $$
+    \Delta(\text{phase}) = 2\pi n + \frac{e}{\hbar c}\int(\vec H, d\vec S).
+    $$
+
+    <h3>Large curves: equation (8) (p. 67)</h3>
+    <p>Fill a large closed curve with a surface and divide the surface into a mesh of small cells. Going around every cell in the same sense, each interior edge is traversed twice in opposite directions and cancels, so the phase change around the large curve is the sum over the cells:</p>
+    $$
+    2\pi\sum n + \frac{e}{\hbar c}\int(\vec H, d\vec S). \tag{8}
+    $$
+    <p>The sum runs over all nodal lines crossing the surface, with signs. The flux term is the same for every wavefunction; the $2\pi\sum n$ term can differ from one wavefunction to another.</p>
+
+    <h3>Closed surfaces and magnetic poles: equation (9) (p. 68)</h3>
+    <p>Now shrink the boundary curve to nothing, so the surface becomes closed, like a balloon. The phase change around a vanishing curve is zero, so (8) must vanish on any closed surface:</p>
+    $$
+    \sum n = -\frac{e}{2\pi\hbar c}\times(\text{total magnetic flux out of the surface}).
+    $$
+    <p>Ordinary electromagnetism has no net flux out of a closed surface, and then nothing new happens. But suppose $\sum n \neq 0$. A nodal line that passes through the surface enters and leaves, and contributes $+n$ and $-n$, which cancel. So a nonzero sum needs nodal lines that <em>end</em> inside. The right-hand side is the same for every wavefunction, so the endpoints must be the same for every wavefunction: they are features of the field, not of the state. They are points where magnetic flux comes out, that is, magnetic poles. For a pole of strength $\mu$ the flux is $4\pi\mu$, so</p>
+    $$
+    4\pi\mu = 2\pi n\,\frac{\hbar c}{e}, \qquad \mu = \frac{n}{2}\,\frac{\hbar c}{e},
+    $$
+    <p>where $n$ is the total characteristic of the nodal lines ending there (the overall sign is a matter of orientation convention). The smallest pole, $n = 1$, has</p>
+    $$
+    \frac{\hbar c}{e\,\mu_0} = 2. \tag{9}
+    $$
+    <p>Compare with (1), $\frac{\hbar c}{e^2} = 137$: dividing gives $\mu_0 = \frac{137}{2}\,e$.</p>
+    <p>The argument runs the other way too. If a single pole of strength $\mu_0$ exists anywhere, then a particle of charge $q$ moving near it has well-defined wavefunctions only if $q\mu_0$ is a multiple of $\frac{1}{2}\hbar c$, so every charge must be an integer multiple of $e$. That is the explanation of charge quantization the paper set out to find, at the price of a monopole. It is the version stated in chapter 1, $q\,g = 2\pi\hbar\,n$ for total flux $g = 4\pi\mu$ in units with $c = 1$.</p>
+
+    <h2>§4 Electron in the field of a one-quantum pole (pp. 68–70)</h2>
+
+    <h3>Choosing $\kappa$ around a pole: equation (10)</h3>
+    <p>Put a pole with $n = 1$ at the origin and use spherical coordinates $(r, \theta, \phi)$. Every wavefunction now has a nodal line coming out of the origin. The field is radial with magnitude $\mu_0/r^2 = \frac{\hbar c}{2e r^2}$, so by (7) $\nabla\times\vec\kappa$ is radial with magnitude $\frac{1}{2r^2}$. No smooth $\vec\kappa$ can do this everywhere around the pole: its curl would have zero divergence, but the flux of $\nabla\times\vec\kappa$ out of a sphere around the pole is $2\pi \neq 0$. So $\vec\kappa$ has to be singular on some line out of the pole, which can be chosen freely. Dirac takes the negative $z$-axis, $\theta = \pi$:</p>
+    $$
+    \kappa_0 = 0, \qquad \kappa_r = \kappa_\theta = 0, \qquad \kappa_\phi = \frac{1}{2r}\tan\frac{\theta}{2}. \tag{10}
+    $$
+    <p>The check that this works: with only a $\phi$-component that does not depend on $\phi$,</p>
+    $$
+    (\nabla\times\vec\kappa)_r = \frac{1}{r\sin\theta}\frac{\partial}{\partial\theta}\left(\sin\theta\,\kappa_\phi\right) = \frac{1}{2r^2\sin\theta}\frac{d}{d\theta}\left(1 - \cos\theta\right) = \frac{1}{2r^2},
+    $$
+    <p>using $\sin\theta\tan\frac{\theta}{2} = 2\sin^2\frac{\theta}{2} = 1 - \cos\theta$. The other components vanish. Around a circle at fixed $r$ and $\theta$, $\oint\vec\kappa\cdot d\vec s = 2\pi r\sin\theta\,\kappa_\phi = \pi(1 - \cos\theta)$. This is the flux through the cap above the circle. It goes to $0$ as $\theta \to 0$ and to $2\pi$ as $\theta \to \pi$: the singular line carries a phase of $2\pi$, which is invisible in $e^{i\beta}$. That line is what is now called the <em>Dirac string</em>.</p>
+    <p>Dirac points out that one could instead put the string along each wavefunction’s own nodal line, making every $\psi_1$ continuous, at the cost of different $\kappa$’s for different states (differing by gradients away from the strings). He prefers one $\kappa$ for all states. Then a $\psi_1$ whose nodal line is not on the string must be discontinuous across the string, in exactly the way that makes $\psi = \psi_1 e^{i\beta}$ continuous.</p>
+
+    <h3>The wave equation: equation (11)</h3>
+    <p>Start from the free equation $-\frac{\hbar^2}{2m}\nabla^2\psi = W\psi$ and apply the rule (5). Since $\vec p + \hbar\vec\kappa = -i\hbar(\nabla + i\vec\kappa)$,</p>
+    $$
+    -\frac{\hbar^2}{2m}\left\{\nabla^2 + i(\vec\kappa, \nabla) + i(\nabla, \vec\kappa) - \kappa^2\right\}\psi_1 = W\psi_1 . \tag{11}
+    $$
+    <p>Here $(\nabla, \vec\kappa)\psi_1$ means $\nabla\cdot(\vec\kappa\,\psi_1)$; the operators are applied in order. With (10), $\kappa_\phi$ does not depend on $\phi$, so both middle terms equal $\kappa_\phi\,\frac{1}{r\sin\theta}\frac{\partial}{\partial\phi} = \frac{1}{4r^2}\sec^2\frac{\theta}{2}\,\frac{\partial}{\partial\phi}$, and $\kappa^2 = \frac{1}{4r^2}\tan^2\frac{\theta}{2}$. Equation (11) becomes</p>
+    $$
+    -\frac{\hbar^2}{2m}\left\{\nabla^2 + \frac{i}{2r^2}\sec^2\frac{\theta}{2}\,\frac{\partial}{\partial\phi} - \frac{1}{4r^2}\tan^2\frac{\theta}{2}\right\}\psi_1 = W\psi_1 .
+    $$
+
+    <h3>Separating variables: equations (12) and (13)</h3>
+    <p>Every new term carries a factor $\frac{1}{r^2}$, just like the angular part of $\nabla^2$. So try $\psi_1 = f(r)\,S(\theta, \phi)$. With $\lambda$ the separation constant,</p>
+    $$
+    \left\{\frac{d^2}{dr^2} + \frac{2}{r}\frac{d}{dr} - \frac{\lambda}{r^2}\right\}f = -\frac{2mW}{\hbar^2}\,f, \tag{12}
+    $$
+    $$
+    \left\{\frac{1}{\sin\theta}\frac{\partial}{\partial\theta}\sin\theta\frac{\partial}{\partial\theta} + \frac{1}{\sin^2\theta}\frac{\partial^2}{\partial\phi^2} + \frac{i}{2}\sec^2\frac{\theta}{2}\,\frac{\partial}{\partial\phi} - \frac{1}{4}\tan^2\frac{\theta}{2}\right\}S = -\lambda S. \tag{13}
+    $$
+    <p><strong>No bound states.</strong> The radial equation (12) contains no constant with the dimensions of a length: $\hbar$, $m$ and $W$ only appear in the combination $\frac{2mW}{\hbar^2}$. If $f(r)$ were a bound state with energy $W$, then $f(sr)$ would be one with energy $s^2 W$ for every $s &gt; 0$, a continuous family with no lowest member, which is not a set of bound states. So an electron cannot be bound to a pole. Dirac notes that the classical theory agrees.</p>
+    <p><strong>Monopole harmonics.</strong> Equation (13) generalises the equation for spherical harmonics, with extra terms from the pole. Its lowest eigenvalue is $\lambda = \frac{1}{2}$ (for ordinary spherical harmonics the lowest is $0$), with two solutions. The paper prints them as</p>
+    $$
+    S_a = \cos\frac{\theta}{2}, \qquad S_b = \sin\frac{\theta}{2}\,e^{i\phi}.
+    $$
+    <p>Substituting $S_a$ into (13) gives $\lambda = \frac{1}{2}$ directly. For $S_b$, with the sign of the $\frac{\partial}{\partial\phi}$ term as printed in (11) and (13), the function that works is $\sin\frac{\theta}{2}\,e^{-i\phi}$. The printed $e^{i\phi}$ fails, so the sign in the scan is presumably a misprint or a slip of convention; the argument is unaffected.</p>
+    <p>The two solutions show the string at work.</p>
+    <ul>
+      <li>$S_a$ vanishes at $\theta = \pi$, so its nodal line lies along the string, and $S_a$ is continuous everywhere.</li>
+      <li>$S_b$ vanishes at $\theta = 0$, so its nodal line points the other way, along the positive $z$-axis. At $\theta = \pi$ it does not vanish, but its phase winds by $2\pi$ around the string, so it is discontinuous there. That winding cancels the $2\pi$ carried by $e^{i\beta}$ on the string, so $\psi = S_b\,e^{i\beta}$ is continuous.</li>
+    </ul>
+    <p>The two physical wavefunctions are on an equal footing. The difference between $S_a$ and $S_b$ comes only from where the string was put. The general eigenvalue is $\lambda = n^2 + 2n + \frac{1}{2}$ for $n = 0, 1, 2, \dots$, worked out in full by Tamm. In later language, these are the <em>monopole harmonics</em>: $\lambda = j(j+1) - \frac{1}{4}$ with $j = n + \frac{1}{2}$, so a charge in the field of a pole has half-integer angular momentum, the extra $\frac{1}{2}$ coming from the field.</p>
+
+    <h2>§5 Conclusion (pp. 71–72)</h2>
+    <p><strong>Why poles were thought impossible.</strong> Classically one can write the equations of motion of a charge near poles. But the Hamiltonian form needs potentials, and potentials only exist if there are no poles. Quantum mechanics is built on the Hamiltonian form, so it seemed to rule poles out. Dirac’s point is that it does not: the formalism, extended naturally, leads to wave equations whose only interpretation is a charge in the field of a pole. Nothing changes in the abstract theory of states and observables; only the way they are represented by wavefunctions is generalised. “Under these circumstances one would be surprised if Nature had made no use of it.”</p>
+    <p><strong>A disappointment.</strong> The theory gives (9), a relation between $e$ and $\mu_0$, rather than a value for $e$ itself, which is what (1) asks for. The theory has no adjustable features, so explaining 137 will need some new idea.</p>
+    <p><strong>Symmetry.</strong> The reciprocity between electricity and magnetism is perfect. One could equally study a pole moving near a fixed charge, using dual potentials $B$ with $\vec E = \nabla\times\vec B$, and reach the same condition (9).</p>
+    <p><strong>Why no one has seen a pole.</strong> With (1) and (9), $\mu_0 = \frac{137}{2}e$, so two opposite poles attract $\left(\frac{137}{2}\right)^2 \approx 4692$ times as strongly as an electron and a proton. Dirac suggests that this force is why opposite poles have never been separated.</p>
+
+    <h2>What came after</h2>
+    <ul>
+      <li>The anti-electron of §1 was found by Anderson in 1932, the anti-proton in 1955.</li>
+      <li>Aharonov and Bohm (1959) showed that the phase $\frac{e}{\hbar c}\times\text{flux}$ around a loop is observable even where the field on the loop is zero, the clearest experimental sign that the non-integrable phase of §2 is physical.</li>
+      <li>Wu and Yang (1975) removed the string: describe the phase with two smooth $\kappa$’s on two overlapping patches covering the sphere, joined by a gauge transformation $e^{in\phi}$ on the overlap. That gauge transformation is single-valued only if $n$ is an integer, which is (9) again. In modern terms, $\kappa$ is a connection on a bundle, and the loop phase is its holonomy.</li>
+      <li>No magnetic monopole has been found. Grand unified theories predict them, as ’t Hooft and Polyakov showed in 1974, which is why the searches described in <a href="../1.%20Classical%20Field%20Theory.md">chapter 1</a> continue.</li>
+    </ul>
+  </article>
+</body>
+</html>

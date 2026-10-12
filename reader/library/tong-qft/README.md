@@ -65,6 +65,6 @@ Explanations of things that didn’t stick. Each one is linked from the sentence
 
 ## Papers
 
-Papers cited in the lectures, and reading notes on them.
+Papers cited in the lectures, and companions that work through them.
 
 - <a href="papers/Papers.html"><strong>Papers</strong></a>
