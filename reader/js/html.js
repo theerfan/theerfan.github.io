@@ -535,8 +535,11 @@
 
   /* ---- Inline rendering (no scripts) ------------------------------------- */
 
-  async function renderInline(doc, ctx, title) {
-    const root = pickRoot(doc);
+  /* Math, sanitizing and theme neutralizing for markup shown inline; links and
+     media are left to the caller. options.autoMath === false skips TeX
+     delimiters in plain text (pages where "$" is just a dollar sign). */
+  function clean(doc, root, options) {
+    options = options || {};
     const store = [];
 
     keepSvgDefs(doc, root);
@@ -548,22 +551,27 @@
       if (!style.closest("svg")) style.remove();
     });
 
-    const clean = global.DOMPurify.sanitize(root.innerHTML, {
+    const safe = global.DOMPurify.sanitize(root.innerHTML, {
       ADD_TAGS: ["use"],
       FORBID_TAGS: FORBID_TAGS,
       FORBID_ATTR: ["srcdoc", "formaction", "ping"]
     });
 
     const wrap = document.createElement("div");
-    wrap.innerHTML = clean;
+    wrap.innerHTML = safe;
     dropExternalUse(wrap);
     wrap.querySelectorAll("style").forEach(function (style) {
       if (!style.closest("svg")) style.remove();
     });
     scopeSvgStyles(wrap);
     neutralize(wrap);
-    autoRender(wrap);
+    if (options.autoMath !== false) autoRender(wrap);
     fillMath(wrap, store);
+    return wrap;
+  }
+
+  async function renderInline(doc, ctx, title) {
+    const wrap = clean(doc, pickRoot(doc));
     global.ReaderDoc.finalize(wrap, ctx, { keepCodeMarkup: true });
     await inlineSvgImages(wrap);
     if (title) wrap.setAttribute("data-doc-title", title);
@@ -780,5 +788,5 @@
     return renderInline(doc, ctx, title);
   }
 
-  global.ReaderHTML = { render: render, inlineSvgImages: inlineSvgImages };
+  global.ReaderHTML = { render: render, clean: clean, inlineSvgImages: inlineSvgImages };
 })(window);

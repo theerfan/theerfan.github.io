@@ -399,3 +399,94 @@
   height: 1px;
   pointer-events: none;
 }
+
+/* Wikipedia articles (js/wiki.js): the article in the reader's typography,
+   with the few Wikipedia structures that need a shape of their own. */
+.doc-wiki .wiki-title { margin-bottom: 0.2em; }
+
+.doc-wiki .wiki-source {
+  margin: 0 0 2em;
+  font-family: var(--ui);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.doc-wiki .wiki-lede::after {
+  content: "·";
+  margin: 0 0.5em;
+}
+
+.doc-wiki .wiki-credit {
+  margin-top: 3em;
+  padding-top: 1em;
+  border-top: 1px solid var(--rule);
+  font-family: var(--ui);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.doc-wiki .hatnote {
+  font-style: italic;
+  font-size: 0.92em;
+  color: var(--muted);
+  margin: 0.4em 0 1em;
+}
+
+/* Infobox: a compact fact table beside the lead on wide screens. */
+.doc-wiki table.infobox {
+  float: right;
+  clear: right;
+  width: 22em;
+  max-width: 45%;
+  margin: 0.3em 0 1em 1.5em;
+  font-size: 0.82em;
+  line-height: 1.45;
+}
+.doc-wiki table.infobox th,
+.doc-wiki table.infobox td { padding: 4px 8px; }
+.doc-wiki .infobox-above,
+.doc-wiki .infobox-title {
+  font-size: 1.15em;
+  text-align: center;
+}
+.doc-wiki .infobox-image,
+.doc-wiki .infobox-caption { text-align: center; }
+.doc-wiki h2 { clear: both; }
+
+@media (max-width: 720px) {
+  .doc-wiki table.infobox {
+    float: none;
+    width: 100%;
+    max-width: 100%;
+    margin: 1em 0;
+  }
+}
+
+.doc-wiki figure img { display: block; margin: 0 auto; }
+
+.doc-wiki sup.reference {
+  font-family: var(--ui);
+  font-size: 0.7em;
+  line-height: 0;
+}
+
+.doc-wiki .references,
+.doc-wiki .reflist {
+  font-size: 0.88em;
+  line-height: 1.55;
+}
+
+.doc-wiki .texhtml { font-family: var(--body); white-space: nowrap; }
+
+/* Wikipedia marks line art that should flip in dark mode (skin-invert). */
+[data-theme="dark"] .doc-wiki img.skin-invert,
+[data-theme="dark"] .doc-wiki .skin-invert img,
+[data-theme="dark"] .doc-wiki .skin-invert-image img {
+  background: none;
+  filter: invert(1) hue-rotate(180deg);
+}
+
+.doc-wiki ul.hlist,
+.doc-wiki .hlist ul { padding-left: 0; }
+.doc-wiki .hlist li { display: inline; }
+.doc-wiki .hlist li:not(:last-child)::after { content: " · "; }

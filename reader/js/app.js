@@ -253,9 +253,19 @@
     ev.preventDefault();
     var form = ev.currentTarget;
     var input = form.querySelector("input");
+    var article = ReaderWiki.parseInput(input.value);
+    if (article) {
+      setJumpError("");
+      els.moreMenu.open = false;
+      var wikiHash = ReaderWiki.hashFor(article.lang, article.title, article.anchor);
+      if (location.hash === wikiHash) onRoute();
+      else location.hash = wikiHash;
+      input.blur();
+      return;
+    }
     var parsed = ReaderGitHub.parseInput(input.value);
     if (!parsed) {
-      setJumpError("Could not parse that. Try owner/repo or a GitHub URL.");
+      setJumpError("Could not parse that. Try owner/repo, a GitHub URL or a Wikipedia link.");
       return;
     }
     setJumpError("");
@@ -357,7 +367,8 @@
     return a === b || a.indexOf(b + "/") === 0;
   }
 
-  /* Routes: #/owner/repo[/folder | /path/to/doc.(md|html)][#anchor] */
+  /* Routes: #/owner/repo[/folder | /path/to/doc.(md|html)][#anchor],
+     #/~/folder-id (catalog folder), #/~wiki/lang/Title[#anchor] (Wikipedia). */
   function parseHash() {
     const full = (location.hash || "").replace(/^#\/?/, "");
     if (!full) return { view: "catalog" };
@@ -379,6 +390,9 @@
     /* #/~/folder-id opens a catalog folder, not a GitHub repo. */
     if (owner === "~") {
       return { view: "group", group: [repo].concat(parts.slice(2)).filter(Boolean).join("/") };
+    }
+    if (owner === "~wiki" && ReaderWiki.isLang(repo) && path) {
+      return { view: "wiki", lang: repo, title: path, anchor: anchor };
     }
     if (!owner || !repo) return { view: "catalog" };
     if (!path) return { view: "repo", owner: owner, repo: repo };
@@ -1085,6 +1099,7 @@
   }
 
   function docKey(route) {
+    if (route.view === "wiki") return "~wiki/" + route.lang + "/" + ReaderWiki.urlTitle(route.title);
     return [route.owner, route.repo, route.path].join("/").toLowerCase();
   }
 
@@ -1121,6 +1136,86 @@
     });
   }
 
+  /* Wikipedia article: the sidebar holds its table of contents. */
+  function showWikiChrome(lang, title, url) {
+    document.body.classList.remove("view-catalog");
+    document.body.classList.add("view-repo");
+    els.catalog.hidden = true;
+    els.repo.hidden = false;
+    els.githubLink.hidden = false;
+    els.githubLink.href = url;
+    els.githubLink.textContent = "View on Wikipedia";
+    els.crumb.innerHTML =
+      '<a class="crumb-up" href="https://' +
+      lang +
+      '.wikipedia.org/" target="_blank" rel="noopener noreferrer">Wikipedia</a>' +
+      '<span class="sep">/</span><span class="here">' +
+      escapeHtml(title) +
+      "</span>";
+    $("sidebarTitle").textContent = "Contents";
+    $("sidebarMeta").textContent = lang + ".wikipedia.org";
+    if (els.folderTools) els.folderTools.hidden = true;
+    els.truncated.hidden = true;
+    els.jumpInputBar.value = url;
+  }
+
+  function renderWikiToc(lang, title, heading, sections) {
+    const items = [
+      '<li class="toc-item" style="--depth:0"><a class="file-link" href="' +
+        ReaderWiki.hashFor(lang, title) +
+        '">' +
+        escapeHtml(heading) +
+        "</a></li>"
+    ];
+    sections.forEach(function (s) {
+      items.push(
+        '<li class="toc-item" style="--depth:' +
+          s.level +
+          '"><a class="file-link" href="' +
+          ReaderWiki.hashFor(lang, title, s.anchor) +
+          '"><span class="toc-num">' +
+          escapeHtml(s.number) +
+          "</span>" +
+          escapeHtml(s.text) +
+          "</a></li>"
+      );
+    });
+    els.fileList.innerHTML = items.join("");
+  }
+
+  async function renderWiki(route) {
+    const title = route.title.replace(/_/g, " ");
+    state.meta = null;
+    state.files = [];
+    showWikiChrome(route.lang, title, ReaderWiki.articleUrl(route.lang, title));
+    els.fileList.innerHTML = "";
+    setTitle([title, "Wikipedia", "Reader"]);
+    showStatus("Loading " + title + " from Wikipedia…");
+    const article = await ReaderWiki.render(route.lang, title);
+    if (state.route !== route) return; /* navigated away meanwhile */
+    showWikiChrome(route.lang, article.heading, article.url);
+    renderWikiToc(route.lang, article.title, article.heading, article.sections);
+    setTitle([article.heading, "Wikipedia", "Reader"]);
+    els.article.innerHTML = "";
+    const body = document.createElement("div");
+    body.className = "markdown-body doc-html doc-wiki";
+    while (article.wrap.firstChild) body.appendChild(article.wrap.firstChild);
+    els.article.appendChild(body);
+    state.framed = false;
+    if (window.ReaderInk) ReaderInk.scan(body);
+    ReaderDoc.fitMath(body);
+    ReaderDoc.lazySections(body);
+    /* Redirects (e.g. "Maxwell equations") settle on the article's own title. */
+    const canonical = { view: "wiki", lang: route.lang, title: article.title };
+    if (docKey(canonical) !== docKey(route) && history.replaceState) {
+      history.replaceState(null, "", ReaderWiki.hashFor(route.lang, article.title, route.anchor));
+      state.route = Object.assign({}, route, { title: article.title });
+    }
+    state.renderedDoc = docKey(canonical);
+    showStatus("");
+    scrollDocTo(route.anchor, false);
+  }
+
   async function onRoute() {
     const route = parseHash();
     const previous = state.route;
@@ -1137,15 +1232,21 @@
 
       /* Same document, different #anchor: just scroll. */
       if (
-        route.view === "file" &&
+        (route.view === "file" || route.view === "wiki") &&
         previous &&
-        previous.view === "file" &&
+        previous.view === route.view &&
         state.renderedDoc === docKey(route)
       ) {
         scrollDocTo(route.anchor, true);
         return;
       }
       state.renderedDoc = "";
+
+      if (route.view === "wiki") {
+        state.scopedFolder = "";
+        await renderWiki(route);
+        return;
+      }
 
       if (route.view === "repo") {
         state.scopedFolder = route.folder || "";

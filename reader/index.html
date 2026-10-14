@@ -9,8 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css">
-  <link rel="stylesheet" href="css/doc.css?v=16">
-  <link rel="stylesheet" href="css/styles.css?v=16">
+  <link rel="stylesheet" href="css/doc.css?v=17">
+  <link rel="stylesheet" href="css/styles.css?v=17">
   <script src="js/prefs.js?v=14"></script>
 </head>
 <body>
@@ -55,7 +55,7 @@
         </summary>
         <div class="more-panel">
           <form class="jump-bar" id="jumpFormBar" action="#" method="get" role="search">
-            <input id="jumpInputBar" type="search" placeholder="owner/repo, folder, or GitHub URL" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository or folder">
+            <input id="jumpInputBar" type="search" placeholder="owner/repo, GitHub URL, or Wikipedia link" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository, folder or Wikipedia article">
           </form>
           <a id="githubLink" hidden href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
           <a href="#/">Catalog</a>
@@ -88,9 +88,9 @@
 
       <section class="article catalog" id="catalogView">
         <h1>Reader</h1>
-        <p class="lede">Markdown and HTML from public GitHub repos, rendered with math. Open a repo below, or paste any public GitHub address — including a folder.</p>
+        <p class="lede">Markdown and HTML from public GitHub repos, and Wikipedia articles, rendered with math. Open a repo below, or paste any public GitHub address (including a folder) or a Wikipedia link. <code>wiki:Title</code> works too.</p>
         <form class="jump jump-hero" id="jumpForm" action="#" method="get" role="search">
-          <input id="jumpInput" type="search" placeholder="owner/repo, folder path, or https://github.com/owner/repo/tree/…" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository or folder">
+          <input id="jumpInput" type="search" placeholder="owner/repo, GitHub URL, or en.wikipedia.org/wiki/…" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository, folder or Wikipedia article">
           <p class="jump-error" id="jumpError" hidden></p>
         </form>
         <h2 class="saved-heading">Saved libraries</h2>
@@ -113,7 +113,8 @@
   <script src="js/ink.js?v=12"></script>
   <script src="js/frame-host.js?v=14"></script>
   <script src="js/markdown.js?v=12"></script>
-  <script src="js/html.js?v=14"></script>
-  <script src="js/app.js?v=18"></script>
+  <script src="js/html.js?v=15"></script>
+  <script src="js/wiki.js?v=1"></script>
+  <script src="js/app.js?v=19"></script>
 </body>
 </html>

@@ -759,3 +759,15 @@ body.sidebar-collapsed .truncated,
   .article { overflow: visible; padding: 0; }
   body { height: auto; display: block; background: #fff; }
 }
+
+/* Wikipedia: the article's table of contents in the sidebar. */
+.toc-item .file-link {
+  padding-left: calc(8px + var(--depth, 0) * 12px);
+}
+
+.toc-num {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.85em;
+  margin-right: 0.5em;
+}
