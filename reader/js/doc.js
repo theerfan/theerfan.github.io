@@ -162,7 +162,8 @@
 
   /* Where a link in a document should go:
      { kind: "anchor", id }            same document, #fragment
-     { kind: "route", hash }           another document or folder in the reader
+     { kind: "route", hash }           another document or folder in the reader,
+                                       or a Wikipedia article
      { kind: "external", url }         another site (opens in a new tab)
      { kind: "file", url }             a non-document repo file (raw, new tab)
      { kind: "none" }                  javascript: and other unusable links */
@@ -171,6 +172,9 @@
     if (!href) return { kind: "none" };
     if (href.charAt(0) === "#") return { kind: "anchor", id: safeDecode(href.slice(1)) };
     if (isExternal(href)) {
+      /* Wikipedia articles open in the reader (js/wiki.js). */
+      const wiki = global.ReaderWiki ? global.ReaderWiki.routeForUrl(href) : "";
+      if (wiki) return { kind: "route", hash: wiki };
       if (/^(https?:|mailto:|\/\/)/i.test(href)) return { kind: "external", url: href };
       return { kind: "none" };
     }

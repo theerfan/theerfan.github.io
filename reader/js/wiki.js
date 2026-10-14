@@ -25,6 +25,11 @@
 
   const cache = new Map();
 
+  function isArticleTitle(title) {
+    const colon = title.indexOf(":");
+    return colon === -1 || !NON_ARTICLE.test(title.slice(0, colon).replace(/ /g, "_"));
+  }
+
   function cleanTitle(title) {
     return String(title || "").replace(/_/g, " ").replace(/\s+/g, " ").trim();
   }
@@ -89,6 +94,16 @@
     title = cleanTitle(title);
     if (!title) return null;
     return { lang: lang, title: title, anchor: safeDecode(u.hash.replace(/^#/, "")) };
+  }
+
+  /* A link elsewhere (a note in a library) to a Wikipedia article: the
+     article's reader route, or "" for anything that is not an article page
+     (files, categories, edit links, the main page's portals). */
+  function routeForUrl(href) {
+    const u = /^https?:\/\//i.test(href || "") ? parseInput(href) : null;
+    if (!u || !/\.wikipedia\.org\/wiki\/[^?]+$/i.test(href.split("#")[0])) return "";
+    if (!isArticleTitle(u.title)) return "";
+    return hashFor(u.lang, u.title, u.anchor);
   }
 
   async function fetchArticle(lang, title) {
@@ -177,8 +192,7 @@
       const wiki = /^(?:\/wiki\/|\.\/)([^?#]+)(?:#(.*))?$/.exec(href);
       if (wiki && !a.classList.contains("mw-file-description")) {
         const title = safeDecode(wiki[1]);
-        const colon = title.indexOf(":");
-        if (colon === -1 || !NON_ARTICLE.test(title.slice(0, colon))) {
+        if (isArticleTitle(title)) {
           a.setAttribute("href", hashFor(lang, title, wiki[2] ? safeDecode(wiki[2]) : ""));
           return;
         }
@@ -343,6 +357,7 @@
     parseInput: parseInput,
     hashFor: hashFor,
     articleUrl: articleUrl,
+    routeForUrl: routeForUrl,
     urlTitle: urlTitle,
     isLang: function (lang) {
       return LANG_RE.test(String(lang || ""));
