@@ -57,6 +57,8 @@
   var storedSidebar = readPref("reader-sidebar");
   var storedWarmth = readPref("reader-warmth");
   var legacyWarm = readPref("reader-warm");
+  var storedFont = readPref("reader-font");
+  var storedSize = readPref("reader-text-size");
   var theme;
   var align;
   var sidebar;
@@ -88,6 +90,14 @@
   var warmth = parseInt(storedWarmth, 10);
   if (!(warmth >= 0 && warmth <= 100)) warmth = legacyWarm === "on" ? 40 : 0;
   document.documentElement.style.setProperty("--warmth", String(warmth));
+  /* Reading font (see css/doc.css) and text size, a scale of 0.85..1.5. */
+  if (/^(literata|sans|legible)$/.test(storedFont || "")) {
+    document.documentElement.setAttribute("data-font", storedFont);
+  }
+  var size = parseFloat(storedSize);
+  if (size >= 0.85 && size <= 1.5 && size !== 1) {
+    document.documentElement.style.setProperty("--text-scale", String(size));
+  }
   if (document.body) {
     document.body.classList.toggle("sidebar-collapsed", sidebar === "collapsed");
   }

@@ -22,7 +22,7 @@ html[data-reader-frame] > body {
   background: transparent !important;
   color: var(--ink) !important;
   font-family: var(--body) !important;
-  font-size: 1.05rem;
+  font-size: calc(1.05rem * var(--text-scale, 1));
   line-height: 1.75;
 }
 

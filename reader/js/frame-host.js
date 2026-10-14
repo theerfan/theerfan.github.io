@@ -41,6 +41,18 @@
     return document.documentElement.style.getPropertyValue("--warmth") || "0";
   }
 
+  /* Theme, warm text, reading font and text size, as the frame applies them. */
+  function look() {
+    const root = document.documentElement;
+    return {
+      type: "theme",
+      theme: theme(),
+      warmth: warmth(),
+      font: root.getAttribute("data-font") || "",
+      scale: root.style.getPropertyValue("--text-scale") || ""
+    };
+  }
+
   function escapeAttr(s) {
     return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
   }
@@ -179,7 +191,7 @@
     switch (d.type) {
       case "ready":
         state.ready = true;
-        send({ type: "theme", theme: theme(), warmth: warmth() });
+        send(look());
         if (state.pending) send({ type: "locate", id: state.pending.id, seq: state.pending.seq });
         break;
       case "height": {
@@ -203,11 +215,14 @@
     }
   });
 
-  /* Live theme: follow the reader's data-theme and --warmth (an inline style)
-     into the frame. */
+  /* Live theme: follow the reader's data-theme, data-font and the --warmth and
+     --text-scale inline styles into the frame. */
   new MutationObserver(function () {
-    send({ type: "theme", theme: theme(), warmth: warmth() });
-  }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "style"] });
+    send(look());
+  }).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme", "data-font", "style"]
+  });
 
   global.ReaderFrame = {
     prologue: prologue,

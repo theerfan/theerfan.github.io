@@ -107,6 +107,11 @@
       root.setAttribute("data-theme", d.theme);
       var w = parseInt(d.warmth, 10);
       root.style.setProperty("--warmth", String(w >= 0 && w <= 100 ? w : 0));
+      if (/^(literata|sans|legible)$/.test(d.font || "")) root.setAttribute("data-font", d.font);
+      else root.removeAttribute("data-font");
+      var scale = parseFloat(d.scale);
+      if (scale >= 0.85 && scale <= 1.5) root.style.setProperty("--text-scale", String(scale));
+      else root.style.removeProperty("--text-scale");
     } else if (d.type === "locate") {
       locate(String(d.id || ""), d.seq);
     }

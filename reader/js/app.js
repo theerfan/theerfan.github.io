@@ -44,6 +44,10 @@
     els.warmRange = $("warmRange");
     els.warmValue = $("warmValue");
     els.alignGroup = $("alignGroup");
+    els.fontGroup = $("fontGroup");
+    els.sizeDown = $("sizeDown");
+    els.sizeUp = $("sizeUp");
+    els.sizeValue = $("sizeValue");
     els.sidebarToggle = $("sidebarToggle");
     els.filesBtn = $("filesBtn");
     els.folderTools = $("folderTools");
@@ -85,6 +89,19 @@
       });
     });
     els.alignGroup.addEventListener("click", onAlignClick);
+    els.fontGroup.addEventListener("click", function (ev) {
+      var btn = ev.target.closest("[data-font]");
+      if (btn) setFont(btn.getAttribute("data-font"));
+    });
+    els.sizeDown.addEventListener("click", function () {
+      stepTextSize(-1);
+    });
+    els.sizeUp.addEventListener("click", function () {
+      stepTextSize(1);
+    });
+    els.sizeValue.addEventListener("click", function () {
+      setTextSize(1);
+    });
     document.addEventListener("click", function (ev) {
       var btn = ev.target.closest("[data-action='toggle-sidebar']");
       if (!btn) return;
@@ -125,6 +142,7 @@
     syncThemeButton();
     syncWarmButton();
     syncAlignButtons();
+    syncTextPrefs();
     setSidebarRail(document.documentElement.getAttribute("data-sidebar") === "collapsed");
   }
 
@@ -168,6 +186,8 @@
       key === "reader-theme" ||
       key === "reader-align" ||
       key === "reader-warmth" ||
+      key === "reader-font" ||
+      key === "reader-text-size" ||
       key === "reader-sidebar"
     ) {
       try {
@@ -207,6 +227,65 @@
     els.warmRange.value = String(n);
     els.warmValue.textContent = n ? n + "%" : "Off";
     els.warmMenu.classList.toggle("is-warm", n > 0);
+  }
+
+  /* Reading font (data-font on <html>, css/doc.css) and text size (--text-scale,
+     a multiple of the default size); prefs.js restores both before paint. */
+  var FONTS = ["serif", "literata", "sans", "legible"];
+  var TEXT_SIZES = [0.85, 0.92, 1, 1.08, 1.16, 1.25, 1.35, 1.5];
+
+  function currentFont() {
+    var font = document.documentElement.getAttribute("data-font");
+    return FONTS.indexOf(font) > 0 ? font : "serif";
+  }
+
+  function setFont(font) {
+    if (FONTS.indexOf(font) === -1) return;
+    if (font === "serif") document.documentElement.removeAttribute("data-font");
+    else document.documentElement.setAttribute("data-font", font);
+    persist("reader-font", font);
+    syncTextPrefs();
+  }
+
+  function currentTextSize() {
+    var n = parseFloat(document.documentElement.style.getPropertyValue("--text-scale"));
+    return n >= TEXT_SIZES[0] && n <= TEXT_SIZES[TEXT_SIZES.length - 1] ? n : 1;
+  }
+
+  function setTextSize(n) {
+    if (n === 1) document.documentElement.style.removeProperty("--text-scale");
+    else document.documentElement.style.setProperty("--text-scale", String(n));
+    persist("reader-text-size", String(n));
+    syncTextPrefs();
+  }
+
+  /* Step to the next size on the scale, from wherever the current one sits. */
+  function stepTextSize(dir) {
+    var now = currentTextSize();
+    var next = now;
+    for (var i = 0; i < TEXT_SIZES.length; i++) {
+      var s = TEXT_SIZES[dir > 0 ? i : TEXT_SIZES.length - 1 - i];
+      if (dir > 0 ? s > now + 0.001 : s < now - 0.001) {
+        next = s;
+        break;
+      }
+    }
+    if (next !== now) setTextSize(next);
+  }
+
+  function syncTextPrefs() {
+    var font = currentFont();
+    var buttons = els.fontGroup.querySelectorAll("[data-font]");
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].setAttribute(
+        "aria-pressed",
+        buttons[i].getAttribute("data-font") === font ? "true" : "false"
+      );
+    }
+    var size = currentTextSize();
+    els.sizeValue.textContent = Math.round(size * 100) + "%";
+    els.sizeDown.disabled = size <= TEXT_SIZES[0];
+    els.sizeUp.disabled = size >= TEXT_SIZES[TEXT_SIZES.length - 1];
   }
 
   function syncThemeButton() {

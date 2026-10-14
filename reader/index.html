@@ -6,12 +6,12 @@
   <title>Reader · Erfan Abedi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css">
-  <link rel="stylesheet" href="css/doc.css?v=17">
-  <link rel="stylesheet" href="css/styles.css?v=17">
-  <script src="js/prefs.js?v=14"></script>
+  <link rel="stylesheet" href="css/doc.css?v=18">
+  <link rel="stylesheet" href="css/styles.css?v=18">
+  <script src="js/prefs.js?v=15"></script>
 </head>
 <body>
   <header class="topbar">
@@ -57,6 +57,21 @@
           <form class="jump-bar" id="jumpFormBar" action="#" method="get" role="search">
             <input id="jumpInputBar" type="search" placeholder="owner/repo, GitHub URL, or Wikipedia link" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository, folder or Wikipedia article">
           </form>
+          <div class="text-prefs" role="group" aria-label="Text">
+            <p class="text-prefs-label">Font</p>
+            <div class="font-pick" id="fontGroup">
+              <button type="button" data-font="serif" aria-pressed="false">Source Serif</button>
+              <button type="button" data-font="literata" aria-pressed="false">Literata</button>
+              <button type="button" data-font="sans" aria-pressed="false">Plex Sans</button>
+              <button type="button" data-font="legible" aria-pressed="false">Hyperlegible</button>
+            </div>
+            <p class="text-prefs-label">Size</p>
+            <div class="size-pick">
+              <button type="button" id="sizeDown" aria-label="Smaller text" title="Smaller text"><span class="size-small">A</span></button>
+              <button type="button" id="sizeValue" title="Reset text size">100%</button>
+              <button type="button" id="sizeUp" aria-label="Larger text" title="Larger text"><span class="size-large">A</span></button>
+            </div>
+          </div>
           <a id="githubLink" hidden href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
           <a href="#/">Catalog</a>
           <a href="/">Home</a>
@@ -111,10 +126,10 @@
   <script src="js/github.js?v=12"></script>
   <script src="js/doc.js?v=16"></script>
   <script src="js/ink.js?v=12"></script>
-  <script src="js/frame-host.js?v=14"></script>
+  <script src="js/frame-host.js?v=15"></script>
   <script src="js/markdown.js?v=12"></script>
-  <script src="js/html.js?v=15"></script>
+  <script src="js/html.js?v=16"></script>
   <script src="js/wiki.js?v=2"></script>
-  <script src="js/app.js?v=19"></script>
+  <script src="js/app.js?v=20"></script>
 </body>
 </html>
