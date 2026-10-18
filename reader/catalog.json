@@ -42,6 +42,14 @@
       "root": "reader/library/chaos"
     },
     {
+      "title": "Interpretability",
+      "description": "Mechanistic interpretability papers: Neural Networks Are Already Clean (Goodfire) and Natural Language Autoencoders (Anthropic), with attribution and links to the originals.",
+      "owner": "theerfan",
+      "repo": "theerfan.github.io",
+      "branch": "main",
+      "root": "reader/library/interpretability"
+    },
+    {
       "title": "Quantum Notes",
       "description": "Notes on quantum algorithms, computation and information (UCLA courses), QML, QSVT, MBQC and topological quantum computing, with an interactive surface code.",
       "owner": "theerfan",
