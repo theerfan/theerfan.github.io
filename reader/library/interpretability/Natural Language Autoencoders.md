@@ -1,8 +1,9 @@
 # Natural Language Autoencoders Produce Unsupervised Explanations of LLM Activations
 
-**Kit Fraser-Taliente\*, Subhash Kantamneni\*‡, Euan Ong\***, Dan Mossing, Christina Lu, Paul C. Bogdan, Emmanuel Ameisen, James Chen, Dzmitry Kishylau, Adam Pearce, Julius Tarng, Alex Wu, Jeff Wu, Yang Zhang, Daniel M. Ziegler, Evan Hubinger, Joshua Batson, Jack Lindsey, Samuel Zimmerman, Samuel Marks
+<strong>Kit Fraser-Taliente*, Subhash Kantamneni*‡, Euan Ong*</strong>, Dan Mossing, Christina Lu, Paul C. Bogdan, Emmanuel Ameisen, James Chen, Dzmitry Kishylau, Adam Pearce, Julius Tarng, Alex Wu, Jeff Wu, Yang Zhang, Daniel M. Ziegler, Evan Hubinger, Joshua Batson, Jack Lindsey, Samuel Zimmerman, Samuel Marks
 
 Anthropic, *Transformer Circuits Thread*. Published May 7, 2026.
+
 <small>\* Equal contribution, author order alphabetical. ‡ Correspondence to subhash@anthropic.com</small>
 
 > **Read the original:** <https://transformer-circuits.pub/2026/nla/index.html>. Also see the [blog post](https://www.anthropic.com/research/natural-language-autoencoders), the [announcement on X](https://x.com/AnthropicAI/status/2052435436157452769), and the [training code and released NLAs](https://github.com/kitft/natural_language_autoencoders). This page is a summary with the abstract quoted. All rights remain with the authors and Anthropic.
