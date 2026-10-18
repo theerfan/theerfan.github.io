@@ -762,6 +762,7 @@
       fillMath(body, store);
     }
     global.ReaderDoc.finalize(body, ctx, { keepCodeMarkup: true, links: false });
+    const outline = global.ReaderDoc.outline(body);
 
     await Promise.all([inlineSvgImages(body), prepareStyles(doc, base), prepareScripts(doc, base)]);
 
@@ -774,6 +775,7 @@
     const wrap = document.createElement("div");
     wrap.appendChild(global.ReaderFrame.mount(srcdoc, ctx, title));
     wrap.setAttribute("data-doc-framed", "");
+    wrap.setAttribute("data-doc-outline", JSON.stringify(outline));
     if (title) wrap.setAttribute("data-doc-title", title);
     return wrap;
   }

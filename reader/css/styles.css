@@ -827,3 +827,124 @@ body.sidebar-collapsed .truncated,
 #sizeValue { font-variant-numeric: tabular-nums; }
 .size-small { font-size: 0.8em; }
 .size-large { font-size: 1.25em; line-height: 1; }
+
+/* Phone navigation (js/mobile.js): drawer "All libraries" link and
+   Files / Contents tabs, the Previous / Next pager, larger touch targets.
+   Hidden above 800px, so the desktop layout is unchanged. */
+.drawer-home,
+.side-tabs,
+.doc-pager { display: none; }
+
+@media (max-width: 800px) {
+  .sidebar {
+    width: min(86vw, 340px);
+    padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+    padding-left: max(12px, env(safe-area-inset-left, 0px));
+    overscroll-behavior: contain;
+  }
+  html[data-sidebar="collapsed"] .sidebar,
+  body.sidebar-collapsed .sidebar,
+  .sidebar.is-collapsed { width: min(86vw, 340px); }
+  body.sidebar-open .sidebar { box-shadow: 0 0 40px rgba(0, 0, 0, 0.25); }
+
+  .topbar {
+    padding-left: max(12px, env(safe-area-inset-left, 0px));
+    padding-right: max(12px, env(safe-area-inset-right, 0px));
+  }
+  .article { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
+  /* The catalog has no drawer button: keep the name on the left. */
+  body.view-catalog .brand { display: inline; font-size: 1.05rem; }
+
+  .drawer-home {
+    display: inline-flex;
+    gap: 0.4em;
+    align-items: center;
+    margin: -4px 0 12px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--accent-ink);
+  }
+  .drawer-home:hover { text-decoration: none; background: rgba(15, 118, 110, 0.1); }
+
+  .side-tabs:not([hidden]) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    padding: 3px;
+    margin: 0 0 12px;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    background: var(--card);
+  }
+  .side-tabs button {
+    font: inherit;
+    font-size: 0.85rem;
+    color: var(--muted);
+    background: transparent;
+    border: 0;
+    border-radius: 7px;
+    padding: 8px 6px;
+    cursor: pointer;
+  }
+  .side-tabs button[aria-selected="true"] {
+    background: rgba(15, 118, 110, 0.14);
+    color: var(--accent-ink);
+    font-weight: 600;
+  }
+  body.drawer-outline #fileList,
+  body.drawer-outline .folder-tools,
+  body.drawer-outline .truncated { display: none !important; }
+  .outline-list .file-link { padding-left: calc(10px + var(--depth, 0) * 14px); }
+  .outline-list .toc-item[style*="--depth:0"] .file-link { font-weight: 600; }
+
+  #article { flex-wrap: wrap; }
+  .doc-pager {
+    flex: 0 0 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    max-width: var(--measure);
+    margin: 40px auto 0;
+    font-family: var(--ui);
+  }
+  .doc-pager a {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    background: var(--card);
+    color: var(--ink);
+  }
+  .doc-pager a:hover,
+  .doc-pager a:focus { text-decoration: none; border-color: var(--accent); }
+  .doc-pager .pager-next { text-align: right; grid-column: 2; }
+  .pager-dir { font-size: 0.75rem; color: var(--muted); }
+  .pager-name {
+    font-size: 0.9rem;
+    color: var(--accent-ink);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 800px) and (pointer: coarse) {
+  .file-link { padding-top: 10px; padding-bottom: 10px; font-size: 0.95rem; }
+  .dir-row { margin: 12px 0 4px; }
+  .dir-twist { width: 32px; height: 32px; }
+  .dir-name { padding: 6px 4px; }
+  .folder-tools button { padding: 8px 12px; font-size: 0.78rem; }
+  .icon-btn { width: 40px; height: 40px; border-radius: 10px; }
+  .more-panel a { padding: 11px 12px; font-size: 0.95rem; }
+}
+
+@media (max-width: 560px) {
+  /* Page alignment doesn't matter on a phone-width column. */
+  #alignGroup { display: none; }
+}

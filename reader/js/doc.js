@@ -243,6 +243,20 @@
     });
   }
 
+  /* Headings (h1-h3 with an id) as [{ id, text, level }], for the phone
+     drawer's "Contents" tab (js/mobile.js). */
+  function outline(root) {
+    const out = [];
+    if (!root) return out;
+    root.querySelectorAll("h1[id], h2[id], h3[id]").forEach(function (h) {
+      if (h.closest("svg, figure, table, .katex")) return;
+      const text = (h.textContent || "").replace(/\s+/g, " ").trim();
+      if (!text || out.length >= 300) return;
+      out.push({ id: h.id, text: text.slice(0, 200), level: Number(h.tagName.charAt(1)) });
+    });
+    return out;
+  }
+
   /* options.keepCodeMarkup: leave code blocks that already contain markup
      (e.g. pre-highlighted HTML) alone instead of re-highlighting them.
      options.links === false: leave links alone (sandboxed frames route clicks
@@ -385,6 +399,7 @@
     renderLatex: renderLatex,
     fitMath: fitMath,
     lazySections: lazySections,
+    outline: outline,
     finalize: finalize
   };
 })(window);

@@ -424,6 +424,21 @@
     return ReaderDoc.hashFor(owner, repo, path, anchor);
   }
 
+  /* After each view settles: "reader:view" on document, for js/mobile.js (and
+     the Android app). detail: { view, route, outline } where outline is the
+     document's headings [{ id, text, level }] or null. */
+  function announce(route, outline) {
+    try {
+      document.dispatchEvent(
+        new CustomEvent("reader:view", {
+          detail: { view: route.view, route: route, outline: outline || null }
+        })
+      );
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
   function joinRepoPath(a, b) {
     a = (a || "").replace(/^\/+|\/+$/g, "");
     b = (b || "").replace(/^\/+|\/+$/g, "");
@@ -976,7 +991,12 @@
      root's own folders are already named by the library. On narrow screens
      only the current file is shown (CSS). */
   function setCrumb(meta, path, folder) {
-    const repoHref = hashFor(meta.owner, meta.repo);
+    /* A repo with several catalog libraries: the library's own root. */
+    const libRoot = (meta.catalogRoot || "").replace(/^\/+|\/+$/g, "");
+    const repoHref =
+      libRoot && sameRepoEntries(meta.owner, meta.repo).length > 1
+        ? hashFor(meta.owner, meta.repo, libRoot)
+        : hashFor(meta.owner, meta.repo);
     const group = folderForEntry(meta);
     const sep = '<span class="sep">/</span>';
     let html = "";
@@ -1052,7 +1072,10 @@
       els.githubLink.textContent = "Repo on GitHub";
     }
     setCrumb(meta, path, folder);
-    const folderName = folder ? folder.split("/").pop() : "";
+    const folderName =
+      folder && folder.toLowerCase() !== (meta.catalogRoot || "").toLowerCase()
+        ? folder.split("/").pop()
+        : "";
     $("sidebarTitle").textContent = folderName || meta.title || meta.repo;
     $("sidebarMeta").textContent =
       meta.owner + "/" + meta.repo + (folder ? "/" + folder : "");
@@ -1293,6 +1316,7 @@
     state.renderedDoc = docKey(canonical);
     showStatus("");
     scrollDocTo(route.anchor, false);
+    announce(state.route, null);
   }
 
   async function onRoute() {
@@ -1306,6 +1330,7 @@
         state.scopedFolder = "";
         state.renderedDoc = "";
         renderCatalog();
+        announce(route, null);
         return;
       }
 
@@ -1354,6 +1379,7 @@
           return;
         }
         renderRepoLanding(meta, folder, heading);
+        announce(route, null);
         return;
       }
 
@@ -1389,6 +1415,15 @@
       state.renderedDoc = docKey(route);
       showStatus("");
       scrollDocTo(route.anchor, false);
+      let outline = null;
+      try {
+        outline = framed
+          ? JSON.parse(rendered.getAttribute("data-doc-outline") || "null")
+          : ReaderDoc.outline(body);
+      } catch (e) {
+        outline = null;
+      }
+      announce(route, outline);
     } catch (err) {
       console.error(err);
       showStatus("");
@@ -1402,6 +1437,7 @@
       els.catalog.hidden = true;
       els.repo.hidden = false;
       showArticleMessage("Could not load this", err.message, "error");
+      announce({ view: "error" }, null);
     }
   }
 
