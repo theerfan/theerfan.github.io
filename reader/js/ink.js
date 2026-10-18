@@ -36,10 +36,43 @@
     const m = /^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:\s*[,/]\s*([\d.]+%?))?\s*\)$/.exec(
       String(value || "").trim()
     );
-    if (!m) return null;
+    if (!m) return parseOtherColor(value);
     let a = m[4] == null ? 1 : parseFloat(m[4]);
     if (m[4] && m[4].slice(-1) === "%") a /= 100;
     return { r: +m[1], g: +m[2], b: +m[3], a: a };
+  }
+
+  /* Computed colours from color-mix(), oklch() and friends serialize as
+     color(srgb …), oklch(…) etc. sRGB is read directly; the rest go through a
+     1×1 canvas, which converts any CSS colour to sRGB bytes. */
+  const otherColors = new Map();
+  let colorProbe = null;
+  function parseOtherColor(value) {
+    const v = String(value || "").trim();
+    if (!v || v === "transparent" || v === "none") return null;
+    const m = /^color\(srgb\s+([-\d.e]+)\s+([-\d.e]+)\s+([-\d.e]+)(?:\s*\/\s*([\d.]+%?))?\s*\)$/i.exec(v);
+    if (m) {
+      const clamp = function (x) { return Math.max(0, Math.min(255, Math.round(parseFloat(x) * 255))); };
+      let a = m[4] == null ? 1 : parseFloat(m[4]);
+      if (m[4] && m[4].slice(-1) === "%") a /= 100;
+      return { r: clamp(m[1]), g: clamp(m[2]), b: clamp(m[3]), a: a };
+    }
+    if (!/^[a-z-]+\(/i.test(v)) return null;
+    if (otherColors.has(v)) return otherColors.get(v);
+    let c = null;
+    try {
+      if (!colorProbe) colorProbe = document.createElement("canvas").getContext("2d", { willReadFrequently: true });
+      colorProbe.clearRect(0, 0, 1, 1);
+      colorProbe.fillStyle = "#000";
+      colorProbe.fillStyle = v;
+      colorProbe.fillRect(0, 0, 1, 1);
+      const d = colorProbe.getImageData(0, 0, 1, 1).data;
+      c = { r: d[0], g: d[1], b: d[2], a: d[3] / 255 };
+    } catch (e) {
+      c = null;
+    }
+    if (otherColors.size < 500) otherColors.set(v, c);
+    return c;
   }
 
   function hsl(c) {

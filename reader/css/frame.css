@@ -2,6 +2,39 @@
    Not layered, so it outranks the page's own CSS (in @layer page) and the
    reader typography (in @layer reader): the frame is exactly as tall as its
    content and the reader's colours and fonts stay in charge. */
+/* The theme's colour variables, pinned unlayered. A page that defines its own
+   --ink, --paper, --accent… on :root (common names) would otherwise override
+   the reader's (doc.css is in @layer reader, below the page), leaving dark text
+   on the dark theme. Keep in sync with the theme blocks in doc.css. */
+html[data-reader-frame] {
+  --paper: #fbfaf6;
+  --ink: #1c1917;
+  --muted: #78716c;
+  --rule: #e7e5e4;
+  --accent: #0f766e;
+  --accent-ink: #115e59;
+  --sidebar: #f5f5f4;
+  --card: #ffffff;
+  --code-bg: #f5f5f4;
+}
+html[data-reader-frame][data-theme="dark"] {
+  --paper: #141210;
+  --ink: #f5f2eb;
+  --muted: #a8a29e;
+  --rule: #3f3b37;
+  --accent: #2dd4bf;
+  --accent-ink: #5eead4;
+  --sidebar: #1c1917;
+  --card: #1c1917;
+  --code-bg: #292524;
+}
+@supports (color: color-mix(in srgb, red 50%, blue)) {
+  html[data-reader-frame][data-theme="dark"] {
+    --ink: color-mix(in srgb, #f7a35c calc(var(--warmth, 0) * 1%), #f5f2eb);
+    --muted: color-mix(in srgb, #c98d5a calc(var(--warmth, 0) * 1%), #a8a29e);
+  }
+}
+
 html[data-reader-frame] {
   height: auto !important;
   min-height: 0 !important;

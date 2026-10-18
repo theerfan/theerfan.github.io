@@ -26,6 +26,49 @@
     }
   }
 
+  /* The page's own stylesheets arrive in @layer page (js/html.js), under
+     frame.css; styles its scripts add later (a template's runtime CSS, say)
+     would land unlayered and override the page's static rules. Put them in
+     the same layer, so the page's cascade order is preserved. */
+  var LAYERED = /@layer\s+page\s*\{/;
+  function layerStyle(el) {
+    if (!el || el.localName !== "style" || el.id === "reader-ink") return;
+    var css = el.textContent || "";
+    if (!css.trim() || LAYERED.test(css) || /@(import|charset|namespace)\b/i.test(css)) return;
+    el.textContent = "@layer page {\n" + css + "\n}";
+  }
+  if (window.MutationObserver) {
+    new MutationObserver(function (records) {
+      records.forEach(function (r) {
+        var t = r.type === "characterData" ? r.target.parentNode : r.target;
+        if (t && t.localName === "style") layerStyle(t);
+        r.addedNodes.forEach(function (n) {
+          if (n.nodeType !== 1) return;
+          if (n.localName === "style") layerStyle(n);
+          else if (n.querySelectorAll) Array.prototype.forEach.call(n.querySelectorAll("style"), layerStyle);
+        });
+      });
+    }).observe(document, { childList: true, subtree: true, characterData: true });
+  }
+
+  /* A srcdoc page can't put URLs in history (scroll-spies that track the current
+     section with replaceState would throw): such calls become no-ops. */
+  ["pushState", "replaceState"].forEach(function (name) {
+    var orig = window.history && window.history[name];
+    if (typeof orig !== "function") return;
+    try {
+      window.history[name] = function () {
+        try {
+          return orig.apply(window.history, arguments);
+        } catch (e) {
+          return undefined;
+        }
+      };
+    } catch (e) {
+      /* read-only */
+    }
+  });
+
   /* Storage stand-ins: pages that remember settings keep working (per view). */
   function memoryStorage() {
     var data = Object.create(null);
