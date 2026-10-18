@@ -425,13 +425,20 @@
   }
 
   /* After each view settles: "reader:view" on document, for js/mobile.js (and
-     the Android app). detail: { view, route, outline } where outline is the
-     document's headings [{ id, text, level }] or null. */
-  function announce(route, outline) {
+     the Android app). detail: { view, route, outline, title, source } where
+     outline is the document's headings [{ id, text, level }] or null, and title /
+     source name the page and its library (documents and Wikipedia articles). */
+  function announce(route, outline, info) {
     try {
       document.dispatchEvent(
         new CustomEvent("reader:view", {
-          detail: { view: route.view, route: route, outline: outline || null }
+          detail: {
+            view: route.view,
+            route: route,
+            outline: outline || null,
+            title: (info && info.title) || "",
+            source: (info && info.source) || ""
+          }
         })
       );
     } catch (e) {
@@ -1316,7 +1323,7 @@
     state.renderedDoc = docKey(canonical);
     showStatus("");
     scrollDocTo(route.anchor, false);
-    announce(state.route, null);
+    announce(state.route, null, { title: article.heading, source: "Wikipedia" });
   }
 
   async function onRoute() {
@@ -1423,7 +1430,10 @@
       } catch (e) {
         outline = null;
       }
-      announce(route, outline);
+      announce(route, outline, {
+        title: docTitle || relativePath(route.path, meta.root),
+        source: meta.title || meta.owner + "/" + meta.repo
+      });
     } catch (err) {
       console.error(err);
       showStatus("");

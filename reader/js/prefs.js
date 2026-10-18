@@ -30,7 +30,8 @@
     return readCookie(key);
   }
 
-  function writePref(key, value) {
+  /* options.cookie === false: storage only (for values too big for a cookie). */
+  function writePref(key, value, options) {
     try {
       localStorage.setItem(key, value);
     } catch (e) {
@@ -41,6 +42,7 @@
     } catch (e) {
       /* ignore */
     }
+    if (options && options.cookie === false) return;
     try {
       document.cookie =
         key +
@@ -51,6 +53,8 @@
       /* ignore */
     }
   }
+
+  window.ReaderPrefs = { read: readPref, write: writePref };
 
   var storedTheme = readPref("reader-theme");
   var storedAlign = readPref("reader-align");

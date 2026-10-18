@@ -10,8 +10,8 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css">
   <link rel="stylesheet" href="css/doc.css?v=18">
-  <link rel="stylesheet" href="css/styles.css?v=19">
-  <script src="js/prefs.js?v=15"></script>
+  <link rel="stylesheet" href="css/styles.css?v=20">
+  <script src="js/prefs.js?v=16"></script>
 </head>
 <body>
   <header class="topbar">
@@ -35,6 +35,9 @@
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3.5h12M6 6.5h8M2 9.5h12M6 12.5h8"/></svg>
         </button>
       </div>
+      <button type="button" class="icon-btn fav-btn" id="favBtn" hidden aria-pressed="false" aria-label="Add to favorites" title="Add to favorites">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.9l1.85 3.77 4.15.6-3 2.93.71 4.13L8 11.38l-3.71 1.95.71-4.13-3-2.93 4.15-.6z"/></svg>
+      </button>
       <button type="button" class="icon-btn" id="themeBtn" aria-label="Toggle dark mode">
         <svg class="theme-moon" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7z"/></svg>
         <svg class="theme-sun" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M3.05 12.95l1.06-1.06M11.89 4.11l1.06-1.06"/></svg>
@@ -130,7 +133,8 @@
   <script src="js/markdown.js?v=12"></script>
   <script src="js/html.js?v=17"></script>
   <script src="js/wiki.js?v=2"></script>
-  <script src="js/mobile.js?v=1"></script>
-  <script src="js/app.js?v=21"></script>
+  <script src="js/favorites.js?v=1"></script>
+  <script src="js/mobile.js?v=2"></script>
+  <script src="js/app.js?v=22"></script>
 </body>
 </html>

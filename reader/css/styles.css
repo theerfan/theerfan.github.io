@@ -244,7 +244,8 @@ body.view-catalog .jump-bar { display: none; }
   font-size: 0.85rem;
 }
 
-.saved-heading {
+.saved-heading,
+.fav-heading {
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -869,7 +870,7 @@ body.sidebar-collapsed .truncated,
 
   .side-tabs:not([hidden]) {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(var(--tabs, 2), 1fr);
     gap: 4px;
     padding: 3px;
     margin: 0 0 12px;
@@ -892,9 +893,13 @@ body.sidebar-collapsed .truncated,
     color: var(--accent-ink);
     font-weight: 600;
   }
+  .side-tabs button[hidden] { display: none; }
   body.drawer-outline #fileList,
   body.drawer-outline .folder-tools,
-  body.drawer-outline .truncated { display: none !important; }
+  body.drawer-outline .truncated,
+  body.drawer-favs #fileList,
+  body.drawer-favs .folder-tools,
+  body.drawer-favs .truncated { display: none !important; }
   .outline-list .file-link { padding-left: calc(10px + var(--depth, 0) * 14px); }
   .outline-list .toc-item[style*="--depth:0"] .file-link { font-weight: 600; }
 
@@ -947,4 +952,172 @@ body.sidebar-collapsed .truncated,
 @media (max-width: 560px) {
   /* Page alignment doesn't matter on a phone-width column. */
   #alignGroup { display: none; }
+}
+
+/* Favorites (js/favorites.js): the ☆ in the top bar, the list on the catalog
+   home, in the ⋯ menu and (phones) in the drawer, and the Undo toast. */
+.fav-btn[hidden] { display: none; }
+.fav-btn svg { stroke-width: 1.4; }
+.fav-btn[aria-pressed="true"] { color: #b7791f; }
+.fav-btn[aria-pressed="true"] svg { fill: currentColor; }
+[data-theme="dark"] .fav-btn[aria-pressed="true"] { color: #f2c14e; }
+
+.fav-list { list-style: none; margin: 0; padding: 0; }
+.fav-item {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.fav-item.is-swiping { transition: none; }
+.fav-link {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--ink);
+}
+.fav-link:hover { text-decoration: none; background: rgba(15, 118, 110, 0.08); }
+.fav-link[aria-current="page"] .fav-title { color: var(--accent-ink); font-weight: 600; }
+.fav-title {
+  font-size: 0.9rem;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fav-meta {
+  font-size: 0.75rem;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fav-missing {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 0 6px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--danger);
+  border: 1px solid currentColor;
+}
+.fav-item.is-missing .fav-title { color: var(--muted); }
+.fav-remove {
+  flex-shrink: 0;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.fav-remove:hover { color: var(--danger); background: rgba(185, 28, 28, 0.08); }
+.fav-remove svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+.fav-empty {
+  padding: 8px 10px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+/* Catalog home. */
+.fav-home { margin: 0 0 28px; }
+.fav-home[hidden] { display: none; }
+.fav-count { margin-left: 0.35em; font-weight: 400; letter-spacing: 0; }
+.fav-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 8px 16px;
+}
+.fav-cards .fav-item {
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--card);
+  padding: 2px 6px 2px 2px;
+}
+.fav-cards .fav-item:hover { border-color: var(--hover-border); }
+.fav-cards .fav-link { padding: 10px 12px; }
+.fav-cards .fav-link:hover { background: transparent; }
+.fav-cards .fav-title { font-weight: 600; }
+.fav-cards .fav-empty {
+  grid-column: 1 / -1;
+  border: 1px dashed var(--rule);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+/* ⋯ menu. */
+.menu-favs {
+  padding: 4px 2px 8px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+}
+.menu-favs .fav-link { padding: 6px 8px; border-radius: 6px; }
+.menu-favs .fav-remove { width: 28px; height: 28px; }
+.more-panel .menu-favs-all { display: block; margin-top: 2px; color: var(--accent-ink); }
+.more-panel .menu-favs-all[hidden] { display: none; }
+.more-panel { max-height: calc(100dvh - var(--bar-h) - 16px); overflow: auto; }
+
+/* Drawer (phones). */
+.fav-drawer .fav-link { padding: 9px 10px; }
+.fav-drawer .fav-empty { padding: 4px 8px; }
+
+.fav-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  z-index: 60;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: min(92vw, 460px);
+  padding: 10px 12px 10px 16px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.88rem;
+  box-shadow: var(--shadow);
+}
+.fav-toast[hidden] { display: none; }
+.fav-toast-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fav-toast button {
+  flex-shrink: 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--accent);
+  background: transparent;
+  border: 0;
+  padding: 4px 6px;
+  cursor: pointer;
+}
+[data-theme="dark"] .fav-toast button { color: #0f766e; }
+
+@media (max-width: 800px) and (pointer: coarse) {
+  .fav-link { padding-top: 10px; padding-bottom: 10px; }
+  .fav-remove { width: 40px; height: 40px; }
+  .fav-title { font-size: 0.95rem; }
+}
+
+@media print {
+  .fav-btn, .fav-toast { display: none !important; }
 }

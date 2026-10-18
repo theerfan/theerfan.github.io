@@ -1,7 +1,7 @@
 /* Phone navigation (narrow screens; css/styles.css shows these only at
    max-width 800px, so the desktop layout is unchanged):
-   - the drawer gets an "All libraries" link and, while a document is open,
-     Files / Contents tabs (Contents = the document's headings);
+   - the drawer gets an "All libraries" link and Files / Contents / Favorites
+     tabs (Contents = the open document's headings; Favorites = js/favorites.js);
    - a Previous / Next pager under each document, in the drawer's file order;
    - swiping the open drawer to the left closes it.
    Driven by the "reader:view" event from js/app.js. */
@@ -9,6 +9,7 @@
   const doc = global.document;
   const els = {};
   const state = { outline: null, tab: "files", route: null };
+  const TABS = ["files", "outline", "favs"];
 
   function esc(s) {
     return String(s)
@@ -20,7 +21,8 @@
 
   function readTab() {
     try {
-      return localStorage.getItem("reader-drawer-tab") === "outline" ? "outline" : "files";
+      const t = localStorage.getItem("reader-drawer-tab");
+      return TABS.indexOf(t) === -1 ? "files" : t;
     } catch (e) {
       return "files";
     }
@@ -45,7 +47,8 @@
     tabs.hidden = true;
     tabs.innerHTML =
       '<button type="button" role="tab" data-tab="files">Files</button>' +
-      '<button type="button" role="tab" data-tab="outline">Contents</button>';
+      '<button type="button" role="tab" data-tab="outline">Contents</button>' +
+      '<button type="button" role="tab" data-tab="favs">Favorites</button>';
     head.insertAdjacentElement("afterend", tabs);
     els.tabs = tabs;
 
@@ -55,6 +58,24 @@
     list.hidden = true;
     els.fileList.insertAdjacentElement("afterend", list);
     els.outline = list;
+
+    const favs = doc.createElement("ul");
+    favs.className = "file-list fav-list fav-drawer";
+    favs.id = "drawerFavList";
+    favs.hidden = true;
+    list.insertAdjacentElement("afterend", favs);
+    els.favs = favs;
+    if (global.ReaderFavorites) {
+      global.ReaderFavorites.wireList(favs);
+      global.ReaderFavorites.onChange(function () {
+        if (!els.favs.hidden) global.ReaderFavorites.renderList(els.favs);
+      });
+      favs.addEventListener("click", function (ev) {
+        if (!ev.target.closest(".fav-link")) return;
+        const backdrop = doc.getElementById("backdrop");
+        if (backdrop && doc.body.classList.contains("sidebar-open")) backdrop.click();
+      });
+    }
 
     tabs.addEventListener("click", function (ev) {
       const b = ev.target.closest("[data-tab]");
@@ -66,15 +87,23 @@
   }
 
   function setTab(tab, save) {
-    state.tab = tab === "outline" ? "outline" : "files";
+    state.tab = TABS.indexOf(tab) === -1 ? "files" : tab;
     const hasOutline = !!(state.outline && state.outline.length);
-    const showOutline = hasOutline && state.tab === "outline";
-    doc.body.classList.toggle("drawer-outline", showOutline);
-    els.outline.hidden = !showOutline;
+    const hasFavs = !!global.ReaderFavorites;
+    let shown = state.tab;
+    if (shown === "outline" && !hasOutline) shown = "files";
+    if (shown === "favs" && !hasFavs) shown = "files";
+    doc.body.classList.toggle("drawer-outline", shown === "outline");
+    doc.body.classList.toggle("drawer-favs", shown === "favs");
+    els.outline.hidden = shown !== "outline";
+    els.favs.hidden = shown !== "favs";
+    if (shown === "favs") global.ReaderFavorites.renderList(els.favs);
     els.tabs.querySelectorAll("[data-tab]").forEach(function (b) {
-      const on = (b.getAttribute("data-tab") === "outline") === showOutline;
-      b.setAttribute("aria-selected", on ? "true" : "false");
+      const t = b.getAttribute("data-tab");
+      b.hidden = (t === "outline" && !hasOutline) || (t === "favs" && !hasFavs);
+      b.setAttribute("aria-selected", t === shown ? "true" : "false");
     });
+    els.tabs.style.setProperty("--tabs", String(els.tabs.querySelectorAll("[data-tab]:not([hidden])").length));
     if (save) {
       try {
         localStorage.setItem("reader-drawer-tab", state.tab);
@@ -86,7 +115,9 @@
 
   function renderOutline(route, outline) {
     state.outline = outline && outline.length ? outline : null;
-    els.tabs.hidden = !state.outline;
+    /* Wikipedia: the file list already is the article's contents. */
+    els.tabs.querySelector('[data-tab="files"]').textContent = route.view === "wiki" ? "Contents" : "Files";
+    els.tabs.hidden = !(state.outline || global.ReaderFavorites);
     if (!state.outline) {
       els.outline.innerHTML = "";
       setTab(state.tab, false);
