@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>1. Knots and their diagrams</title>
+</head>
+<body>
+  <article>
+    <p><a href="README.md">Contents</a></p>
+    <h1>1. Knots and their diagrams</h1>
+    <p>Tie a knot in a piece of string and glue the two ends together. The result is a closed loop that cannot be untangled without cutting it, or so it seems. Knot theory turns “it seems” into mathematics. It asks when two closed loops in space are the same knot, and it answers by finding quantities, called invariants, that can be computed from a drawing and that do not change however the loop is moved. This chapter sets up the objects precisely, reduces the problem from three dimensions to drawings on paper, and then proves, with a short and complete argument, that the trefoil really is knotted.</p>
+
+    <h2 id="knots">1.1 What a knot is</h2>
+    <p>A <strong>knot</strong> is a closed curve in space that does not cross itself. Precisely, it is a subset $K \subset \mathbb{R}^3$ that is the image of a continuous injective map $S^1 \to \mathbb{R}^3$ from the circle. The <strong>unknot</strong> is the round circle $\{x^2 + y^2 = 1,\ z = 0\}$, and anything equivalent to it.</p>
+    <p>As a topological space every knot is a circle. The map $S^1 \to K$ is a homeomorphism, so asking whether $K$ is homeomorphic to the unknot is asking nothing. What distinguishes knots is how the circle sits inside $\mathbb{R}^3$. The right notion of “the same” has to move the surrounding space along with the curve.</p>
+    <p>Two knots $K_0$ and $K_1$ are <strong>equivalent</strong> when there is a continuous family of homeomorphisms $h_t: \mathbb{R}^3 \to \mathbb{R}^3$, $t \in [0, 1]$, with</p>
+    $$
+    h_0 = \mathrm{id}, \qquad h_1(K_0) = K_1.
+    $$
+    <p>Such a family is an <strong>ambient isotopy</strong>. Each $h_t$ deforms all of space, and the knot is carried along. Since $h_t$ is a bijection for every $t$, the curve can never pass through itself: two points of the curve that are distinct stay distinct.</p>
+    <p>A weaker notion would be to deform the curve alone, through injective maps $S^1 \to \mathbb{R}^3$. That notion is useless, because of a trick sometimes called pulling the knot tight. Take a trefoil and shrink the knotted part to a smaller and smaller region, keeping the rest of the curve fixed. At every stage before the end, the curve is injective. At the end the knotted part has shrunk to a single point, and what remains is a circle. Every knot is deformable to the unknot this way. Ambient isotopy forbids it: a homeomorphism of space cannot squash a region containing a tangle into a point, because the tangle's complement would change.</p>
+    <p>A second pathology has to be excluded by hand. A curve can be knotted infinitely often, with an infinite sequence of smaller and smaller trefoils converging to a point. Such <strong>wild</strong> knots exist and behave very differently. A knot is <strong>tame</strong> when it is equivalent to a polygon with finitely many edges, or equivalently to a smooth curve with nowhere-vanishing derivative. All knots from here on are tame. A <strong>link</strong> is the same definition with several disjoint circles, called its components. A knot is a link with one component.</p>
+    <p>Whether the curve lives in $\mathbb{R}^3$ or in the three-sphere $S^3 = \mathbb{R}^3 \cup \{\infty\}$ makes no difference to the theory. A tame knot misses some point, and the equivalence classes are the same. The sphere is the more natural home later, when the complement $S^3 \setminus K$ becomes the main object of study.</p>
+    <figure style="margin:1.5em auto;text-align:center">
+<!--fig:zoo-->
+      <figcaption>Figure 1.1: the unknot and the simplest knots. The label $3_1$ means the first knot in the standard table with three crossings.</figcaption>
+    </figure>
+
+    <h2 id="diagrams">1.2 Diagrams</h2>
+    <p>Knots live in three dimensions, but they are drawn on paper. Let $\pi(x, y, z) = (x, y)$ be projection onto the plane. For a polygonal knot $K$, the projection $\pi(K)$ is <strong>regular</strong> when</p>
+    <ol>
+      <li>each point of the plane has at most two preimages on $K$,</li>
+      <li>there are finitely many points with two preimages, and</li>
+      <li>no vertex of the polygon projects onto a double point.</li>
+    </ol>
+    <p>The conditions say that the only places the shadow overlaps itself are clean crossings of two strands. Three strands never meet at one point, and two strands never touch tangentially, which would be indistinguishable on paper from not touching at all. A regular projection always exists: the directions of projection that violate one of the conditions form a set of measure zero on the sphere of directions, so a random small rotation of the knot makes any projection regular.</p>
+    <p>The shadow alone loses information. At each double point, one strand lies above the other, and the projection forgets which. A <strong>knot diagram</strong> is a regular projection with that information restored. By convention the lower strand is drawn with a small gap on each side of the crossing, so it appears to pass underneath. The diagram determines the knot up to equivalence: lift each over-strand slightly above the plane, and the result is a knot in space whose projection is the diagram.</p>
+    <p>A shadow with $n$ crossings has $2^n$ diagrams. Figure 1.2 shows the shadow of the trefoil, with its three double points marked, and three of its eight diagrams. Two choices give knots: the alternating ones, where travelling along the curve you pass over, under, over, under, and so on. The other six give the unknot. Reversing one crossing of an alternating trefoil makes one lobe lie loosely on top of the rest, and it can be lifted off.</p>
+    <figure style="margin:1.5em auto;text-align:center">
+<!--fig:shadow-->
+      <figcaption>Figure 1.2: the trefoil's shadow, and three ways to resolve its crossings. The two trefoils are mirror images of each other.</figcaption>
+    </figure>
+    <p>The two trefoils are mirror images: reflect space in the plane of the paper, and every crossing reverses. A knot equivalent to its mirror image is <strong>amphichiral</strong>, and one that is not is <strong>chiral</strong>. The trefoil is chiral, a fact that is surprisingly hard to prove and will need the Jones polynomial. The figure-eight knot is amphichiral. This can be checked with a piece of string, by deforming a figure-eight knot until it matches its own mirror image.</p>
+
+    <h2 id="reidemeister">1.3 Reidemeister moves</h2>
+    <p>Different diagrams can represent the same knot. Rotate a knot slightly before projecting and the diagram changes. The question is how. Three local changes, called the <strong>Reidemeister moves</strong>, are drawn in Figure 1.3. Each changes the diagram only inside a small disc, and leaves it unchanged outside.</p>
+    <figure style="margin:1.5em auto;text-align:center">
+<!--fig:reidemeister-->
+      <figcaption>Figure 1.3: the three Reidemeister moves, each read in either direction. Outside the region drawn, the diagram is unchanged.</figcaption>
+    </figure>
+    <p>Each move is visibly realised by moving a strand in space. Move I untwists a kink. Move II slides one strand off another, on which it was lying. Move III slides a strand that lies entirely beneath a crossing to the other side of it, like moving a rope under the point where two other ropes cross. Combined with deformations of the plane that do not change any crossings, called planar isotopies, they generate everything.</p>
+    <p><strong>Theorem</strong> (Reidemeister, 1927; Alexander and Briggs, 1926). Two diagrams represent equivalent knots if and only if one can be turned into the other by a finite sequence of Reidemeister moves and planar isotopies.</p>
+    <p>One direction has just been explained. For the other, the idea of the proof goes as follows. For polygonal knots, ambient isotopy can be replaced by a combinatorial equivalence. A <strong>triangle move</strong> replaces one edge $AB$ of the polygon by two edges $AC$ and $CB$, or the reverse, where the solid triangle $ABC$ meets the knot only along $AB$. Two tame knots are equivalent if and only if they are related by finitely many triangle moves. Now project. After a small perturbation of the knot, each triangle move projects to a triangle in the plane that the rest of the diagram crosses in a controlled way. Subdivide the triangle into smaller ones, each crossed by at most one strand or containing at most one crossing. Each small triangle move then changes the diagram by a single Reidemeister move or a planar isotopy, and the three cases are exactly I, II and III.</p>
+    <p>The theorem converts knot theory into combinatorics. A <strong>knot invariant</strong> is any function of diagrams that is unchanged by the three moves. By the theorem it is a function of the knot, and if two diagrams give different values, the knots are different. Proving that two knots are different is now a finite computation, provided an invariant can be found that separates them.</p>
+    <p>The theorem is less useful in the other direction. Two diagrams of the same knot are related by some sequence of moves, but no bound on its length comes with the proof. Some diagrams of the unknot cannot be simplified without first adding crossings: every move that reduces the crossing count is blocked, and the route to the circle goes uphill first. Lackenby showed in 2015 that a diagram of the unknot with $c$ crossings can always be untangled in at most $(236\,c)^{11}$ moves, a polynomial in $c$. The bound is far too large for a computer to try every sequence, but it shows the question is decidable.</p>
+
+    <h2 id="crossing-number">1.4 Crossing number and the knot table</h2>
+    <p>The first invariant follows from the definition. The <strong>crossing number</strong> $c(K)$ of a knot is the least number of crossings over all diagrams of $K$. It is an invariant because it is defined from the knot rather than from any particular diagram. The unknot is the only knot with $c = 0$. No knot has $c = 1$ or $c = 2$: going through the few possible shadows with one or two double points shows that every diagram with fewer than three crossings is a diagram of the unknot. The trefoil has $c = 3$, and the figure-eight knot $c = 4$.</p>
+    <p>An invariant defined as a minimum is hard to compute. Finding a diagram with seven crossings shows $c(K) \leq 7$. Showing $c(K) = 7$ requires ruling out every diagram with six or fewer, and the definition gives no way to do this. Lower bounds always come from other invariants. For an important class, the <strong>alternating</strong> knots, which have a diagram whose crossings alternate over, under, over, along the curve, the Jones polynomial settles the question: a reduced alternating diagram has the minimal number of crossings.</p>
+    <p>Knot tables list knots by crossing number. The notation $n_k$ means the $k$-th knot with $n$ crossings, in the order of Rolfsen's table. The tables list only <strong>prime</strong> knots, those that are not built by joining two simpler knots, as defined in Section 1.7, and they list a chiral knot and its mirror image only once. The number of prime knots with $n$ crossings grows quickly:</p>
+    <table>
+      <thead><tr><th>$n$</th><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td></tr></thead>
+      <tbody><tr><th>prime knots</th><td>1</td><td>1</td><td>2</td><td>3</td><td>7</td><td>21</td><td>49</td><td>165</td></tr></tbody>
+    </table>
+    <p>Up to sixteen crossings there are $1\,701\,936$ (Hoste, Thistlethwaite and Weeks, 1998). Tables have been wrong. In 1974 Kenneth Perko, a lawyer working on knots in his spare time, showed that two knots listed separately in the classical tables, $10_{161}$ and $10_{162}$ in Rolfsen's numbering, are the same knot. They had been distinguished by eye for 75 years.</p>
+
+    <h2 id="colourings">1.5 Colourings</h2>
+    <p>The figure in Section 1.2 makes it plausible that the trefoil is knotted. Here is a proof.</p>
+    <p>An <strong>arc</strong> of a diagram is a piece of the curve running from one under-crossing to the next. Along an arc, the curve passes over crossings but never under. At each crossing three arcs meet: the over-arc, and the two arcs that end there from underneath. The trefoil's diagram has three arcs and three crossings. In general, a knot diagram with $c \geq 1$ crossings has exactly $c$ arcs, since each crossing ends one arc and starts the next.</p>
+    <p>A <strong>3-colouring</strong> of a diagram assigns one of three colours to each arc such that at every crossing, the three arcs that meet there are either all the same colour or all different. A colouring is <strong>trivial</strong> when it uses only one colour. Every diagram has three trivial colourings. A diagram is <strong>tricolourable</strong> when it has a nontrivial one.</p>
+    <figure style="margin:1.5em auto;text-align:center">
+<!--fig:tricolour-->
+      <figcaption>Figure 1.4: the trefoil is tricolourable. Each of its three crossings sees all three colours.</figcaption>
+    </figure>
+    <p>Name the colours $0$, $1$, $2$, elements of $\mathbb{Z}/3$. Three elements of $\mathbb{Z}/3$ are all equal or all different exactly when their sum is $0$ mod $3$. Since $-1 \equiv 2$, this is the same as</p>
+    $$
+    2a \equiv b + c \pmod 3,
+    $$
+    <p>where $a$ is the colour of the over-arc and $b$, $c$ are the colours of the two under-arcs. The condition at each crossing is a linear equation. A colouring is a solution to a system of $c$ linear equations in $c$ unknowns over the field $\mathbb{Z}/3$, so the set of colourings is a vector space. Its size $3^d$ is a power of $3$, with $d \geq 1$ because the constant colourings always solve the system.</p>
+    <p><strong>Claim.</strong> The number of 3-colourings of a diagram is unchanged by Reidemeister moves, so it is a knot invariant.</p>
+    <p>The proof checks each move. In each case, colour the arcs outside the disc where the move happens, and count how many ways there are to extend the colouring into the disc. Each move has exactly one extension before and exactly one after, with the same colours on the arcs leaving the disc.</p>
+    <ul>
+      <li><strong>Move I.</strong> The kink's crossing is formed by a single arc, which passes over itself, and by the two arcs that leave the crossing underneath. One of those two is the over-arc itself. So the crossing condition reads $2a \equiv a + b$, forcing $b = a$. The two ends of the strand have the same colour, as they do for a straight strand.</li>
+      <li><strong>Move II.</strong> Let the upper strand have colour $a$. The lower strand enters the disc with colour $b$, and is split by the two crossings into three arcs $b$, $m$, $b'$. The crossing conditions $2a \equiv b + m$ and $2a \equiv m + b'$ have the unique solution $m = 2a - b$, $b' = b$. The lower strand leaves with the colour it came in with, and the middle arc is determined.</li>
+      <li><strong>Move III.</strong> Let the top strand have colour $t$, the middle strand enter with colour $m$, and the bottom strand with colour $b$. The middle strand passes under the top one and leaves with $2t - m$. Before the move the bottom strand passes under the middle strand first and then under the top strand, leaving with $2t - (2m - b) = 2t - 2m + b$. After the move it passes under the top strand first and then under the middle strand, now coloured $2t - m$, leaving with $2(2t - m) - (2t - b) = 2t - 2m + b$. The same, so both sides have one extension with the same outgoing colours.</li>
+    </ul>
+    <p>The unknot's standard diagram, a circle with no crossings, has one arc and therefore exactly three colourings, all trivial. The trefoil diagram has nine: three trivial ones and the six ways of assigning three different colours to its three arcs. Since $9 \neq 3$, <strong>the trefoil is not the unknot.</strong></p>
+    <p>The figure-eight knot has only the three trivial 3-colourings. So the figure-eight knot is not the trefoil. Whether it is the unknot, this invariant cannot tell.</p>
+    <p>Nothing in the proof used the number $3$ except that the equation $2a \equiv b + c$ was linear. Replace $\mathbb{Z}/3$ by $\mathbb{Z}/n$ and the same argument shows that the number of solutions to</p>
+    $$
+    2a \equiv b + c \pmod n \quad \text{at every crossing}
+    $$
+    <p>is a knot invariant. These are <strong>Fox $n$-colourings</strong>. For $n = 5$, the figure-eight knot has $25$ of them, while the unknot has only the $5$ constant ones. So the figure-eight knot is knotted too.</p>
+    <figure style="margin:1.5em auto;text-align:center">
+<!--fig:fox-->
+      <figcaption>Figure 1.5: nontrivial Fox colourings. At each crossing, twice the over-arc's label equals the sum of the two under-arcs' labels, mod $n$.</figcaption>
+    </figure>
+    <p>For a prime $p$, a knot has nontrivial $p$-colourings exactly when $p$ divides a single integer, the <strong>determinant</strong> $\det(K)$, which is $1$ for the unknot, $3$ for the trefoil, $5$ for the figure-eight knot, and $5$ for the cinquefoil $5_1$. The determinant is the absolute value of the Alexander polynomial at $t = -1$, and it explains every count above. It also shows the limit of colourings: the figure-eight knot and the cinquefoil have the same determinant, so Fox colourings cannot separate them, though they are different knots.</p>
+    <p>Colourings are the first appearance of a deeper structure. A Fox $n$-colouring is the same thing as a homomorphism from the fundamental group of the knot complement, $\pi_1(\mathbb{R}^3 \setminus K)$, to the symmetry group of a regular $n$-gon, sending each small loop around an arc to a reflection. Counting colourings is counting such homomorphisms. A later chapter builds the knot group, and the group sees far more than its maps to a dihedral group.</p>
+
+    <h2 id="linking">1.6 Orientation, crossing signs, and linking number</h2>
+    <p>An <strong>orientation</strong> of a knot is a choice of direction along it, drawn as arrows on a diagram. With both strands oriented, each crossing has a sign. Look along the over-strand in its direction. If the under-strand passes beneath it from right to left, the crossing is <strong>positive</strong>. If from left to right, it is <strong>negative</strong>. Equivalently, rotate the over-strand counterclockwise by less than half a turn to line it up with the under-strand: the crossing is positive. The sign does not depend on which of the two strands is chosen first, and it is unchanged if both orientations are reversed together.</p>
+    <figure style="margin:1.5em auto;text-align:center">
+<!--fig:signs-->
+      <figcaption>Figure 1.6: positive and negative crossings, and the Hopf link with both components oriented.</figcaption>
+    </figure>
+    <p>The <strong>writhe</strong> $w(D)$ of an oriented diagram is the sum of the signs of its crossings. The right-handed trefoil has $w = +3$ and the left-handed one $w = -3$. The writhe is not a knot invariant. Move I adds or removes one crossing, changing $w$ by $\pm 1$. It is unchanged by moves II and III. Move II creates two crossings of opposite sign, and move III permutes three crossings without changing any sign. Quantities unchanged by II and III but not I appear again with the Jones polynomial, where the writhe is exactly what is needed to repair them.</p>
+    <p>For a link with two components $J$ and $K$, crossings of one component with itself are discarded. The <strong>linking number</strong> is</p>
+    $$
+    \mathrm{lk}(J, K) = \frac{1}{2}\sum_{\text{crossings of } J \text{ with } K} \varepsilon,
+    $$
+    <p>where $\varepsilon = \pm 1$ is the sign. It is an invariant. Move I only involves crossings of a component with itself, which are not counted. Move II between $J$ and $K$ adds two crossings of opposite signs. Move III does not change signs. It is an integer, not a half-integer. Push $J$ down through $K$ at one crossing and the sign of that one crossing flips, changing the sum by $2$. Any two-component link can be pulled apart by such crossing changes, and pulled apart the sum is zero, so the sum is always even. It also equals the sum of signs over only the crossings where $J$ passes over $K$.</p>
+    <p>The Hopf link has $\mathrm{lk} = \pm 1$, so it cannot be pulled apart. The two-component unlink has $\mathrm{lk} = 0$. The converse fails. The Whitehead link has two components with linking number zero, and yet it cannot be separated: one component threads through the other and then back again, so the crossings cancel in the count but not in space.</p>
+    <p>The linking number was first written down by Gauss, in 1833, as an integral, and it has a direct physical meaning. For two disjoint closed curves $\gamma_1$ and $\gamma_2$,</p>
+    $$
+    \mathrm{lk}(\gamma_1, \gamma_2) = \frac{1}{4\pi}\oint_{\gamma_1}\oint_{\gamma_2}\frac{(\mathbf{r}_1 - \mathbf{r}_2)\cdot(d\mathbf{r}_1 \times d\mathbf{r}_2)}{|\mathbf{r}_1 - \mathbf{r}_2|^3}.
+    $$
+    <p>Let a steady current $I$ flow along $\gamma_2$. By the Biot–Savart law, the integrand is, up to constants, the magnetic field $\mathbf{B}$ that the current produces at $\mathbf{r}_1$. The inner integral is that field, and the outer integral is its circulation around $\gamma_1$. Ampère's law says this circulation equals $\mu_0$ times the current threading $\gamma_1$. The wire $\gamma_2$ threads $\gamma_1$ a net $\mathrm{lk}$ times, so</p>
+    $$
+    \oint_{\gamma_1}\mathbf{B}\cdot d\mathbf{r}_1 = \mu_0\, I\, \mathrm{lk}(\gamma_1, \gamma_2).
+    $$
+    <p>An integral of a smooth function over two curves comes out an integer, and that integer is unchanged as the curves move, provided they never touch. The same integral, with the velocity field of a fluid in place of $\mathbf{B}$, gives the helicity of a flow, which counts how tangled its vortex lines are and is conserved in an ideal fluid.</p>
+
+    <h2 id="sums">1.7 Connected sum and prime knots</h2>
+    <p>Two knots can be combined. Draw them far apart, cut each open at an arc on its outer edge, and join the four loose ends by two parallel strands that cross nothing. The result is the <strong>connected sum</strong> $K_1 \# K_2$. For oriented knots, the orientations are required to match across the joining strands. With that requirement, the result does not depend on where the knots are cut, though this takes some proof. Without orientations it can depend on the choice, for knots that are not equivalent to themselves with reversed orientation. The first such knot, $8_{17}$, has eight crossings.</p>
+    <figure style="margin:1.5em auto;text-align:center">
+<!--fig:sum-->
+      <figcaption>Figure 1.7: the connected sum of the trefoil and the figure-eight knot.</figcaption>
+    </figure>
+    <p>Connected sum is commutative and associative, and the unknot is its identity: $K \# O = K$. It behaves like multiplication of positive integers. A knot is <strong>prime</strong> if it is not the unknot and whenever $K = K_1 \# K_2$, one of the two factors is the unknot. Schubert proved in 1949 that every knot factors as a connected sum of prime knots, uniquely up to order. This is why the tables list only prime knots.</p>
+    <p>There are no inverses. No knot $K'$ satisfies $K \# K' = O$ unless $K$ is already the unknot. You cannot untie a knot by tying another knot further along the string. The proof uses the genus, an invariant still to come that adds under connected sum: $g(K_1 \# K_2) = g(K_1) + g(K_2)$, and only the unknot has genus $0$. The crossing number appears to add too. That $c(K_1 \# K_2) = c(K_1) + c(K_2)$ for all knots is a long-standing conjecture. It is proved for alternating knots, and open in general.</p>
+
+    <h2 id="ahead">1.8 Where this goes</h2>
+    <p>The chapter has built three tools: diagrams, Reidemeister moves, and invariants that are checked against the moves. Every invariant so far has a limit. Colourings cannot separate the figure-eight knot from the cinquefoil. The linking number misses the Whitehead link. Nothing so far can distinguish the trefoil from its mirror image. Each later approach removes some of these limits.</p>
+    <ul>
+      <li><strong>Surfaces.</strong> Every knot bounds an orientable surface in space, called a Seifert surface. The least genus of such a surface is the knot's genus, and it gives the proof that knots have no inverses.</li>
+      <li><strong>The knot group.</strong> The fundamental group of the complement, $\pi_1(S^3 \setminus K)$, is computable from any diagram, with one generator per arc. Colourings are its maps to dihedral groups. It detects the unknot: the group is $\mathbb{Z}$ only for the unknot.</li>
+      <li><strong>Polynomials.</strong> The Alexander polynomial (1928) comes from the group and from Seifert surfaces. The Jones polynomial (1984) comes from a simple recursive rule on diagrams, the Kauffman bracket, and is invariant by the same move-by-move check as above. It separates the trefoil from its mirror image.</li>
+      <li><strong>Physics.</strong> Kelvin proposed in 1867 that atoms were knotted vortex tubes in the ether, which is what prompted Tait to make the first knot tables. In 1989 Witten showed that the Jones polynomial is the expectation value of a Wilson loop in Chern–Simons gauge theory, a quantum field theory in three dimensions. Anyons in two-dimensional matter have braided worldlines, and topological quantum computing uses those braids as gates.</li>
+    </ul>
+    <p>The chapter in one line: a knot is a circle in space up to moving space; every knot can be drawn as a diagram, and two diagrams are the same knot exactly when Reidemeister moves connect them; so anything computed from a diagram that survives the three moves is an invariant, and colourings, the simplest such thing, already prove that knots exist.</p>
+  </article>
+</body>
+</html>

@@ -50,6 +50,14 @@
       "root": "reader/library/interpretability"
     },
     {
+      "title": "Knot Theory",
+      "description": "An introductory chapter on knots, diagrams, Reidemeister moves, colourings and linking number, with figures.",
+      "owner": "theerfan",
+      "repo": "theerfan.github.io",
+      "branch": "main",
+      "root": "reader/library/knots"
+    },
+    {
       "title": "Quantum Notes",
       "description": "Notes on quantum algorithms, computation and information (UCLA courses), QML, QSVT, MBQC and topological quantum computing, with an interactive surface code.",
       "owner": "theerfan",
