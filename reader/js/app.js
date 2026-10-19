@@ -128,6 +128,13 @@
       });
     }
     window.addEventListener("hashchange", onRoute);
+    /* Render the current document again (js/restyle.js after a Page style change). */
+    window.ReaderApp = {
+      rerender: function () {
+        state.renderedDoc = "";
+        onRoute();
+      }
+    };
     window.addEventListener("keydown", function (ev) {
       if (ev.key === "Escape") {
         setSidebar(false);

@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css">
   <link rel="stylesheet" href="css/doc.css?v=18">
-  <link rel="stylesheet" href="css/styles.css?v=20">
+  <link rel="stylesheet" href="css/styles.css?v=21">
   <script src="js/prefs.js?v=16"></script>
 </head>
 <body>
@@ -75,6 +75,13 @@
               <button type="button" id="sizeUp" aria-label="Larger text" title="Larger text"><span class="size-large">A</span></button>
             </div>
           </div>
+          <div class="text-prefs page-style" id="pageStyle" role="group" aria-labelledby="pageStyleLabel" hidden>
+            <p class="text-prefs-label" id="pageStyleLabel">Page style</p>
+            <div class="font-pick page-style-pick">
+              <button type="button" data-style="reader" aria-pressed="false" title="The article in the reader's fonts, size and theme">Reader</button>
+              <button type="button" data-style="original" aria-pressed="false" title="The page as its site designed it, with its interactive parts">Original</button>
+            </div>
+          </div>
           <a id="githubLink" hidden href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
           <a href="#/">Catalog</a>
           <a href="/">Home</a>
@@ -131,10 +138,12 @@
   <script src="js/ink.js?v=13"></script>
   <script src="js/frame-host.js?v=17"></script>
   <script src="js/markdown.js?v=12"></script>
-  <script src="js/html.js?v=17"></script>
+  <script src="js/html.js?v=18"></script>
+  <script src="js/restyle.js?v=1"></script>
+  <script src="js/restyle-sites.js?v=1"></script>
   <script src="js/wiki.js?v=2"></script>
   <script src="js/favorites.js?v=1"></script>
   <script src="js/mobile.js?v=2"></script>
-  <script src="js/app.js?v=22"></script>
+  <script src="js/app.js?v=23"></script>
 </body>
 </html>

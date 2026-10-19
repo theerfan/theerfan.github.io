@@ -11,7 +11,8 @@
      page's own MathJax/KaTeX if it loads one, otherwise by the reader.
 
    Known analytics beacons are dropped first, so they neither run nor force a
-   document into the frame. */
+   document into the frame. A document with scripts can instead be shown in
+   "Reader style" (js/restyle.js): its article extracted and rendered inline. */
 (function (global) {
   const document = global.document;
 
@@ -786,7 +787,24 @@
     const doc = new DOMParser().parseFromString(String(text || ""), "text/html");
     const title = docTitle(doc);
     dropTrackers(doc);
-    if (needsScripts(doc)) return renderFramed(doc, ctx, title);
+    if (needsScripts(doc)) {
+      /* Reader style (js/restyle.js): the article re-rendered like any note. */
+      const R = global.ReaderRestyle;
+      const plan = R ? R.plan(doc, ctx, text) : null;
+      if (plan && plan.mode === "reader") {
+        try {
+          const article = await R.article(doc, ctx, plan);
+          if (article) {
+            const wrap = await renderInline(article, ctx, article.title || title);
+            wrap.setAttribute("data-doc-restyled", "");
+            return wrap;
+          }
+        } catch (e) {
+          console.warn("Reader style failed; showing the original page", e);
+        }
+      }
+      return renderFramed(doc, ctx, title);
+    }
     return renderInline(doc, ctx, title);
   }
 
