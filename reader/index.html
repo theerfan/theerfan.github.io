@@ -58,7 +58,7 @@
         </summary>
         <div class="more-panel">
           <form class="jump-bar" id="jumpFormBar" action="#" method="get" role="search">
-            <input id="jumpInputBar" type="search" placeholder="owner/repo, GitHub URL, or Wikipedia link" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository, folder or Wikipedia article">
+            <input id="jumpInputBar" type="search" placeholder="owner/repo, GitHub, Wikipedia or any web link" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository, folder, Wikipedia article or web page">
           </form>
           <div class="text-prefs" role="group" aria-label="Text">
             <p class="text-prefs-label">Font</p>
@@ -113,9 +113,9 @@
 
       <section class="article catalog" id="catalogView">
         <h1>Reader</h1>
-        <p class="lede">Markdown and HTML from public GitHub repos, and Wikipedia articles, rendered with math. Open a repo below, or paste any public GitHub address (including a folder) or a Wikipedia link. <code>wiki:Title</code> works too.</p>
+        <p class="lede">Markdown and HTML from public GitHub repos, Wikipedia articles and web pages, rendered with math. Open a repo below, or paste any public GitHub address (including a folder), a Wikipedia link or an article's web address. <code>wiki:Title</code> works too.</p>
         <form class="jump jump-hero" id="jumpForm" action="#" method="get" role="search">
-          <input id="jumpInput" type="search" placeholder="owner/repo, GitHub URL, or en.wikipedia.org/wiki/…" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository, folder or Wikipedia article">
+          <input id="jumpInput" type="search" placeholder="owner/repo, GitHub URL, en.wikipedia.org/wiki/… or any web link" enterkeyhint="go" autocomplete="off" spellcheck="false" aria-label="Open a GitHub repository, folder, Wikipedia article or web page">
           <p class="jump-error" id="jumpError" hidden></p>
         </form>
         <h2 class="saved-heading">Saved libraries</h2>
@@ -134,16 +134,17 @@
   <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
   <script src="js/github.js?v=12"></script>
-  <script src="js/doc.js?v=17"></script>
+  <script src="js/doc.js?v=18"></script>
   <script src="js/ink.js?v=13"></script>
   <script src="js/frame-host.js?v=17"></script>
   <script src="js/markdown.js?v=12"></script>
-  <script src="js/html.js?v=18"></script>
-  <script src="js/restyle.js?v=1"></script>
+  <script src="js/html.js?v=19"></script>
+  <script src="js/restyle.js?v=2"></script>
   <script src="js/restyle-sites.js?v=1"></script>
   <script src="js/wiki.js?v=2"></script>
-  <script src="js/favorites.js?v=1"></script>
-  <script src="js/mobile.js?v=2"></script>
-  <script src="js/app.js?v=23"></script>
+  <script src="js/web.js?v=1"></script>
+  <script src="js/favorites.js?v=2"></script>
+  <script src="js/mobile.js?v=3"></script>
+  <script src="js/app.js?v=24"></script>
 </body>
 </html>

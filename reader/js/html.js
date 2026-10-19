@@ -729,6 +729,22 @@
   }
 
   function docBase(doc, ctx) {
+    if (ctx.web) {
+      /* A web page (js/web.js): its own address, or its <base>. */
+      const own = doc.querySelector("base[href]");
+      let base = ctx.web;
+      if (own) {
+        try {
+          base = new URL(own.getAttribute("href"), ctx.web).href;
+        } catch (e) {
+          base = ctx.web;
+        }
+      }
+      doc.querySelectorAll("base").forEach(function (b) {
+        b.remove();
+      });
+      return base;
+    }
     const dir = global.ReaderDoc.fileDir(ctx.path);
     const rawDir = dir ? global.ReaderDoc.rawUrl(ctx, dir) + "/" : global.ReaderDoc.rawUrl(ctx, "");
     const own = doc.querySelector("base[href]");
@@ -783,14 +799,18 @@
 
   /* Returns a promise of a <div> holding the rendered document. A framed
      document's <div> carries data-doc-framed. */
-  async function render(text, ctx) {
+  async function render(text, ctx, options) {
+    options = options || {};
     const doc = new DOMParser().parseFromString(String(text || ""), "text/html");
     const title = docTitle(doc);
     dropTrackers(doc);
-    if (needsScripts(doc)) {
+    const scripted = needsScripts(doc);
+    /* Web pages (js/web.js) always offer Reader style, script-free ones too: their
+       site header, menus and footer are not part of the article. */
+    if (scripted || ctx.web) {
       /* Reader style (js/restyle.js): the article re-rendered like any note. */
       const R = global.ReaderRestyle;
-      const plan = R ? R.plan(doc, ctx, text) : null;
+      const plan = R ? R.plan(doc, ctx, options.sourceText || text) : null;
       if (plan && plan.mode === "reader") {
         try {
           const article = await R.article(doc, ctx, plan);
@@ -803,7 +823,7 @@
           console.warn("Reader style failed; showing the original page", e);
         }
       }
-      return renderFramed(doc, ctx, title);
+      if (scripted) return renderFramed(doc, ctx, title);
     }
     return renderInline(doc, ctx, title);
   }

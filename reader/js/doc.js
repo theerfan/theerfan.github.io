@@ -128,6 +128,7 @@
   }
 
   function rewriteMedia(wrap, ctx) {
+    if (ctx.web) return; /* web pages: already absolute (js/web.js) */
     const attrs = [
       ["img", "src"],
       ["source", "src"],
@@ -171,6 +172,17 @@
     href = String(href || "").trim();
     if (!href) return { kind: "none" };
     if (href.charAt(0) === "#") return { kind: "anchor", id: safeDecode(href.slice(1)) };
+    if (ctx.web && global.ReaderWeb) {
+      /* A web page: its own #anchors stay here, other pages of the same site open in
+         the reader too, everything else as below. */
+      const hashIdx = href.indexOf("#");
+      const frag = hashIdx === -1 ? "" : safeDecode(href.slice(hashIdx + 1));
+      if (global.ReaderWeb.sameDoc(href, ctx.web)) return { kind: "anchor", id: frag };
+      const page = global.ReaderWeb.parseInput(href);
+      if (page && global.ReaderWeb.host(href) === global.ReaderWeb.host(ctx.web)) {
+        return { kind: "route", hash: global.ReaderWeb.hashFor(page.url, frag) };
+      }
+    }
     if (isExternal(href)) {
       /* Wikipedia articles open in the reader (js/wiki.js). */
       const wiki = global.ReaderWiki ? global.ReaderWiki.routeForUrl(href) : "";
@@ -213,14 +225,18 @@
     });
   }
 
+  function hashHere(ctx, id) {
+    return ctx.web && global.ReaderWeb ? global.ReaderWeb.hashFor(ctx.web, id) : hashFor(ctx.owner, ctx.repo, ctx.path, id);
+  }
+
   function bindInPage(a, wrap, ctx, id) {
-    a.setAttribute("href", hashFor(ctx.owner, ctx.repo, ctx.path, id));
+    a.setAttribute("href", hashHere(ctx, id));
     a.addEventListener("click", function (ev) {
       if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button === 1) return;
       ev.preventDefault();
       if (!id) return;
       if (scrollToAnchor(wrap, id, true) && global.history && global.history.replaceState) {
-        global.history.replaceState(null, "", hashFor(ctx.owner, ctx.repo, ctx.path, id));
+        global.history.replaceState(null, "", hashHere(ctx, id));
       }
     });
   }

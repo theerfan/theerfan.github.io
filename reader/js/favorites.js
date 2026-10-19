@@ -401,11 +401,13 @@
     const d = ev.detail || {};
     const r = d.route || {};
     if (els.home) els.home.hidden = d.view !== "catalog";
-    if (d.view === "file" || d.view === "wiki") {
+    if (d.view === "file" || d.view === "wiki" || d.view === "web") {
       const hash =
         d.view === "wiki"
           ? global.ReaderWiki.hashFor(r.lang, r.title)
-          : global.ReaderDoc.hashFor(r.owner, r.repo, r.path);
+          : d.view === "web"
+            ? global.ReaderWeb.hashFor(r.url)
+            : global.ReaderDoc.hashFor(r.owner, r.repo, r.path);
       current = { hash: hash, title: d.title || "", source: d.source || "", view: d.view, anchor: r.anchor || "" };
       /* Loaded fine: refresh its title / source and clear "unavailable". */
       const list = load();

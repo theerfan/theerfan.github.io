@@ -115,8 +115,8 @@
 
   function renderOutline(route, outline) {
     state.outline = outline && outline.length ? outline : null;
-    /* Wikipedia: the file list already is the article's contents. */
-    els.tabs.querySelector('[data-tab="files"]').textContent = route.view === "wiki" ? "Contents" : "Files";
+    /* Wikipedia and web pages: the file list already is the article's contents. */
+    els.tabs.querySelector('[data-tab="files"]').textContent = route.view === "wiki" || route.view === "web" ? "Contents" : "Files";
     els.tabs.hidden = !(state.outline || global.ReaderFavorites);
     if (!state.outline) {
       els.outline.innerHTML = "";

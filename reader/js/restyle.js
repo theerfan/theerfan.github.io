@@ -83,11 +83,17 @@
   function makePage(doc, ctx, text) {
     const dir = global.ReaderDoc.fileDir(ctx.path);
     return {
-      url: originalUrl(doc, text),
+      url: ctx.web || originalUrl(doc, text),
       ctx: ctx,
       title: "",
       byline: "",
       fetchSibling: function (rel) {
+        if (ctx.web) {
+          return global.fetch(new URL(rel, ctx.web).href, { credentials: "omit", readerCache: true }).then(function (res) {
+            if (!res.ok) throw new Error(res.status + " " + rel);
+            return res.text();
+          });
+        }
         const path = (dir ? dir + "/" : "") + String(rel).replace(/^\.?\//, "");
         return global.ReaderGitHub.fetchText(ctx.owner, ctx.repo, ctx.branch, path);
       }
@@ -125,7 +131,18 @@
     return (el.textContent || "").replace(/\s+/g, " ").trim().length;
   }
 
-  /* <main>, a single <article>, or the block whose paragraphs hold the most text. */
+  /* Length of the text written straight into `el` (not inside child elements). */
+  function directText(el) {
+    let n = 0;
+    el.childNodes.forEach(function (c) {
+      if (c.nodeType === 3) n += c.textContent.replace(/\s+/g, " ").trim().length;
+    });
+    return n;
+  }
+
+  /* <main>, a single <article>, or the block whose paragraphs hold the most text
+     (paragraph elements, or text written straight into a block between <br>s, as old
+     sites do). */
   function findArticle(doc) {
     const body = doc.body;
     const main = body.querySelector("main, [role='main']");
@@ -141,6 +158,10 @@
       scores.set(parent, (scores.get(parent) || 0) + n);
       const grand = parent.parentElement;
       if (grand) scores.set(grand, (scores.get(grand) || 0) + n / 2);
+    });
+    body.querySelectorAll("div, td, font, section, article, center, span").forEach(function (el) {
+      const n = directText(el);
+      if (n > 200) scores.set(el, (scores.get(el) || 0) + n);
     });
     let best = null;
     let bestScore = 0;
@@ -313,6 +334,62 @@
     });
   }
 
+  /* Presentational wrappers (<font>, <center>) go; their content stays. */
+  function unwrapPresentational(root) {
+    root.querySelectorAll("font, center, basefont").forEach(function (el) {
+      el.replaceWith.apply(el, Array.prototype.slice.call(el.childNodes));
+    });
+  }
+
+  const BLOCK = /^(P|DIV|TABLE|UL|OL|DL|H[1-6]|BLOCKQUOTE|PRE|FIGURE|HR|SECTION|ARTICLE|ASIDE|DETAILS|FORM)$/;
+
+  /* Text separated by <br><br> instead of <p> becomes paragraphs. */
+  function brParagraphs(root) {
+    const doc = root.ownerDocument;
+    [root].concat(Array.prototype.slice.call(root.querySelectorAll("div, td, blockquote, section, article"))).forEach(function (el) {
+      if (el.querySelectorAll(":scope > br").length < 2 || directText(el) < 200) return;
+      const nodes = Array.prototype.slice.call(el.childNodes);
+      const groups = [];
+      let cur = [];
+      for (let i = 0; i < nodes.length; ) {
+        if (nodes[i].nodeName === "BR") {
+          let j = i;
+          let brs = 0;
+          while (j < nodes.length && (nodes[j].nodeName === "BR" || (nodes[j].nodeType === 3 && !nodes[j].textContent.trim()))) {
+            if (nodes[j].nodeName === "BR") brs++;
+            j++;
+          }
+          if (brs >= 2) {
+            groups.push(cur);
+            cur = [];
+            i = j;
+            continue;
+          }
+        }
+        cur.push(nodes[i]);
+        i++;
+      }
+      groups.push(cur);
+      el.textContent = "";
+      groups.forEach(function (group) {
+        let p = null;
+        group.forEach(function (n) {
+          if (n.nodeType === 1 && BLOCK.test(n.nodeName)) {
+            p = null;
+            el.appendChild(n);
+            return;
+          }
+          if (!p) {
+            if (n.nodeType === 3 && !n.textContent.trim()) return;
+            p = doc.createElement("p");
+            el.appendChild(p);
+          }
+          p.appendChild(n);
+        });
+      });
+    });
+  }
+
   /* Unknown custom elements: keep their content as plain blocks/spans. */
   function unwrapCustom(root) {
     const doc = root.ownerDocument;
@@ -350,8 +427,14 @@
       return pair.ref;
     };
     if (adapter && adapter.prepare) await adapter.prepare(doc, page);
-    const root = (adapter && adapter.root && adapter.root(doc, page)) || findArticle(doc);
+    let root = (adapter && adapter.root && adapter.root(doc, page)) || findArticle(doc);
     if (!root || textLength(root) < 200) return null;
+    if (/^(font|center|span)$/.test(root.localName)) {
+      const div = doc.createElement("div");
+      while (root.firstChild) div.appendChild(root.firstChild);
+      root.replaceWith(div);
+      root = div;
+    }
     const targets = scriptTargets(doc, root);
 
     root.querySelectorAll(CHROME).forEach(function (el) {
@@ -364,6 +447,8 @@
     });
     popoverNotes(root, notes);
     fixLazyImages(root);
+    unwrapPresentational(root);
+    brParagraphs(root);
     dropLayout(root);
     replaceInteractive(root, targets);
     unwrapCustom(root);
@@ -378,7 +463,7 @@
     const header = out.createElement("header");
     header.className = "restyle-head";
     const firstHeading = root.querySelector("h1");
-    if (title && !(firstHeading && textLength(firstHeading) && firstHeading.textContent.trim() === title)) {
+    if (title && !(firstHeading && textLength(firstHeading))) {
       const h1 = out.createElement("h1");
       h1.textContent = title;
       header.appendChild(h1);
@@ -427,7 +512,7 @@
     const group = document.getElementById("pageStyle");
     if (!group) return;
     const cur = state.current;
-    const show = !!(cur && route && route.view === "file" && route.path === cur.path);
+    const show = !!(cur && route && ((route.view === "file" && route.path === cur.path) || (route.view === "web" && route.url === cur.path)));
     group.hidden = !show;
     if (!show) return;
     const label = document.getElementById("pageStyleLabel");
@@ -467,7 +552,7 @@
   );
   document.addEventListener("reader:view", function (ev) {
     const d = ev.detail || {};
-    if (d.view !== "file") state.current = null;
+    if (d.view !== "file" && d.view !== "web") state.current = null;
     paintMenu(d.route);
   });
 

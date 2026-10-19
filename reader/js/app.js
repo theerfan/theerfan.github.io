@@ -349,9 +349,20 @@
       input.blur();
       return;
     }
+    /* Any other web address (before GitHub: "example.com/post" is not owner/repo). */
+    var page = window.ReaderWeb ? ReaderWeb.parseInput(input.value) : null;
+    if (page) {
+      setJumpError("");
+      els.moreMenu.open = false;
+      var webHash = ReaderWeb.hashFor(page.url, page.anchor);
+      if (location.hash === webHash) onRoute();
+      else location.hash = webHash;
+      input.blur();
+      return;
+    }
     var parsed = ReaderGitHub.parseInput(input.value);
     if (!parsed) {
-      setJumpError("Could not parse that. Try owner/repo, a GitHub URL or a Wikipedia link.");
+      setJumpError("Could not parse that. Try owner/repo, a GitHub URL, a Wikipedia link or a web address.");
       return;
     }
     setJumpError("");
@@ -501,6 +512,10 @@
     }
     if (owner === "~wiki" && ReaderWiki.isLang(repo) && path) {
       return { view: "wiki", lang: repo, title: path, anchor: anchor };
+    }
+    /* #/~web/<encoded URL>: any web page (js/web.js). */
+    if (owner === "~web" && /^https?:\/\//i.test(repo || "")) {
+      return { view: "web", url: repo, anchor: anchor };
     }
     if (!owner || !repo) return { view: "catalog" };
     if (!path) return { view: "repo", owner: owner, repo: repo };
@@ -1216,6 +1231,7 @@
 
   function docKey(route) {
     if (route.view === "wiki") return "~wiki/" + route.lang + "/" + ReaderWiki.urlTitle(route.title);
+    if (route.view === "web") return "~web/" + route.url;
     return [route.owner, route.repo, route.path].join("/").toLowerCase();
   }
 
@@ -1299,6 +1315,71 @@
     els.fileList.innerHTML = items.join("");
   }
 
+  /* Any web page (js/web.js): the sidebar holds its contents. */
+  function showWebChrome(url, title) {
+    const host = ReaderWeb.host(url);
+    document.body.classList.remove("view-catalog");
+    document.body.classList.add("view-repo");
+    els.catalog.hidden = true;
+    els.repo.hidden = false;
+    els.githubLink.hidden = false;
+    els.githubLink.href = url;
+    els.githubLink.textContent = "Open in browser";
+    els.crumb.innerHTML =
+      '<a class="crumb-up" href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">' +
+      escapeHtml(host) + '</a><span class="sep">/</span><span class="here">' + escapeHtml(title) + "</span>";
+    $("sidebarTitle").textContent = "Contents";
+    $("sidebarMeta").textContent = host;
+    if (els.folderTools) els.folderTools.hidden = true;
+    els.truncated.hidden = true;
+    els.jumpInputBar.value = url;
+  }
+
+  function renderWebToc(url, outline) {
+    els.fileList.innerHTML = (outline || [])
+      .map(function (o) {
+        return (
+          '<li class="toc-item" style="--depth:' + Math.max(0, o.level - 1) + '"><a class="file-link" href="' +
+          ReaderWeb.hashFor(url, o.id) + '">' + escapeHtml(o.text) + "</a></li>"
+        );
+      })
+      .join("");
+  }
+
+  async function renderWeb(route) {
+    const host = ReaderWeb.host(route.url);
+    state.meta = null;
+    state.files = [];
+    showWebChrome(route.url, host);
+    els.fileList.innerHTML = "";
+    setTitle([host, "Reader"]);
+    showStatus("Loading " + host + "…");
+    const page = await ReaderWeb.render(route.url);
+    if (state.route !== route) return; /* navigated away meanwhile */
+    const framed = page.wrap.hasAttribute("data-doc-framed");
+    showWebChrome(route.url, page.title);
+    setTitle([page.title, host, "Reader"]);
+    els.article.innerHTML = "";
+    const body = document.createElement("div");
+    body.className = "markdown-body doc-html doc-web" + (framed ? " doc-framed" : "");
+    while (page.wrap.firstChild) body.appendChild(page.wrap.firstChild);
+    els.article.appendChild(body);
+    state.framed = framed;
+    if (!framed && window.ReaderInk) ReaderInk.scan(body);
+    if (!framed) ReaderDoc.fitMath(body);
+    let outline = null;
+    try {
+      outline = framed ? JSON.parse(page.wrap.getAttribute("data-doc-outline") || "null") : ReaderDoc.outline(body);
+    } catch (e) {
+      outline = null;
+    }
+    renderWebToc(route.url, outline);
+    state.renderedDoc = docKey(route);
+    showStatus("");
+    scrollDocTo(route.anchor, false);
+    announce(route, outline, { title: page.title, source: host });
+  }
+
   async function renderWiki(route) {
     const title = route.title.replace(/_/g, " ");
     state.meta = null;
@@ -1350,7 +1431,7 @@
 
       /* Same document, different #anchor: just scroll. */
       if (
-        (route.view === "file" || route.view === "wiki") &&
+        (route.view === "file" || route.view === "wiki" || route.view === "web") &&
         previous &&
         previous.view === route.view &&
         state.renderedDoc === docKey(route)
@@ -1363,6 +1444,11 @@
       if (route.view === "wiki") {
         state.scopedFolder = "";
         await renderWiki(route);
+        return;
+      }
+      if (route.view === "web") {
+        state.scopedFolder = "";
+        await renderWeb(route);
         return;
       }
 
