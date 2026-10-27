@@ -35,6 +35,9 @@
   }
 
   function hashFor(url, anchor) {
+    /* Sources with their own view (js/raypeat.js) take their addresses. */
+    const own = global.ReaderRayPeat && global.ReaderRayPeat.hashForUrl(url, anchor);
+    if (own) return own;
     return "#/~web/" + encodeURIComponent(String(url).split("#")[0]) + (anchor ? "#" + encodeURIComponent(anchor) : "");
   }
 
@@ -131,6 +134,7 @@
   global.ReaderWeb = {
     parseInput: parseInput,
     hashFor: hashFor,
+    absolutize: absolutize,
     render: render,
     sameDoc: sameDoc,
     host: host

@@ -208,7 +208,9 @@
     wrap.querySelectorAll("a[href]").forEach(function (a) {
       const href = a.getAttribute("href");
       if (!href) return;
-      const target = resolveHref(ctx, href);
+      /* The restyle header's source link is the original page: it opens that site. */
+      const target = a.parentElement && a.parentElement.classList.contains("restyle-source") && /^https?:/i.test(href)
+        ? { kind: "external", url: href } : resolveHref(ctx, href);
       if (target.kind === "anchor") {
         bindInPage(a, wrap, ctx, target.id);
       } else if (target.kind === "route") {

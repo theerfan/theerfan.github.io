@@ -401,9 +401,11 @@
     const d = ev.detail || {};
     const r = d.route || {};
     if (els.home) els.home.hidden = d.view !== "catalog";
-    if (d.view === "file" || d.view === "wiki" || d.view === "web") {
+    if (d.view === "file" || d.view === "wiki" || d.view === "web" || (d.view === "raypeat" && r.path)) {
       const hash =
-        d.view === "wiki"
+        d.view === "raypeat"
+          ? global.ReaderRayPeat.hashFor(r.path)
+          : d.view === "wiki"
           ? global.ReaderWiki.hashFor(r.lang, r.title)
           : d.view === "web"
             ? global.ReaderWeb.hashFor(r.url)

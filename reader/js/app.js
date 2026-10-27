@@ -513,8 +513,14 @@
     if (owner === "~wiki" && ReaderWiki.isLang(repo) && path) {
       return { view: "wiki", lang: repo, title: path, anchor: anchor };
     }
+    /* #/~raypeat[/<article path>]: Ray Peat's articles (js/raypeat.js). */
+    if (owner === "~raypeat" && window.ReaderRayPeat) {
+      return { view: "raypeat", path: parts.slice(1).join("/"), anchor: anchor };
+    }
     /* #/~web/<encoded URL>: any web page (js/web.js). */
     if (owner === "~web" && /^https?:\/\//i.test(repo || "")) {
+      const rp = window.ReaderRayPeat ? ReaderRayPeat.pathForUrl(repo) : null;
+      if (rp !== null) return { view: "raypeat", path: rp, anchor: anchor };
       return { view: "web", url: repo, anchor: anchor };
     }
     if (!owner || !repo) return { view: "catalog" };
@@ -760,6 +766,15 @@
       if (seenFolder[home.id]) return;
       seenFolder[home.id] = true;
       cards.push(folderCardHtml(home, entriesInFolder(home).length));
+    });
+    /* Sources with their own view (e.g. Ray Peat's articles, js/raypeat.js). */
+    (state.catalog.sources || []).forEach(function (src) {
+      if (!src || !/^#\/~[a-z]+/.test(src.href || "")) return;
+      cards.push(
+        '<a class="repo-card repo-source" href="' + escapeHtml(src.href) + '"><h2>' + escapeHtml(src.title || "") + "</h2>" +
+          '<p class="repo-id">' + escapeHtml(src.site || "") + "</p>" +
+          (src.description ? "<p>" + escapeHtml(src.description) + "</p>" : "") + "</a>"
+      );
     });
     els.repoList.innerHTML = cards.join("");
   }
@@ -1232,6 +1247,7 @@
   function docKey(route) {
     if (route.view === "wiki") return "~wiki/" + route.lang + "/" + ReaderWiki.urlTitle(route.title);
     if (route.view === "web") return "~web/" + route.url;
+    if (route.view === "raypeat") return "~raypeat/" + String(route.path || "").toLowerCase();
     return [route.owner, route.repo, route.path].join("/").toLowerCase();
   }
 
@@ -1380,6 +1396,112 @@
     announce(route, outline, { title: page.title, source: host });
   }
 
+  /* Ray Peat's articles (js/raypeat.js): the index, or one article. The sidebar lists
+     every article (the pager follows it), with the open article's contents. */
+  function showRayPeatChrome(route, title) {
+    document.body.classList.remove("view-catalog");
+    document.body.classList.add("view-repo");
+    els.catalog.hidden = true;
+    els.repo.hidden = false;
+    const url = ReaderRayPeat.articleUrl(route.path);
+    els.githubLink.hidden = false;
+    els.githubLink.href = url;
+    els.githubLink.textContent = "Open on raypeat.com";
+    els.crumb.innerHTML = route.path
+      ? '<a class="crumb-up" href="' + ReaderRayPeat.hashFor("") + '">Ray Peat</a><span class="sep">/</span><span class="here">' +
+        escapeHtml(title) + "</span>"
+      : '<span class="here">Ray Peat</span>';
+    $("sidebarTitle").textContent = "Ray Peat";
+    $("sidebarMeta").textContent = "raypeat.com/articles";
+    if (els.folderTools) els.folderTools.hidden = true;
+    els.truncated.hidden = true;
+    els.jumpInputBar.value = url;
+  }
+
+  function renderRayPeatList(idx, path, outline) {
+    els.fileList.innerHTML = ReaderRayPeat.sidebarHtml(idx, path ? path : undefined, outline);
+    ReaderRayPeat.wireSidebar(els.fileList);
+    const active = els.fileList.querySelector(".file-link.active");
+    if (active && active.scrollIntoView) active.scrollIntoView({ block: "nearest" });
+  }
+
+  async function renderRayPeat(route) {
+    const RP = window.ReaderRayPeat;
+    state.meta = null;
+    state.files = [];
+    const indexP = RP.index();
+    if (!route.path) {
+      showRayPeatChrome(route, "Articles");
+      setTitle(["Ray Peat", "Reader"]);
+      els.fileList.innerHTML = "";
+      showStatus("Loading the article index from raypeat.com…");
+      const idx = await indexP;
+      if (state.route !== route) return;
+      renderRayPeatList(idx, "", null);
+      els.article.innerHTML = "";
+      els.article.appendChild(RP.indexView(idx));
+      state.framed = false;
+      state.renderedDoc = docKey(route);
+      showStatus("");
+      els.repo.scrollTop = 0;
+      announce(route, null, { title: "Ray Peat", source: "raypeat.com" });
+      return;
+    }
+    const known = RP.titleFor(await Promise.race([indexP, Promise.resolve(null)]), route.path);
+    showRayPeatChrome(route, known || route.path.split("/").pop());
+    setTitle([known || "Ray Peat", "Ray Peat", "Reader"]);
+    showStatus("Loading " + (known ? "\u201c" + known + "\u201d" : "the article") + " from raypeat.com…");
+    let both;
+    try {
+      both = await Promise.all([RP.render(route.path), indexP]);
+    } catch (err) {
+      if (state.route !== route) return;
+      /* Keep the article list usable, and offer the original page. */
+      const listIdx = await indexP;
+      renderRayPeatList(listIdx, route.path, null);
+      showArticleMessage(known || RP.titleFor(listIdx, route.path) || "Couldn\u2019t open the article", (err && err.message) || "Couldn\u2019t load the article.", "error");
+      const more = document.createElement("p");
+      const link = document.createElement("a");
+      link.href = RP.articleUrl(route.path);
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = "Open it on raypeat.com";
+      more.appendChild(link);
+      const box = els.article.querySelector(".article-msg");
+      if (box) box.appendChild(more);
+      state.renderedDoc = "";
+      showStatus("");
+      announce(route, null, { title: known || "Ray Peat", source: "Ray Peat" });
+      return;
+    }
+    if (state.route !== route) return; /* navigated away meanwhile */
+    const page = both[0];
+    const idx = both[1];
+    const framed = page.wrap.hasAttribute("data-doc-framed");
+    const title = page.title || known;
+    showRayPeatChrome(route, title);
+    setTitle([title, "Ray Peat", "Reader"]);
+    els.article.innerHTML = "";
+    const body = document.createElement("div");
+    body.className = "markdown-body doc-html doc-web doc-raypeat" + (framed ? " doc-framed" : "");
+    while (page.wrap.firstChild) body.appendChild(page.wrap.firstChild);
+    els.article.appendChild(body);
+    state.framed = framed;
+    if (!framed && window.ReaderInk) ReaderInk.scan(body);
+    if (!framed) ReaderDoc.fitMath(body);
+    let outline = null;
+    try {
+      outline = framed ? JSON.parse(page.wrap.getAttribute("data-doc-outline") || "null") : ReaderDoc.outline(body);
+    } catch (e) {
+      outline = null;
+    }
+    renderRayPeatList(idx, route.path, outline);
+    state.renderedDoc = docKey(route);
+    showStatus(page.from === "stale" ? "Offline: showing the copy from your last visit." : "");
+    scrollDocTo(route.anchor, false);
+    announce(route, outline, { title: title, source: "Ray Peat" });
+  }
+
   async function renderWiki(route) {
     const title = route.title.replace(/_/g, " ");
     state.meta = null;
@@ -1431,7 +1553,7 @@
 
       /* Same document, different #anchor: just scroll. */
       if (
-        (route.view === "file" || route.view === "wiki" || route.view === "web") &&
+        (route.view === "file" || route.view === "wiki" || route.view === "web" || route.view === "raypeat") &&
         previous &&
         previous.view === route.view &&
         state.renderedDoc === docKey(route)
@@ -1449,6 +1571,11 @@
       if (route.view === "web") {
         state.scopedFolder = "";
         await renderWeb(route);
+        return;
+      }
+      if (route.view === "raypeat") {
+        state.scopedFolder = "";
+        await renderRayPeat(route);
         return;
       }
 

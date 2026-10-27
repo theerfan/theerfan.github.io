@@ -1141,3 +1141,49 @@ body.sidebar-collapsed .truncated,
 @media print {
   .fav-btn, .fav-toast { display: none !important; }
 }
+
+/* Ray Peat's articles (js/raypeat.js). */
+.rp-index .rp-head { margin-bottom: 1.4em; }
+.rp-index .rp-intro { color: var(--muted); font-size: 0.95em; }
+.rp-index .rp-note { color: var(--muted); font-size: 0.85em; font-style: italic; }
+.rp-filter { position: sticky; top: 0; z-index: 2; padding: 8px 0; background: var(--paper); }
+.rp-filter-input, .rp-side-filter input {
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  font-family: var(--ui);
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 9px 12px;
+}
+.rp-filter-input:focus, .rp-side-filter input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.rp-index .rp-count { color: var(--muted); font-family: var(--ui); font-size: 0.85rem; min-height: 1.2em; margin: 0.2em 0 0; }
+.rp-index .rp-section h2 { font-size: 1.15em; margin-top: 1.4em; }
+.rp-index .rp-n { color: var(--muted); font-family: var(--ui); font-size: 0.75em; font-weight: 400; margin-left: 0.3em; }
+.rp-index .rp-list { padding-left: 1.6em; }
+.rp-index .rp-list li { margin: 0.35em 0; }
+.rp-index .rp-list a { text-decoration: none; }
+.rp-index .rp-list a:hover { text-decoration: underline; }
+.rp-index .rp-none { color: var(--muted); }
+.file-list .rp-side-filter { margin: 0 0 8px; }
+.file-list .rp-side-filter input { padding: 7px 10px; font-size: 0.85rem; }
+.file-list .rp-side-section {
+  margin: 14px 0 4px;
+  padding: 0 8px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.file-list .rp-side-toc .file-link { font-size: 0.82rem; color: var(--muted); padding-top: 4px; padding-bottom: 4px; }
+.file-list [hidden] { display: none; }
+.doc-raypeat .rp-subtitle { font-size: 1.15em; font-style: italic; color: var(--muted); margin-top: -0.4em; }
+.doc-raypeat .rp-toc { list-style: none; padding-left: 0; margin: 1em 0 1.6em; border-left: 3px solid var(--rule); padding-left: 1em; }
+.doc-raypeat .rp-toc li { margin: 0.25em 0; }
+.doc-raypeat .rp-copyright { color: var(--muted); font-size: 0.85em; margin-top: 2em; }
+.doc-raypeat .restyle-references li { margin: 0.45em 0; line-height: 1.5; }
+.repo-card.repo-source .repo-id { font-family: var(--ui); }

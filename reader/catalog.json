@@ -65,5 +65,14 @@
       "branch": "main",
       "root": ""
     }
+  ],
+  "sources": [
+    {
+      "id": "raypeat",
+      "title": "Ray Peat",
+      "site": "raypeat.com · articles",
+      "href": "#/~raypeat",
+      "description": "Ray Peat's articles on physiology, hormones and nutrition, read live from raypeat.com in the reader's style. Searchable index."
+    }
   ]
 }
