@@ -4,7 +4,7 @@
    talks to the reader only through postMessage (see frame-host.js):
 
      → host  { type: "ready" | "height" | "link" | "anchor" | "interact" }
-     ← host  { type: "theme" | "locate" }
+     ← host  { type: "theme" | "locate" | "tops" }
 
    It also gives the page in-memory localStorage/sessionStorage/cookies (the
    real ones are unavailable to an opaque origin), keeps the frame as tall as
@@ -157,6 +157,8 @@
       else root.style.removeProperty("--text-scale");
     } else if (d.type === "locate") {
       locate(String(d.id || ""), d.seq);
+    } else if (d.type === "tops") {
+      post({ type: "tops", seq: d.seq, items: headingTops() });
     }
   });
 
@@ -166,6 +168,21 @@
     if (el) return el;
     var named = document.getElementsByName(id);
     return named.length ? named[0] : null;
+  }
+
+  /* Where each heading is (for the reader's reading-position memory). */
+  function headingTops() {
+    var out = [];
+    var hs = document.querySelectorAll("h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]");
+    for (var i = 0; i < hs.length && out.length < 3000; i++) {
+      if (!hs[i].getClientRects().length) continue;
+      out.push({
+        id: hs[i].id,
+        top: hs[i].getBoundingClientRect().top + window.scrollY,
+        text: (hs[i].textContent || "").replace(/\s+/g, " ").trim().slice(0, 160)
+      });
+    }
+    return out;
   }
 
   function locate(id, seq) {

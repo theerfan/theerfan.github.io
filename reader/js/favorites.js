@@ -126,7 +126,7 @@
     if (!current) return;
     const list = load();
     if (indexOf(list, current.hash) !== -1) return;
-    const where = visibleHeading();
+    const where = (global.ReaderResume && global.ReaderResume.where()) || visibleHeading();
     const anchor = where ? where.id : current.anchor || "";
     list.unshift({
       hash: current.hash,

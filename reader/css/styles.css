@@ -1132,6 +1132,40 @@ body.sidebar-collapsed .truncated,
 }
 [data-theme="dark"] .fav-toast button { color: #0f766e; }
 
+/* "Resumed at § X · Back to top" (js/resume.js). */
+.resume-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  z-index: 59;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: min(92vw, 460px);
+  padding: 8px 10px 8px 14px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--ui);
+  font-size: 0.84rem;
+  box-shadow: var(--shadow);
+  opacity: 0.94;
+}
+.resume-toast[hidden] { display: none; }
+.resume-toast-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.resume-toast button {
+  flex-shrink: 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--accent);
+  background: transparent;
+  border: 0;
+  padding: 4px 6px;
+  cursor: pointer;
+}
+[data-theme="dark"] .resume-toast button { color: #0f766e; }
+
 @media (max-width: 800px) and (pointer: coarse) {
   .fav-link { padding-top: 10px; padding-bottom: 10px; }
   .fav-remove { width: 40px; height: 40px; }

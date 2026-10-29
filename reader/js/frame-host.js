@@ -4,8 +4,8 @@
    modals). The frame gets the reader theme, fonts and KaTeX CSS injected and
    talks to the reader only via postMessage (js/frame.js on the other side):
 
-     frame → reader  ready | height | link | anchor | interact
-     reader → frame  theme | locate
+     frame → reader  ready | height | link | anchor | interact | tops
+     reader → frame  theme | locate | tops
 
    Messages are accepted only from the current frame's window with the opaque
    "null" origin, are shape-checked, and links are honoured only during a user
@@ -154,6 +154,36 @@
     state.mark.scrollIntoView({ behavior: p.smooth ? "smooth" : "auto", block: "start" });
   }
 
+  /* Heading positions inside the frame (js/resume.js): [{ id, top, text }]. */
+  const topsWaiting = {};
+  function tops() {
+    if (!active() || !state.ready) return Promise.resolve(null);
+    state.seq += 1;
+    const seq = state.seq;
+    return new Promise(function (resolve) {
+      topsWaiting[seq] = resolve;
+      send({ type: "tops", seq: seq });
+      setTimeout(function () {
+        if (topsWaiting[seq]) {
+          delete topsWaiting[seq];
+          resolve(null);
+        }
+      }, 1000);
+    });
+  }
+  function onTops(d) {
+    const resolve = topsWaiting[d.seq];
+    if (!resolve || !Array.isArray(d.items)) return;
+    delete topsWaiting[d.seq];
+    const items = [];
+    for (let i = 0; i < d.items.length && items.length < 3000; i++) {
+      const h = d.items[i];
+      if (!h || typeof h.id !== "string" || !isFinite(Number(h.top))) continue;
+      items.push({ id: h.id.slice(0, 300), top: Number(h.top), text: String(h.text || "").slice(0, 160) });
+    }
+    resolve(items);
+  }
+
   function onLink(d) {
     const href = d.href;
     if (typeof href !== "string" || !href || href.length > 4096) return;
@@ -209,6 +239,10 @@
         break;
       case "interact":
         state.userMoved = true;
+        document.dispatchEvent(new CustomEvent("reader:frame-interact"));
+        break;
+      case "tops":
+        onTops(d);
         break;
       default:
         break;
@@ -229,6 +263,7 @@
     mount: mount,
     active: active,
     scrollTo: scrollTo,
+    tops: tops,
     theme: theme
   };
 })(window);
