@@ -3,7 +3,7 @@
    an opaque origin with no access to the reader's DOM, storage or cookies) and
    talks to the reader only through postMessage (see frame-host.js):
 
-     → host  { type: "ready" | "height" | "link" | "anchor" | "interact" }
+     → host  { type: "ready" | "height" | "link" | "anchor" | "interact" | "image" }
      ← host  { type: "theme" | "locate" | "tops" }
 
    It also gives the page in-memory localStorage/sessionStorage/cookies (the
@@ -221,6 +221,49 @@
       href: link.href,
       newTab: !!(ev.metaKey || ev.ctrlKey || ev.shiftKey)
     });
+  });
+
+  /* Images: a tap opens the reader's image viewer (js/lightbox.js) with the
+     page's images; images that are links stay links. Only addresses are sent. */
+  var SMALL = 48;
+  function bigEnough(img) {
+    var r = img.getBoundingClientRect();
+    return r.width >= SMALL && r.height >= SMALL && !(img.naturalWidth && img.naturalWidth < SMALL && img.naturalHeight < SMALL);
+  }
+  function viewable(img) {
+    if (!img || img.localName !== "img" || !bigEnough(img)) return false;
+    if (img.closest("a[href], button, .katex, mjx-container")) return false;
+    var src = img.currentSrc || img.src || "";
+    return /^https?:\/\//i.test(src) || /^data:image\//i.test(src);
+  }
+  function largest(set) {
+    var best = "", bv = -1;
+    String(set || "").split(/,\s+(?=\S)/).forEach(function (part) {
+      var bits = part.trim().split(/\s+/);
+      var d = bits[1] || "1x";
+      var v = parseFloat(d) * (/x$/.test(d) ? 1000 : 1) || 0;
+      if (bits[0] && v > bv) { bv = v; best = bits[0]; }
+    });
+    try { return best ? new URL(best, document.baseURI).href : ""; } catch (e) { return ""; }
+  }
+  window.addEventListener("click", function (ev) {
+    if (ev.defaultPrevented || ev.button !== 0) return;
+    var t = ev.target;
+    var img = t && t.closest ? t.closest("img") : null;
+    if (!viewable(img)) return;
+    var all = Array.prototype.filter.call(document.images, function (el) { return el === img || viewable(el); });
+    var items = all.slice(0, 300).map(function (el) {
+      var fig = el.closest("figure");
+      var cap = fig && fig.querySelector("figcaption");
+      var src = el.currentSrc || el.src;
+      return {
+        src: src, full: largest(el.getAttribute("srcset")) || src, alt: el.getAttribute("alt") || "",
+        caption: ((cap && cap.textContent) || el.getAttribute("alt") || el.getAttribute("title") || "").slice(0, 1000),
+        w: el.naturalWidth || 0, h: el.naturalHeight || 0
+      };
+    });
+    ev.preventDefault();
+    post({ type: "image", index: all.indexOf(img), items: items });
   });
 
   window.addEventListener("auxclick", function (ev) {

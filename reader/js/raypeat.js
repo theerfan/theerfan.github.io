@@ -922,7 +922,9 @@
     global.ReaderRestyle.register({
       id: "raypeat",
       name: "Ray Peat article",
-      match: function (doc, page) { return pathForUrl(page.url || "") !== null; },
+      /* Only pages that say they are from raypeat.com (an empty address would
+         resolve to the index and claim every note). */
+      match: function (doc, page) { return !!page.url && pathForUrl(page.url) !== null; },
       prepare: prepare,
       root: function (doc) { return doc.querySelector(".rp-article"); },
       drop: []

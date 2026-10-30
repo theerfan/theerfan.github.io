@@ -237,6 +237,13 @@
       case "link":
         onLink(d);
         break;
+      case "image": {
+        /* Only on a real tap in the frame; js/lightbox.js checks the addresses. */
+        const ua = global.navigator.userActivation;
+        if (ua && !ua.isActive) return;
+        if (global.ReaderLightbox) global.ReaderLightbox.openFromFrame(d.items, d.index);
+        break;
+      }
       case "interact":
         state.userMoved = true;
         document.dispatchEvent(new CustomEvent("reader:frame-interact"));
