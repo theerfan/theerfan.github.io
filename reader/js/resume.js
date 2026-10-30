@@ -274,6 +274,7 @@
   function isDoc(d) {
     const v = d && d.view;
     if (v === "file" || v === "wiki" || v === "web") return true;
+    if (v === "substack") return !!(d.route && d.route.slug);
     return v === "raypeat" && !!(d.route && d.route.path);
   }
 

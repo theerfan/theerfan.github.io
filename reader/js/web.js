@@ -35,8 +35,9 @@
   }
 
   function hashFor(url, anchor) {
-    /* Sources with their own view (js/raypeat.js) take their addresses. */
-    const own = global.ReaderRayPeat && global.ReaderRayPeat.hashForUrl(url, anchor);
+    /* Sources with their own view (js/raypeat.js, js/substack.js) take their addresses. */
+    const own = (global.ReaderRayPeat && global.ReaderRayPeat.hashForUrl(url, anchor)) ||
+      (global.ReaderSubstack && global.ReaderSubstack.hashForUrl(url, anchor));
     if (own) return own;
     return "#/~web/" + encodeURIComponent(String(url).split("#")[0]) + (anchor ? "#" + encodeURIComponent(anchor) : "");
   }
@@ -121,6 +122,13 @@
   /* { wrap, title, outline, url }: the rendered page. */
   async function render(url) {
     const text = await fetchPage(url);
+    /* A Substack publication on its own domain: its own view (js/substack.js). */
+    const ss = global.ReaderSubstack && global.ReaderSubstack.fromHtml(url, text);
+    if (ss) {
+      const err = new Error("This is a Substack page.");
+      err.substackHash = ss;
+      throw err;
+    }
     const ctx = { owner: "", repo: "", branch: "", path: url, web: url };
     /* ReaderHTML parses again; absolutize a parsed copy and hand over its markup. */
     const doc = new DOMParser().parseFromString(text, "text/html");

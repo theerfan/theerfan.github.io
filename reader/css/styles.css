@@ -1221,3 +1221,66 @@ body.sidebar-collapsed .truncated,
 .doc-raypeat .rp-copyright { color: var(--muted); font-size: 0.85em; margin-top: 2em; }
 .doc-raypeat .restyle-references li { margin: 0.45em 0; line-height: 1.5; }
 .repo-card.repo-source .repo-id { font-family: var(--ui); }
+
+/* ---- Substack (js/substack.js) ---- */
+.doc-substack .ss-head h1 { margin-bottom: 0.2em; }
+.doc-substack .ss-subtitle { font-size: 1.15em; color: var(--muted); margin: 0.2em 0 0.6em; line-height: 1.4; }
+.doc-substack .restyle-head { margin-bottom: 1.4em; }
+.doc-substack .ss-figure, .doc-substack .ss-gallery { margin: 1.6em 0; text-align: center; }
+.doc-substack .ss-figure img, .doc-substack .ss-gallery img { max-width: 100%; height: auto; border-radius: 4px; }
+.doc-substack figcaption { color: var(--muted); font-size: 0.85em; margin-top: 0.5em; line-height: 1.4; }
+.doc-substack .ss-gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 6px; }
+.doc-substack .ss-gallery-grid img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 1; }
+.doc-substack .ss-math-block { margin: 1.2em 0; overflow-x: auto; overflow-y: hidden; }
+.doc-substack .ss-pullquote { border-left: none; padding: 0.2em 1em; margin: 1.6em 0; font-size: 1.2em; font-style: italic; text-align: center; }
+.doc-substack .ss-card, .ss-index .ss-card {
+  display: block;
+  margin: 1.4em 0;
+  padding: 0.8em 1em;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--card);
+  font-size: 0.92em;
+}
+.doc-substack .ss-card p { margin: 0.3em 0; }
+.doc-substack .ss-card-kind { color: var(--muted); font-family: var(--ui); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.doc-substack .ss-card-title { font-weight: 600; }
+.doc-substack .ss-card-meta { color: var(--muted); font-family: var(--ui); font-size: 0.82rem; }
+.doc-substack .ss-card-text, .doc-substack .ss-card-title, .doc-substack .ss-card-quote p { white-space: normal; color: var(--ink); }
+.doc-substack .ss-card-photo { display: block; max-width: 100%; max-height: 320px; height: auto; border-radius: 6px; margin: 0.5em 0; }
+.doc-substack .ss-card-quote { margin: 0.5em 0; padding: 0.3em 0.8em; border-left: 3px solid var(--rule); }
+.doc-substack .ss-card-thumb { position: relative; display: block; line-height: 0; }
+.doc-substack .ss-card-thumb img { width: 100%; height: auto; border-radius: 6px; }
+.doc-substack .ss-card-play {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 56px; height: 40px; line-height: 40px; text-align: center; border-radius: 10px;
+  background: rgba(0, 0, 0, 0.7); color: #fff; font-size: 20px;
+}
+.doc-substack .ss-card-paid { border-color: var(--accent); }
+.doc-substack .ss-card-paid-end { text-align: center; }
+.doc-substack .ss-card-audio audio { width: 100%; }
+.doc-substack pre { white-space: pre; overflow-x: auto; }
+.ss-index .ss-index-head { margin-bottom: 1em; }
+.ss-index .ss-intro { color: var(--muted); font-size: 0.95em; }
+.ss-index .ss-note { color: var(--muted); font-size: 0.85em; font-style: italic; }
+.ss-index .ss-count { color: var(--muted); font-family: var(--ui); font-size: 0.85rem; min-height: 1.2em; margin: 0.2em 0 0; }
+.ss-index .ss-list { list-style: none; padding-left: 0; margin: 0.6em 0; }
+.ss-index .ss-list li { margin: 0; border-bottom: 1px solid var(--rule); }
+.ss-index .ss-list li[hidden] { display: none; }
+.ss-index .ss-list a { display: block; padding: 0.75em 0.1em; text-decoration: none; color: inherit; }
+.ss-index .ss-list a:hover .ss-item-title { text-decoration: underline; }
+.ss-index .ss-item-title { font-weight: 600; color: var(--accent); }
+.ss-index .ss-item-sub { display: block; font-size: 0.92em; margin-top: 0.15em; }
+.ss-index .ss-item-meta { display: block; color: var(--muted); font-family: var(--ui); font-size: 0.78rem; margin-top: 0.25em; }
+.ss-index .ss-badge, .doc-substack .ss-badge {
+  display: inline-block; margin-left: 0.5em; padding: 0 0.45em; border: 1px solid var(--muted); border-radius: 4px;
+  color: var(--muted); font-family: var(--ui); font-size: 0.68rem; font-weight: 600; vertical-align: 0.15em; text-transform: uppercase;
+}
+.ss-index .ss-none { color: var(--muted); }
+.ss-index .ss-more-wrap { margin: 1.2em 0 2em; text-align: center; }
+.ss-index .ss-more {
+  font: inherit; font-family: var(--ui); font-size: 0.9rem; padding: 0.55em 1.2em; border-radius: 8px;
+  border: 1px solid var(--rule); background: var(--card); color: inherit; cursor: pointer;
+}
+.ss-index .ss-more[hidden] { display: none; }
+.ss-index .ss-more-note { display: block; color: var(--muted); font-family: var(--ui); font-size: 0.8rem; margin-top: 0.5em; }

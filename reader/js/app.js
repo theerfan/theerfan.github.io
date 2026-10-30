@@ -517,10 +517,18 @@
     if (owner === "~raypeat" && window.ReaderRayPeat) {
       return { view: "raypeat", path: parts.slice(1).join("/"), anchor: anchor };
     }
+    /* #/~substack/<host>[/p/<slug>] and #/~substack/~id/<id>: Substack (js/substack.js). */
+    if (owner === "~substack" && window.ReaderSubstack && repo) {
+      if (repo === "~id") return { view: "substack", id: parts[2] || "", anchor: anchor };
+      return { view: "substack", host: repo.toLowerCase(), slug: parts[2] === "p" ? parts[3] || "" : "", anchor: anchor };
+    }
     /* #/~web/<encoded URL>: any web page (js/web.js). */
     if (owner === "~web" && /^https?:\/\//i.test(repo || "")) {
       const rp = window.ReaderRayPeat ? ReaderRayPeat.pathForUrl(repo) : null;
       if (rp !== null) return { view: "raypeat", path: rp, anchor: anchor };
+      const ss = window.ReaderSubstack ? ReaderSubstack.parseUrl(repo) : null;
+      if (ss && ss.kind === "id") return { view: "substack", id: ss.id, anchor: anchor };
+      if (ss) return { view: "substack", host: ss.host, slug: ss.kind === "post" ? ss.slug : "", anchor: anchor };
       return { view: "web", url: repo, anchor: anchor };
     }
     if (!owner || !repo) return { view: "catalog" };
@@ -1248,6 +1256,7 @@
     if (route.view === "wiki") return "~wiki/" + route.lang + "/" + ReaderWiki.urlTitle(route.title);
     if (route.view === "web") return "~web/" + route.url;
     if (route.view === "raypeat") return "~raypeat/" + String(route.path || "").toLowerCase();
+    if (route.view === "substack") return "~substack/" + (route.id ? "~id/" + route.id : route.host + "/" + (route.slug || ""));
     return [route.owner, route.repo, route.path].join("/").toLowerCase();
   }
 
@@ -1370,7 +1379,31 @@
     els.fileList.innerHTML = "";
     setTitle([host, "Reader"]);
     showStatus("Loading " + host + "…");
-    const page = await ReaderWeb.render(route.url);
+    /* A Substack publication on its own domain (js/substack.js): a /p/<slug> post is
+       asked of Substack's API first; a page that turns out to be Substack's (the app
+       reads it) or that can't be read (the website) is checked after. */
+    const SS = window.ReaderSubstack;
+    const isPost = /^\/p\/[^/]+\/?$/.test(new URL(route.url).pathname);
+    if (SS && isPost) {
+      const to = await SS.detect(route.url);
+      if (state.route !== route) return;
+      if (to) {
+        redirectTo(to);
+        return;
+      }
+    }
+    let page;
+    try {
+      page = await ReaderWeb.render(route.url);
+    } catch (err) {
+      const to = SS && err && err.substackHash ? err.substackHash : SS && !isPost && err && err.cors ? await SS.detect(route.url) : "";
+      if (state.route !== route) return;
+      if (to) {
+        redirectTo(to);
+        return;
+      }
+      throw err;
+    }
     if (state.route !== route) return; /* navigated away meanwhile */
     const framed = page.wrap.hasAttribute("data-doc-framed");
     showWebChrome(route.url, page.title);
@@ -1502,6 +1535,175 @@
     announce(route, outline, { title: title, source: "Ray Peat" });
   }
 
+  /* Substack (js/substack.js): a publication's archive, or one post. The sidebar lists
+     the archive loaded so far (the pager follows it), with the open post's contents. */
+  /* Settle on another route for the same thing (a canonical address) without a new
+     history entry. */
+  function redirectTo(hash) {
+    if (history.replaceState) {
+      history.replaceState(null, "", hash);
+      onRoute();
+    } else {
+      location.replace(hash);
+    }
+  }
+
+  function showSubstackChrome(host, name, title, url) {
+    const SS = window.ReaderSubstack;
+    document.body.classList.remove("view-catalog");
+    document.body.classList.add("view-repo");
+    els.catalog.hidden = true;
+    els.repo.hidden = false;
+    els.githubLink.hidden = !url;
+    if (url) els.githubLink.href = url;
+    els.githubLink.textContent = "Open on Substack";
+    const pub = name || host || "Substack";
+    els.crumb.innerHTML = title
+      ? (host ? '<a class="crumb-up" href="' + escapeHtml(SS.hashFor(host, "")) + '">' + escapeHtml(pub) + '</a><span class="sep">/</span>' : "") +
+        '<span class="here">' + escapeHtml(title) + "</span>"
+      : '<span class="here">' + escapeHtml(pub) + "</span>";
+    $("sidebarTitle").textContent = pub;
+    $("sidebarMeta").textContent = host ? host.replace(/^www\./, "") : "Substack";
+    if (els.folderTools) els.folderTools.hidden = true;
+    els.truncated.hidden = true;
+    els.jumpInputBar.value = url || "";
+  }
+
+  function renderSubstackList(arc, current, outline) {
+    els.fileList.innerHTML = ReaderSubstack.sidebarHtml(arc, current, outline);
+    ReaderSubstack.wireSidebar(els.fileList);
+    const active = els.fileList.querySelector(".file-link.active");
+    if (active && active.scrollIntoView) active.scrollIntoView({ block: "nearest" });
+  }
+
+  function substackError(title, err, url) {
+    showArticleMessage(title, (err && err.message) || "Couldn\u2019t load it from Substack.", "error");
+    const more = document.createElement("p");
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "Open it on Substack";
+    more.appendChild(link);
+    const box = els.article.querySelector(".article-msg");
+    if (box) box.appendChild(more);
+    state.renderedDoc = "";
+    showStatus("");
+  }
+
+  async function renderSubstack(route) {
+    const SS = window.ReaderSubstack;
+    state.meta = null;
+    state.files = [];
+    state.framed = false;
+    if (route.id) {
+      showSubstackChrome("", "Substack", "", "");
+      els.fileList.innerHTML = "";
+      setTitle(["Substack", "Reader"]);
+      showStatus("Looking up the post on Substack\u2026");
+      let to;
+      try {
+        to = await SS.byId(route.id);
+      } catch (err) {
+        if (state.route !== route) return;
+        substackError("Couldn\u2019t open the post", err, "https://substack.com/home/post/p-" + encodeURIComponent(route.id));
+        announce(route, null, { title: "Substack", source: "Substack" });
+        return;
+      }
+      if (state.route !== route) return;
+      redirectTo(SS.hashFor(to.host, to.slug, route.anchor));
+      return;
+    }
+    const host = route.host;
+    const known = SS.nameFor(host);
+    if (!route.slug) {
+      showSubstackChrome(host, known, "", SS.pubUrl(host));
+      setTitle([known || host, "Reader"]);
+      els.fileList.innerHTML = "";
+      showStatus("Loading the archive from " + host + "\u2026");
+      const arc = await SS.archive(host);
+      if (state.route !== route) return;
+      if (arc.canonicalHost && arc.canonicalHost !== host) {
+        redirectTo(SS.hashFor(arc.canonicalHost, ""));
+        return;
+      }
+      const name = arc.name || known || host;
+      showSubstackChrome(host, name, "", SS.pubUrl(host));
+      setTitle([name, "Substack", "Reader"]);
+      if (!arc.items.length) {
+        renderSubstackList(null, null, null);
+        substackError(name, { message: arc.error || "This publication has no posts yet." }, SS.pubUrl(host));
+        announce(route, null, { title: name, source: "Substack" });
+        return;
+      }
+      renderSubstackList(arc, null, null);
+      els.article.innerHTML = "";
+      els.article.appendChild(SS.indexView(arc, function (a) {
+        if (state.route === route) renderSubstackList(a, null, null);
+      }));
+      state.renderedDoc = docKey(route);
+      showStatus(arc.from === "stale" ? "Offline: showing the list from your last visit." : "");
+      els.repo.scrollTop = 0;
+      announce(route, null, { title: name, source: "Substack" });
+      return;
+    }
+    showSubstackChrome(host, known, route.slug.replace(/-/g, " "), SS.postUrl(host, route.slug));
+    setTitle([known || host, "Reader"]);
+    els.fileList.innerHTML = "";
+    showStatus("Loading the post from " + host + "\u2026");
+    const arcP = SS.archive(host);
+    let page;
+    try {
+      page = await SS.render(host, route.slug);
+    } catch (err) {
+      if (state.route !== route) return;
+      const arc = await Promise.race([arcP, new Promise(function (r) { setTimeout(r, 3000, null); })]);
+      if (state.route !== route) return;
+      renderSubstackList(arc, null, null);
+      substackError("Couldn\u2019t open the post", err, SS.postUrl(host, route.slug));
+      announce(route, null, { title: known || "Substack", source: "Substack" });
+      return;
+    }
+    if (state.route !== route) return; /* navigated away meanwhile */
+    const p = page.post;
+    if (p.host !== host || p.slug !== route.slug) {
+      /* e.g. <name>.substack.com moved to its own domain: one address per post. */
+      redirectTo(SS.hashFor(p.host, p.slug, route.anchor));
+      return;
+    }
+    const framed = page.wrap.hasAttribute("data-doc-framed");
+    showSubstackChrome(host, p.pubName, p.title, p.url);
+    setTitle([p.title, p.pubName || host, "Reader"]);
+    els.article.innerHTML = "";
+    const body = document.createElement("div");
+    body.className = "markdown-body doc-html doc-web doc-substack" + (framed ? " doc-framed" : "");
+    while (page.wrap.firstChild) body.appendChild(page.wrap.firstChild);
+    els.article.appendChild(body);
+    state.framed = framed;
+    if (!framed && window.ReaderInk) ReaderInk.scan(body);
+    if (!framed) ReaderDoc.fitMath(body);
+    let outline = null;
+    try {
+      outline = framed ? JSON.parse(page.wrap.getAttribute("data-doc-outline") || "null") : ReaderDoc.outline(body);
+    } catch (e) {
+      outline = null;
+    }
+    /* The archive (for the list and the pager), if it comes quickly; else later, for
+       the list only. */
+    const arc = await Promise.race([arcP, new Promise(function (r) { setTimeout(r, 4000, null); })]);
+    if (state.route !== route) return;
+    renderSubstackList(arc, p, outline);
+    if (!arc) {
+      arcP.then(function (a) {
+        if (state.route === route && state.renderedDoc === docKey(route)) renderSubstackList(a, p, outline);
+      });
+    }
+    state.renderedDoc = docKey(route);
+    showStatus(page.from === "stale" ? "Offline: showing the copy from your last visit." : "");
+    scrollDocTo(route.anchor, false);
+    announce(route, outline, { title: p.title, source: p.pubName || "Substack" });
+  }
+
   async function renderWiki(route) {
     const title = route.title.replace(/_/g, " ");
     state.meta = null;
@@ -1553,7 +1755,7 @@
 
       /* Same document, different #anchor: just scroll. */
       if (
-        (route.view === "file" || route.view === "wiki" || route.view === "web" || route.view === "raypeat") &&
+        (route.view === "file" || route.view === "wiki" || route.view === "web" || route.view === "raypeat" || route.view === "substack") &&
         previous &&
         previous.view === route.view &&
         state.renderedDoc === docKey(route)
@@ -1576,6 +1778,11 @@
       if (route.view === "raypeat") {
         state.scopedFolder = "";
         await renderRayPeat(route);
+        return;
+      }
+      if (route.view === "substack") {
+        state.scopedFolder = "";
+        await renderSubstack(route);
         return;
       }
 

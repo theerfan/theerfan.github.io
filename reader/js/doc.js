@@ -187,6 +187,9 @@
       /* Wikipedia articles open in the reader (js/wiki.js). */
       const wiki = global.ReaderWiki ? global.ReaderWiki.routeForUrl(href) : "";
       if (wiki) return { kind: "route", hash: wiki };
+      /* So do Substack posts and publications (js/substack.js). */
+      const ss = global.ReaderSubstack ? global.ReaderSubstack.hashForUrl(href) : "";
+      if (ss) return { kind: "route", hash: ss };
       if (/^(https?:|mailto:|\/\/)/i.test(href)) return { kind: "external", url: href };
       return { kind: "none" };
     }

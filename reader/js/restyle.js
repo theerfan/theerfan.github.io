@@ -512,7 +512,7 @@
     const group = document.getElementById("pageStyle");
     if (!group) return;
     const cur = state.current;
-    const show = !!(cur && route && ((route.view === "file" && route.path === cur.path) || (route.view === "web" && route.url === cur.path) || (route.view === "raypeat" && route.path && global.ReaderRayPeat && global.ReaderRayPeat.articleUrl(route.path) === cur.path)));
+    const show = !!(cur && route && ((route.view === "file" && route.path === cur.path) || (route.view === "web" && route.url === cur.path) || (route.view === "raypeat" && route.path && global.ReaderRayPeat && global.ReaderRayPeat.articleUrl(route.path) === cur.path) || (route.view === "substack" && route.slug && global.ReaderSubstack && global.ReaderSubstack.postUrl(route.host, route.slug) === cur.path)));
     group.hidden = !show;
     if (!show) return;
     const label = document.getElementById("pageStyleLabel");
@@ -552,7 +552,7 @@
   );
   document.addEventListener("reader:view", function (ev) {
     const d = ev.detail || {};
-    if (d.view !== "file" && d.view !== "web" && d.view !== "raypeat") state.current = null;
+    if (d.view !== "file" && d.view !== "web" && d.view !== "raypeat" && d.view !== "substack") state.current = null;
     paintMenu(d.route);
   });
 

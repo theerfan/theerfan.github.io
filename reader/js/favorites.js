@@ -401,10 +401,12 @@
     const d = ev.detail || {};
     const r = d.route || {};
     if (els.home) els.home.hidden = d.view !== "catalog";
-    if (d.view === "file" || d.view === "wiki" || d.view === "web" || (d.view === "raypeat" && r.path)) {
+    if (d.view === "file" || d.view === "wiki" || d.view === "web" || (d.view === "raypeat" && r.path) || (d.view === "substack" && r.slug)) {
       const hash =
         d.view === "raypeat"
           ? global.ReaderRayPeat.hashFor(r.path)
+          : d.view === "substack"
+          ? global.ReaderSubstack.hashFor(r.host, r.slug)
           : d.view === "wiki"
           ? global.ReaderWiki.hashFor(r.lang, r.title)
           : d.view === "web"
