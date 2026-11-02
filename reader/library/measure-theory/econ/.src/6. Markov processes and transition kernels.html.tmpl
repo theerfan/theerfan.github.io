@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>6. Markov processes and transition kernels</title>
+</head>
+<body>
+  <article>
+    <p><a href="README.md">Contents</a></p>
+    <h1>6. Markov processes and transition kernels</h1>
+    <p>Recursive macroeconomics assumes the future depends on the past only through a state variable. That assumption is the Markov property, and its measure-theoretic form is a transition kernel: a rule assigning to each state today a probability distribution over states tomorrow. A kernel acts in two directions. Acting on functions, it produces conditional expectations, which is what the Bellman equation needs. Acting on measures, it moves a distribution forward one period, which is what the evolution of a cross-sectional distribution needs. This chapter defines kernels, shows both actions, and discusses when a distribution settles down to a stationary one, and in what sense it converges.</p>
+
+    <h2 id="kernels">6.1 Transition kernels</h2>
+    <p>Let $(S, \mathcal{S})$ be a measurable space of states, for instance a finite set of productivity levels, an interval of asset holdings, or pairs $(a, z)$.</p>
+    <p><strong>Definition.</strong> A <strong>transition kernel</strong> (or transition function) on $S$ is a function $Q(x, A)$, for $x \in S$ and $A \in \mathcal{S}$, such that</p>
+    <ol>
+      <li>for each fixed $x$, $A \mapsto Q(x, A)$ is a probability measure on $S$: the distribution of tomorrow's state if today's is $x$;</li>
+      <li>for each fixed $A$, $x \mapsto Q(x, A)$ is a measurable function of $x$.</li>
+    </ol>
+    <p>A process $(x_t)$ is <strong>Markov with kernel $Q$</strong> if $P(x_{t+1} \in A \mid \mathcal{F}_t) = Q(x_t, A)$ almost surely. The conditional probability on the left is a conditional expectation of an indicator, as in Chapter 5. The equation says that, given the whole history up to $t$, the distribution of tomorrow's state depends only on today's.</p>
+    <p>Condition 2 looks technical. It is there so that tomorrow's probabilities can be averaged over today's states, as in $\int Q(x, A)\,\mu(dx)$ below, which requires the integrand to be measurable.</p>
+    <p><strong>Finite states.</strong> With $S = \{1, \ldots, n\}$, a kernel is a matrix $\Pi$ with $\Pi_{ij} = Q(i, \{j\}) \geq 0$ and each row summing to $1$. Figure 6.1 shows the two-state earnings process used in the Aiyagari economy of Chapter 7: earnings are low ($z = 0.4$) or high ($z = 1$), and</p>
+    $$
+    \Pi = \begin{pmatrix} 0.90 &amp; 0.10 \\ 0.05 &amp; 0.95 \end{pmatrix},
+    $$
+    <p>with rows indexed by today's state (low, high) and columns by tomorrow's.</p>
+    <figure>
+<!--fig:chain-->
+      <figcaption>Figure 6.1: a two-state Markov chain. A low-earnings spell lasts $1/0.10 = 10$ periods on average, a high-earnings spell $1/0.05 = 20$.</figcaption>
+    </figure>
+    <p><strong>Continuous states.</strong> An AR(1) process $z_{t+1} = \rho z_t + \sigma \varepsilon_{t+1}$, with $\varepsilon_{t+1}$ standard normal and independent of the past, has kernel</p>
+    $$
+    Q(z, A) = P(\rho z + \sigma \varepsilon \in A) = \int_A \frac{1}{\sigma}\, \phi\Bigl(\frac{z' - \rho z}{\sigma}\Bigr)\, dz',
+    $$
+    <p>where $\phi$ is the standard normal density. Each $Q(z, \cdot)$ is a normal distribution with mean $\rho z$ and standard deviation $\sigma$.</p>
+    <p><strong>A policy and a shock.</strong> A household with state $(a, z)$ chooses next period's assets by a policy function $a' = g(a, z)$, and $z$ follows the chain $\Pi$. The kernel on pairs is</p>
+    $$
+    Q\bigl((a, z),\, A \times \{z'\}\bigr) = \mathbf{1}_A\bigl(g(a, z)\bigr)\, \Pi(z, z').
+    $$
+    <p>The asset part of tomorrow's state is a point mass at $g(a, z)$, since it is chosen, and the earnings part is drawn from row $z$ of $\Pi$. Condition 2 holds as long as $g$ is measurable. This is the kernel whose stationary distribution is the wealth distribution of Chapter 4.</p>
+
+    <h2 id="operators">6.2 Two directions: functions and measures</h2>
+    <p>A kernel defines two operators.</p>
+    <p><strong>On functions</strong>, for bounded measurable $f : S \to \mathbb{R}$,</p>
+    $$
+    (Tf)(x) = \int_S f(x')\, Q(x, dx') = \mathbb{E}\bigl[f(x_{t+1}) \mid x_t = x\bigr].
+    $$
+    <p>$Tf$ is the expected value of $f$ tomorrow, as a function of today's state. It is measurable by condition 2 (true for indicators by definition, then for simple functions and limits). With finitely many states, $f$ is a column vector and $Tf = \Pi f$.</p>
+    <p><strong>On measures</strong>, for a probability measure $\mu$ on $S$,</p>
+    $$
+    (\mu Q)(A) = \int_S Q(x, A)\, \mu(dx).
+    $$
+    <p>If today's state is distributed according to $\mu$, then tomorrow's is distributed according to $\mu Q$: average the distribution of tomorrow's state over today's. With finitely many states, $\mu$ is a row vector and $\mu Q = \mu \Pi$.</p>
+    <p>The two operators are adjoint. For bounded $f$ and probability $\mu$,</p>
+    $$
+    \int_S (Tf)\, d\mu = \int_S f\, d(\mu Q),
+    $$
+    <p>because both sides equal $\mathbb{E}[f(x_{t+1})]$ when $x_t \sim \mu$. (In matrices: $\mu(\Pi f) = (\mu \Pi) f$.) They answer different questions. $T$ is one household's forecasting problem: what do I expect tomorrow, given where I am? $\mu \mapsto \mu Q$ is the economy's accounting problem: if the population is spread according to $\mu$ today, how is it spread tomorrow? In a heterogeneous-agent model, the Bellman equation uses $T$ and the law of motion for the distribution uses $\mu Q$. The two halves of the model are one kernel read in two directions.</p>
+    <p>For the policy-and-shock kernel, the law of motion is</p>
+    $$
+    \Psi'\bigl(A \times \{z'\}\bigr) = \int \mathbf{1}_A\bigl(g(a, z)\bigr)\, \Pi(z, z')\, \Psi(da, dz),
+    $$
+    <p>the mass of households who choose assets in $A$ and then draw $z'$. Using this equation to describe a population, rather than the probabilities of one household, requires the law of large numbers discussed in Section 7.3.</p>
+
+    <h2 id="bellman">6.3 The Bellman equation, with the measure theory visible</h2>
+    <p>The household problem behind the policy $g$ is</p>
+    $$
+    v(a, z) = \max_{0 \,\leq\, a' \,\leq\, (1 + r)a + wz} \Bigl\{ u\bigl((1 + r) a + wz - a'\bigr) + \beta \sum_{z'} \Pi(z, z')\, v(a', z') \Bigr\}.
+    $$
+    <p>With a continuous shock the sum becomes $\int v(a', z')\, Q(z, dz')$. Write the right side as $(Bv)(a, z)$, defining an operator $B$ on functions. Measure theory supplies three things.</p>
+    <p><strong>The expectation is defined.</strong> $\int v(a', z')\, Q(z, dz')$ requires $v(a', \cdot)$ to be measurable and integrable. If $v$ is bounded and measurable, it is.</p>
+    <p><strong>Iteration converges.</strong> A <strong>contraction</strong> is a map $B$ on a space of functions with $\sup_x |Bv(x) - Bw(x)| \leq \beta \sup_x |v(x) - w(x)|$ for some $\beta \lt 1$. By the contraction mapping theorem, a contraction on the bounded measurable functions has exactly one fixed point, and iterating $v_{n+1} = B v_n$ from any starting point converges to it geometrically. Blackwell's conditions say $B$ is a contraction if it is monotone ($v \leq w$ implies $Bv \leq Bw$) and discounts ($B(v + c) \leq Bv + \beta c$ for constants $c \geq 0$). Both come from properties of integration against a probability measure: integrals are monotone, and $\int (v + c)\,dQ = \int v\,dQ + c$ because $Q(x, \cdot)$ has total mass $1$. The limit of the iteration is measurable because limits of measurable functions are (Chapter 2).</p>
+    <p><strong>The policy is measurable.</strong> The maximiser $g(a, z)$ must be measurable for the kernel of Section 6.1 to be a kernel. When the objective is continuous and the choice set is a compact interval varying continuously with the state, the maximum theorem gives a continuous $v$ and, if the maximiser is unique (strict concavity), a continuous $g$. Without continuity, measurable selection theorems guarantee that a measurable maximiser can be chosen. The step is mentioned here because it is easy to skip, and it is the step that lets the policy define a transition kernel.</p>
+    <p>A kernel is <strong>Feller</strong> if $Tf$ is continuous whenever $f$ is bounded and continuous: nearby states lead to nearby distributions tomorrow. The AR(1) kernel is Feller. When the kernel is Feller, the operator $B$ maps bounded continuous functions to bounded continuous functions, so the whole analysis can be done inside the continuous functions and measurability takes care of itself.</p>
+
+    <h2 id="invariant">6.4 Invariant distributions</h2>
+    <p>A probability measure $\mu^*$ is <strong>invariant</strong> (or stationary) for $Q$ if</p>
+    $$
+    \mu^* Q = \mu^* .
+    $$
+    <p>If the population is distributed according to $\mu^*$ today, it is distributed according to $\mu^*$ tomorrow, even though every individual keeps moving. A stationary equilibrium of a heterogeneous-agent model is built around such a distribution.</p>
+    <p><strong>The two-state chain.</strong> Write $\mu^* = (p, 1 - p)$ for the shares in low and high. Invariance requires the flow out of low to equal the flow in: $0.10\, p = 0.05\, (1 - p)$, so $p = 1/3$. One third of households have low earnings at any time. Starting with everyone low, the share in the low state after $t$ periods is</p>
+    $$
+    \mu_t(\text{low}) = \tfrac13 + \tfrac23\, (0.85)^t ,
+    $$
+    <p>where $0.85 = 1 - 0.10 - 0.05$ is the second eigenvalue of $\Pi$. The distance to the invariant distribution shrinks by the factor $0.85$ every period.</p>
+    <p><strong>The AR(1) process.</strong> With $|\rho| \lt 1$, the invariant distribution is normal with mean $0$ and variance $\sigma^2/(1 - \rho^2)$. Starting from a point mass at $z_0$, the distribution at date $t$ is normal with mean $\rho^t z_0$ and variance $\sigma^2 (1 - \rho^{2t})/(1 - \rho^2)$, which converges to the invariant one.</p>
+    <figure>
+<!--fig:ar1-->
+      <figcaption>Figure 6.2: the distribution $\mu_t = \delta_{z_0} Q^t$ of an AR(1) process with $\rho = 0.8$ and $\sigma = 0.3$, started at $z_0 = 2$. It begins as a point mass, spreads out, drifts toward $0$, and approaches the invariant normal distribution (dashed).</figcaption>
+    </figure>
+    <p>In general neither existence nor uniqueness is automatic. Three ways things fail:</p>
+    <ul>
+      <li><strong>No invariant distribution.</strong> A random walk $z_{t+1} = z_t + \varepsilon_{t+1}$ spreads out forever and never settles.</li>
+      <li><strong>Many.</strong> A chain with two groups of states that never communicate has an invariant distribution on each group, and every mixture of them is invariant too.</li>
+      <li><strong>No convergence.</strong> A chain that alternates deterministically between two states has the invariant distribution $(\frac12, \frac12)$, but a distribution started anywhere else oscillates forever.</li>
+    </ul>
+    <p>The results used in macroeconomics rule these out:</p>
+    <ul>
+      <li>A finite chain in which every state can reach every other (irreducible) and which is not periodic has a unique invariant distribution, and $\mu_0 \Pi^t \to \mu^*$ from every starting $\mu_0$.</li>
+      <li>A Feller kernel on a compact state space has at least one invariant distribution (the Krylov–Bogoliubov theorem). Compactness stops mass from escaping, which is the same danger as in Chapter 3. In the Aiyagari model it is supplied by the borrowing limit below and by $\beta(1 + r) \lt 1$ above, which makes rich households run assets down.</li>
+      <li>For monotone kernels, where higher states today lead to stochastically higher states tomorrow, Hopenhayn and Prescott (1992) give a mixing condition under which the invariant distribution is unique and every starting distribution converges to it. Savings policies that are increasing in assets and earnings make the Aiyagari kernel monotone, and this is the theorem usually cited for the uniqueness of its stationary wealth distribution.</li>
+    </ul>
+
+    <h2 id="weak">6.5 In what sense distributions converge</h2>
+    <p>“$\mu_t \to \mu^*$” needs a meaning. The most demanding is the <strong>total variation distance</strong></p>
+    $$
+    \|\mu - \nu\|_{TV} = \sup_{A \in \mathcal{S}} |\mu(A) - \nu(A)|,
+    $$
+    <p>the largest disagreement between the two measures about the probability of any single event. It is too demanding for most purposes. Consider the point masses $\delta_{1/n}$ at $1, \frac12, \frac13, \ldots$. They should converge to $\delta_0$, since the mass is moving toward $0$. But $\|\delta_{1/n} - \delta_0\|_{TV} = 1$ for every $n$, because the event $\{0\}$ has probability $1$ under $\delta_0$ and $0$ under each $\delta_{1/n}$.</p>
+    <figure>
+<!--fig:weak-->
+      <figcaption>Figure 6.3: point masses at $1/n$ approach a point mass at $0$. They never get closer in total variation, but every bounded continuous function $f$ has $f(1/n) \to f(0)$.</figcaption>
+    </figure>
+    <p>The useful notion asks only about averages of continuous functions. A sequence $\mu_n$ <strong>converges weakly</strong> to $\mu$ if</p>
+    $$
+    \int f\, d\mu_n \to \int f\, d\mu \qquad \text{for every bounded continuous } f .
+    $$
+    <p>For $\delta_{1/n}$, the integrals are $f(1/n)$, which converge to $f(0)$, so $\delta_{1/n} \to \delta_0$ weakly. On the real line, weak convergence is equivalent to convergence of the distribution functions, $F_n(x) \to F(x)$, at every $x$ where $F$ does not jump. Continuous functions cannot tell apart mass at $1/n$ and mass at $0$ when $n$ is large, and economic aggregates are averages of continuous functions, which is why weak convergence is the right notion for them.</p>
+    <p>Two places where the distinction matters in practice:</p>
+    <ul>
+      <li><strong>Discretising shocks.</strong> Methods such as Tauchen's and Rouwenhorst's replace an AR(1) process by a finite Markov chain. A distribution on finitely many points is at total variation distance $1$ from any distribution with a density, since the finite set has probability $1$ under one and $0$ under the other. The approximation converges weakly as the grid is refined, and that is all one needs for expectations of continuous functions such as value functions.</li>
+      <li><strong>Convergence to the stationary distribution.</strong> The Hopenhayn–Prescott theorem gives weak convergence. In the Aiyagari model the distribution has an atom at the borrowing limit, which a sequence of distributions can approach without reaching, and weak convergence handles that without difficulty.</li>
+    </ul>
+    <p>A Feller kernel is exactly one for which $\mu \mapsto \mu Q$ is continuous with respect to weak convergence: by the adjoint relation, $\int f\,d(\mu_n Q) = \int Tf\,d\mu_n$, which converges when $Tf$ is continuous. This continuity is what existence proofs for invariant distributions use, which is why the Feller property kept appearing above.</p>
+    <p><a href="5.%20Information%20and%20conditional%20expectation.html">Previous: 5. Information and conditional expectation</a> · <a href="7.%20A%20continuum%20of%20households.html">Next: 7. A continuum of households</a></p>
+  </article>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>3. Integration and expectation</title>
+</head>
+<body>
+  <article>
+    <p><a href="README.md">Contents</a></p>
+    <h1>3. Integration and expectation</h1>
+    <p>An expectation is an average over states of the world. An aggregate is an average over households. A present value is a weighted sum over dates. All three are one operation, the integral of a function against a measure, and this chapter defines it. The definition is built so that it needs nothing from the underlying space except the measure. The chapter then gives the three theorems that let you move limits, derivatives, and sums through integrals. Those moves are made, often silently, in every derivation of an Euler equation and every argument that value function iteration converges.</p>
+
+    <h2 id="idea">3.1 Cutting the range instead of the domain</h2>
+    <p>The Riemann integral $\int_a^b f(x)\,dx$ cuts the domain $[a, b]$ into small intervals, multiplies the width of each by a value of $f$ on it, and adds up. This requires a domain that can be cut into small intervals, and a function that does not vary wildly within each interval. Neither is available for a function on the set of infinite histories of shocks.</p>
+    <p>Lebesgue's idea is to cut the range instead. Choose levels $0 = y_0 \lt y_1 \lt \cdots$ on the vertical axis. For each level, measure the set of points where $f$ is at least that high, and add up</p>
+    $$
+    \int f\,d\mu \;\approx\; \sum_k y_k\; \mu\bigl(\{\omega : y_k \leq f(\omega) \lt y_{k+1}\}\bigr).
+    $$
+    <p>Lebesgue described it as counting money by first sorting the coins and notes into piles by denomination and then counting how many are in each pile, rather than adding them in the order they come out of the pocket. The second approach only needs to know the size of each pile. In integration, it needs only the measure of sets like $\{y_k \leq f \lt y_{k+1}\}$, which exist because $f$ is measurable.</p>
+    <figure>
+<!--fig:slices-->
+      <figcaption>Figure 3.1: two ways to compute an area. Riemann (left) uses vertical strips over pieces of the domain. Lebesgue (right) uses horizontal bands; the band at height $y$ is as long as the set $\{x : f(x) \geq y\}$, marked in green, which need not be an interval.</figcaption>
+    </figure>
+
+    <h2 id="definition">3.2 The definition, in three steps</h2>
+    <p>Fix a measure space $(\Omega, \mathcal{F}, \mu)$.</p>
+    <p><strong>Step 1: simple functions.</strong> For $\varphi = \sum_{k=1}^m c_k \mathbf{1}_{A_k}$ with $c_k \geq 0$ and $A_k \in \mathcal{F}$,</p>
+    $$
+    \int \varphi\,d\mu = \sum_{k=1}^m c_k\, \mu(A_k),
+    $$
+    <p>with the convention $0 \cdot \infty = 0$, so a function equal to zero on a set of infinite measure contributes nothing. This is “value times size of the set where the value is taken,” and it does not depend on how $\varphi$ was written as a combination.</p>
+    <p><strong>Step 2: nonnegative functions.</strong> For measurable $f \geq 0$,</p>
+    $$
+    \int f\,d\mu = \sup\Bigl\{ \int \varphi\,d\mu \;:\; \varphi \text{ simple},\ 0 \leq \varphi \leq f \Bigr\}.
+    $$
+    <p>The integral is the best lower approximation by staircases. The answer may be $+\infty$. By Section 2.5 there is always an increasing sequence of simple $\varphi_n$ rising to $f$, and (by the monotone convergence theorem of Section 3.5) $\int f\,d\mu = \lim_n \int \varphi_n\,d\mu$ along any such sequence.</p>
+    <p><strong>Step 3: functions of either sign.</strong> Split $f$ into its positive and negative parts, $f^+ = \max(f, 0)$ and $f^- = \max(-f, 0)$, so $f = f^+ - f^-$ and $|f| = f^+ + f^-$. If $\int |f|\,d\mu \lt \infty$, call $f$ <strong>integrable</strong> and set</p>
+    $$
+    \int f\,d\mu = \int f^+\,d\mu - \int f^-\,d\mu.
+    $$
+    <p>If both parts have infinite integral, the integral is undefined, because $\infty - \infty$ has no meaning. This is a real restriction in economics. A utility function such as $u(c) = \log c$ is unbounded below, and expected utility $\mathbb{E}[\log c]$ is only meaningful when consumption is not too often close to zero.</p>
+    <p>The same object goes by several notations, all used in the literature:</p>
+    $$
+    \int f\,d\mu = \int_\Omega f(\omega)\,\mu(d\omega) = \int f(\omega)\,d\mu(\omega), \qquad \int_A f\,d\mu = \int f\,\mathbf{1}_A\,d\mu.
+    $$
+    <p>The form $\mu(d\omega)$ is the one macroeconomists use most, as in $\int a\,\Psi(da, dz)$, and is worth reading literally: the value $f(\omega)$ times the mass $\mu(d\omega)$ of a small piece around $\omega$, added up.</p>
+    <p>Basic properties follow from the definition. The integral is linear, $\int (af + bg)\,d\mu = a\int f\,d\mu + b\int g\,d\mu$, and monotone: $f \leq g$ implies $\int f \leq \int g$. If $f = g$ almost everywhere, $\int f = \int g$: null sets are invisible to integrals. Conversely, if $f \geq 0$ and $\int f\,d\mu = 0$, then $f = 0$ almost everywhere.</p>
+    <p><strong>Examples.</strong> The definition unifies cases that a first course in probability treats separately.</p>
+    <ul>
+      <li><strong>Counting measure</strong> on $\mathbb{N}$: $\int f\,d\mu = \sum_{n} f(n)$. A sum is an integral.</li>
+      <li><strong>Point mass</strong>: $\int f\,d\delta_x = f(x)$. Integrating against $\delta_x$ evaluates the function at $x$.</li>
+      <li><strong>Discrete distribution</strong> $\mu = \sum_k p_k \delta_{x_k}$: $\int f\,d\mu = \sum_k p_k f(x_k)$.</li>
+      <li><strong>Lebesgue measure</strong>: whenever the Riemann integral of $f$ on $[a, b]$ exists, the Lebesgue integral exists and equals it. Nothing computed in a calculus course changes.</li>
+      <li><strong>Density</strong>: if $\mu(A) = \int_A p(x)\,dx$, then $\int f\,d\mu = \int f(x)\, p(x)\,dx$.</li>
+    </ul>
+    <p>There are functions the Lebesgue integral handles and the Riemann integral does not. On $[0, 1]$, $\mathbf{1}_{\mathbb{Q}}$ jumps between $0$ and $1$ in every interval, so its Riemann sums do not converge. Its Lebesgue integral is $1 \cdot \lambda(\mathbb{Q} \cap [0,1]) = 0$. That example is not economics, but the general point is. Limits of well-behaved functions can be badly behaved, and the Lebesgue integral is closed under the limits we need.</p>
+
+    <h2 id="expectation">3.3 Expectation, and computing it from a distribution</h2>
+    <p>On a probability space $(\Omega, \mathcal{F}, P)$ the integral of a random variable is its <strong>expectation</strong>,</p>
+    $$
+    \mathbb{E}[X] = \int_\Omega X(\omega)\,P(d\omega).
+    $$
+    <p>This is an integral over $\Omega$, typically a space of infinite histories, which nobody computes directly. What we compute is an integral over the real line against the distribution of $X$. The two agree:</p>
+    <p><strong>Theorem</strong> (change of variables). If $X$ has distribution $\mu_X$ and $g$ is a Borel function with $g(X)$ integrable (or $g \geq 0$), then</p>
+    $$
+    \mathbb{E}[g(X)] = \int_\Omega g\bigl(X(\omega)\bigr)\,P(d\omega) = \int_{\mathbb{R}} g(x)\,\mu_X(dx).
+    $$
+    <p><em>Why.</em> For $g = \mathbf{1}_B$, the left side is $P(X \in B)$ and the right side is $\mu_X(B)$, equal by the definition of $\mu_X$. Both sides are linear in $g$, so they agree for simple $g$. Both sides respect increasing limits (Section 3.5), so they agree for nonnegative $g$, and then for integrable $g$ by splitting into parts. ∎</p>
+    <p>The proof has the shape of almost every proof in this subject: indicators, then simple functions, then limits. The result is what makes measure theory practical. With a density, $\mathbb{E}[g(X)] = \int g(x)\,p(x)\,dx$. With a discrete distribution, $\mathbb{E}[g(X)] = \sum_k g(x_k)\, p_k$. Both formulas from a first course are special cases of one statement.</p>
+    <p>The same theorem, read with the population in place of a probability space, is the aggregation formula. With households $i \in [0,1]$, asset holdings $a(i)$, and wealth distribution $\Psi = \lambda \circ a^{-1}$,</p>
+    $$
+    K = \int_0^1 a(i)\,di = \int a\,\Psi(da).
+    $$
+    <p>Aggregate capital is an integral over households, and it can be computed from the wealth distribution without knowing who holds what. With a joint distribution $\Psi$ over $(a, z)$ and a consumption policy $c(a, z)$, aggregate consumption is $C = \int c(a, z)\,\Psi(da, dz)$. Every aggregate in a heterogeneous-agent model is of this form.</p>
+    <p>One inequality deserves mention because it is the mathematical content of risk aversion. A function $u$ is concave if it lies above its chords: $u(\theta x + (1-\theta) y) \geq \theta u(x) + (1-\theta) u(y)$ for $\theta \in [0, 1]$.</p>
+    <p><strong>Jensen's inequality.</strong> If $u$ is concave and $X$ and $u(X)$ are integrable, then $\mathbb{E}[u(X)] \leq u(\mathbb{E}[X])$.</p>
+    <p>A risk-averse household prefers the average of a gamble to the gamble. The inequality holds for any probability measure, not just for distributions with densities, which is what lets it be applied to the measure $\Psi$ over households: with concave utility, equalising consumption across households raises the average utility, a fact behind every utilitarian argument for redistribution in these models.</p>
+
+    <h2 id="limits">3.4 Limits and integrals do not always commute</h2>
+    <p>Many arguments need $\lim_n \int f_n\,d\mu = \int \lim_n f_n\,d\mu$. This can fail. On $[0, 1]$ with Lebesgue measure, let</p>
+    $$
+    f_n = n\, \mathbf{1}_{(0,\, 1/n)}.
+    $$
+    <figure>
+<!--fig:bump-->
+      <figcaption>Figure 3.2: $f_n$ is a rectangle of height $n$ and width $1/n$. Every one has area $1$, but at each fixed $x$ the rectangles eventually pass to its left, so $f_n(x) \to 0$.</figcaption>
+    </figure>
+    <p>Each $f_n$ has integral $1$. At every $x$, $f_n(x) = 0$ once $1/n \leq x$, so the pointwise limit is the zero function, with integral $0$. The limit of the integrals is $1$, the integral of the limit is $0$. The mass did not disappear. It concentrated into a spike that every fixed point eventually escapes. The same failure happens on an unbounded domain when mass escapes to infinity, as in $f_n = \mathbf{1}_{(n, n+1)}$ on $\mathbb{R}$.</p>
+    <p>The economic version of this example is a sequence of strategies whose payoffs are concentrated on events of vanishing probability, for instance a gamble that pays $n$ with probability $1/n$. Its expected value is always $1$, though in almost every history it pays nothing in the limit. Whether such a limit is allowed is a modelling decision, and the theorems below say exactly when the issue cannot arise.</p>
+
+    <h2 id="convergence">3.5 The convergence theorems</h2>
+    <p><strong>Monotone convergence theorem.</strong> If $0 \leq f_1 \leq f_2 \leq \cdots$ are measurable and $f_n \to f$ pointwise, then $\int f_n\,d\mu \to \int f\,d\mu$ (the limit may be $+\infty$).</p>
+    <p>For increasing nonnegative sequences, mass cannot escape: it can only accumulate. One application is infinite sums. If $g_t \geq 0$, then the partial sums $\sum_{t=0}^T g_t$ increase in $T$, and</p>
+    $$
+    \mathbb{E}\Bigl[\sum_{t=0}^{\infty} g_t\Bigr] = \sum_{t=0}^{\infty} \mathbb{E}[g_t].
+    $$
+    <p>For lifetime utility $\sum_t \beta^t u(c_t)$ with $u \geq 0$, the expectation of the discounted sum is the discounted sum of expectations. When $u$ can be negative, the next theorem is needed.</p>
+    <p><strong>Dominated convergence theorem.</strong> If $f_n \to f$ almost everywhere and there is a single integrable function $g$ with $|f_n| \leq g$ for all $n$, then $f$ is integrable and $\int f_n\,d\mu \to \int f\,d\mu$.</p>
+    <p>The dominating function $g$ is a fixed integrable ceiling that every $f_n$ fits under, so no mass can escape. The spikes of Figure 3.2 have no such ceiling: any $g \geq f_n$ for all $n$ must be at least about $1/x$ near zero, which is not integrable on $(0, 1)$.</p>
+    <p>Three uses in macroeconomics, the third of which needs a paragraph of its own:</p>
+    <ul>
+      <li><strong>Lifetime utility with bounded period utility.</strong> If $|u| \leq M$ and $0 \lt \beta \lt 1$, the partial sums of $\sum_t \beta^t u(c_t)$ are bounded by $M/(1 - \beta)$, a constant, which is integrable on a probability space. So expectation and infinite sum can be exchanged.</li>
+      <li><strong>Continuity of expected values.</strong> If $v$ is bounded and continuous and $k_n \to k$, then $\mathbb{E}[v(k_n, z')] \to \mathbb{E}[v(k, z')]$, with the bound on $v$ as the dominating constant. This is how continuity of value functions is carried through the expectation in the Bellman equation.</li>
+    </ul>
+    <p><strong>Differentiating under the expectation.</strong> First-order conditions in stochastic models need</p>
+    $$
+    \frac{\partial}{\partial k}\, \mathbb{E}\bigl[F(k, z)\bigr] = \mathbb{E}\Bigl[\frac{\partial F}{\partial k}(k, z)\Bigr].
+    $$
+    <p>The derivative on the left is a limit of difference quotients $\bigl(F(k + h, z) - F(k, z)\bigr)/h$ inside the expectation. By the mean value theorem each quotient equals $\frac{\partial F}{\partial k}$ at some intermediate point, so if $\bigl|\frac{\partial F}{\partial k}(k', z)\bigr| \leq G(z)$ for all $k'$ near $k$ with $G$ integrable, dominated convergence allows the exchange. This step turns the first-order condition of a Bellman equation, with $\frac{\partial}{\partial k'} \mathbb{E}[v(k', z')]$, into the Euler equation with $\mathbb{E}\bigl[\frac{\partial v}{\partial k'}(k', z')\bigr]$, and from there, by the envelope theorem, into a condition on marginal utilities.</p>
+    <p>A third result is an inequality that survives when mass escapes.</p>
+    <p><strong>Fatou's lemma.</strong> If $f_n \geq 0$, then $\int \liminf_n f_n\,d\mu \leq \liminf_n \int f_n\,d\mu$.</p>
+    <p>Here $\liminf_n x_n$ is the smallest value the sequence keeps coming back near, $\lim_{n \to \infty} \inf_{m \geq n} x_m$. In Figure 3.2 the inequality reads $0 \leq 1$. Mass can be lost in the limit, never created. It is used to show that a limit of feasible plans is still feasible in expectation.</p>
+
+    <h2 id="fubini">3.6 Product measures and the order of integration</h2>
+    <p>Given measure spaces $(\Omega_1, \mathcal{F}_1, \mu)$ and $(\Omega_2, \mathcal{F}_2, \nu)$, the product $\Omega_1 \times \Omega_2$ is the set of pairs $(\omega_1, \omega_2)$. Its σ-algebra $\mathcal{F}_1 \otimes \mathcal{F}_2$ is generated by rectangles $A \times B$ with $A \in \mathcal{F}_1$ and $B \in \mathcal{F}_2$. The <strong>product measure</strong> $\mu \otimes \nu$ is the measure with</p>
+    $$
+    (\mu \otimes \nu)(A \times B) = \mu(A)\, \nu(B),
+    $$
+    <p>which exists and is unique by the Carathéodory theorem of Section 1.6 when both measures are σ-finite (each space is a countable union of sets of finite measure, as is true of every example in these notes). Lebesgue measure on the plane is $\lambda \otimes \lambda$. Two independent random variables have the product of their distributions as their joint distribution.</p>
+    <p><strong>Tonelli's theorem.</strong> If $f \geq 0$ is measurable on $\Omega_1 \times \Omega_2$, then</p>
+    $$
+    \int_{\Omega_1 \times \Omega_2} f\, d(\mu \otimes \nu) = \int_{\Omega_1} \Bigl( \int_{\Omega_2} f(\omega_1, \omega_2)\,\nu(d\omega_2) \Bigr) \mu(d\omega_1) = \int_{\Omega_2} \Bigl( \int_{\Omega_1} f(\omega_1, \omega_2)\,\mu(d\omega_1) \Bigr) \nu(d\omega_2).
+    $$
+    <p><strong>Fubini's theorem.</strong> The same equalities hold for $f$ of either sign, provided $\int |f|\,d(\mu\otimes\nu) \lt \infty$.</p>
+    <p>For nonnegative functions the order of integration never matters. For functions of either sign, it does not matter once the absolute value is integrable, and it can matter otherwise. A counterexample uses counting measure on $\mathbb{N} \times \mathbb{N}$, where integrals are double sums. Put $a_{m,m} = 1$ and $a_{m,m+1} = -1$, and all other entries $0$. Each row $m$ contains one $1$ and one $-1$, so every row sums to $0$ and the sum of the row sums is $0$. Column $1$ contains only $a_{1,1} = 1$, and every later column contains one $1$ and one $-1$, so the sum of the column sums is $1$. The absolute values sum to $\infty$, and Fubini does not apply.</p>
+    <p>Fubini–Tonelli is the theorem behind most bookkeeping in macroeconomics:</p>
+    <ul>
+      <li><strong>Time and uncertainty.</strong> Take counting measure on dates $t = 0, 1, 2, \ldots$ weighted by $\beta^t$, and $P$ on histories. Then $\mathbb{E}\bigl[\sum_t \beta^t u(c_t)\bigr] = \sum_t \beta^t\, \mathbb{E}[u(c_t)]$ whenever $\sum_t \beta^t\, \mathbb{E}|u(c_t)| \lt \infty$. Section 3.5 reached the same conclusion with convergence theorems. Fubini gives it in one line.</li>
+      <li><strong>Households and states.</strong> In an economy with households $i \in [0, 1]$ and a probability space of shocks, the expected value of aggregate consumption equals the aggregate of expected consumption: $\mathbb{E}\bigl[\int_0^1 c_i\,di\bigr] = \int_0^1 \mathbb{E}[c_i]\,di$. Utilitarian welfare, the average over households of expected lifetime utility, can be computed in either order.</li>
+      <li><strong>Joint distributions.</strong> If $\Psi$ is the distribution over $(a, z)$ and $\pi$ is the distribution of $z$, then integrals over $(a, z)$ can be computed state by state: first over assets within each productivity level, then over productivity.</li>
+    </ul>
+    <p>The second item needs the map $(i, \omega) \mapsto c_i(\omega)$ to be measurable on the product space. For idiosyncratic shocks that are independent across a continuum of households, this measurability fails in a precise sense, which is the subject of Section 7.3.</p>
+    <p><a href="2.%20Measurable%20functions%20and%20distributions.html">Previous: 2. Measurable functions and distributions</a> · <a href="4.%20Densities%2C%20atoms%20and%20changes%20of%20measure.html">Next: 4. Densities, atoms and changes of measure</a></p>
+  </article>
+</body>
+</html>

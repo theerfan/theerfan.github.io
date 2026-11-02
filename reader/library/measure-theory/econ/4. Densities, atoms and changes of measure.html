@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>4. Densities, atoms and changes of measure</title>
+</head>
+<body>
+  <article>
+    <p><a href="README.md">Contents</a></p>
+    <h1>4. Densities, atoms and changes of measure</h1>
+    <p>A first course in probability treats a distribution as either a list of probabilities or a density. Measure theory treats both as measures, and explains a density as a ratio of one measure to another. That point of view does two jobs in macroeconomics. It explains why the wealth distribution of an incomplete-markets model has no density, so that it must be handled as a measure. And it is the language of asset pricing, where prices are expectations under a reweighted probability measure.</p>
+
+    <h2 id="rn">4.1 What a density is</h2>
+    <p>Let $\mu$ be a measure on $(\Omega, \mathcal{F})$ and $f \geq 0$ a measurable function. Then</p>
+    $$
+    \nu(A) = \int_A f\,d\mu, \qquad A \in \mathcal{F},
+    $$
+    <p>defines a new measure $\nu$. Countable additivity of $\nu$ is the monotone convergence theorem applied to the partial sums of $f \mathbf{1}_{A_1} + f \mathbf{1}_{A_2} + \cdots$. We say $\nu$ has <strong>density</strong> $f$ with respect to $\mu$. The density says how much $\nu$-mass there is per unit of $\mu$-mass near each point.</p>
+    <p>A measure with a density inherits the null sets of $\mu$: if $\mu(A) = 0$ then $\nu(A) = \int_A f\,d\mu = 0$. This property gets a name. $\nu$ is <strong>absolutely continuous</strong> with respect to $\mu$, written $\nu \ll \mu$, if</p>
+    $$
+    \mu(A) = 0 \;\Longrightarrow\; \nu(A) = 0 .
+    $$
+    <p>Whatever $\mu$ considers impossible, $\nu$ considers impossible too. The remarkable fact is that this condition is also sufficient for a density.</p>
+    <p><strong>Theorem</strong> (Radon–Nikodym). Let $\mu$ and $\nu$ be σ-finite measures on $(\Omega, \mathcal{F})$ with $\nu \ll \mu$. Then there is a measurable $f \geq 0$ with $\nu(A) = \int_A f\,d\mu$ for every $A \in \mathcal{F}$. It is unique up to changes on $\mu$-null sets.</p>
+    <p>The density is written</p>
+    $$
+    f = \frac{d\nu}{d\mu},
+    $$
+    <p>the <strong>Radon–Nikodym derivative</strong>. The notation is chosen because it behaves like a fraction. For any $g \geq 0$ or $g$ integrable against $\nu$,</p>
+    $$
+    \int g\,d\nu = \int g\, \frac{d\nu}{d\mu}\, d\mu,
+    $$
+    <p>as if the $d\mu$'s cancelled. If $\nu \ll \mu \ll \rho$, then $\frac{d\nu}{d\rho} = \frac{d\nu}{d\mu}\, \frac{d\mu}{d\rho}$, the chain rule. The intuition is the ratio $\frac{\nu(A)}{\mu(A)}$ for a small set $A$ around a point, and for measures on $\mathbb{R}$ with smooth densities that limit exists and equals $\frac{d\nu}{d\mu}$.</p>
+    <p>The densities of a first course are Radon–Nikodym derivatives:</p>
+    <ul>
+      <li>A probability density $p(x)$ is $\frac{d\mu_X}{d\lambda}$, the derivative of the distribution of $X$ with respect to Lebesgue measure.</li>
+      <li>A probability mass function $p_k = P(X = x_k)$ is the derivative of the distribution with respect to counting measure on the points $x_k$.</li>
+    </ul>
+    <p>These are one concept with two reference measures. Which reference measure to use is a choice, and for some distributions no single familiar choice works.</p>
+
+    <h2 id="atoms">4.2 Atoms, and why wealth distributions are measures</h2>
+    <p>A point $x$ with $\mu(\{x\}) \gt 0$ is an <strong>atom</strong> of $\mu$. A distribution with an atom cannot have a density with respect to Lebesgue measure: $\lambda(\{x\}) = 0$, so absolute continuity would force $\mu(\{x\}) = 0$. On the distribution function $F(x) = \mu((-\infty, x])$, an atom at $x$ is a jump of size $\mu(\{x\})$.</p>
+    <p><strong>Theorem</strong> (Lebesgue decomposition, for distributions on $\mathbb{R}$). Every probability distribution is a mixture of three parts: an absolutely continuous part with a density, a discrete part consisting of countably many atoms, and a singular continuous part, which has no atoms yet lives on a set of length zero.</p>
+    <p>The third part is real mathematics (the Cantor distribution is an example) and plays no role in economics. The first two are everywhere, and the most important example is the wealth distribution in an Aiyagari economy. Households face idiosyncratic earnings risk, save in a single asset, and cannot borrow: $a \geq 0$. A household that has had a long stretch of low earnings runs its assets down, and at some point the constraint binds. It would like to borrow and cannot, so it chooses $a' = 0$ exactly. Not just one household but a whole range of low-asset, low-earnings households all choose the same point. That point therefore carries positive mass.</p>
+    <figure>
+<svg viewBox="0 0 660 250" width="100%" style="max-width:660px" role="img" aria-label="Left: a histogram of household assets above zero together with a separate spike at zero, where about 6 percent of households sit at the borrowing limit. Right: the distribution function, which jumps at zero by that amount and then rises smoothly." xmlns="http://www.w3.org/2000/svg" font-family="serif">
+<line x1="50" y1="200" x2="323" y2="200" stroke="currentColor" stroke-width="1.2"/><polygon points="330,200 323,203.2 323,196.8" fill="currentColor" fill-opacity="1.00" stroke="none" stroke-width="1.0"/>
+<line x1="50" y1="200" x2="50" y2="27" stroke="currentColor" stroke-width="1.2"/><polygon points="50,20 53.1,27 46.9,27" fill="currentColor" fill-opacity="1.00" stroke="none" stroke-width="1.0"/>
+<text x="334" y="205" font-size="15" text-anchor="start" fill="currentColor" font-style="italic">a</text>
+<rect x="50" y="85" width="7.5" height="115" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="57.5" y="100.7" width="7.5" height="99.3" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="65" y="100.4" width="7.5" height="99.6" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="72.5" y="88.6" width="7.5" height="111.4" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="80" y="86.4" width="7.5" height="113.6" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="87.5" y="82.6" width="7.5" height="117.4" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="95" y="79.4" width="7.5" height="120.6" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="102.5" y="75.9" width="7.5" height="124.1" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="110" y="74.2" width="7.5" height="125.8" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="117.5" y="74.1" width="7.5" height="125.9" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="125" y="74.9" width="7.5" height="125.1" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="132.5" y="76.7" width="7.5" height="123.3" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="140" y="79.5" width="7.5" height="120.5" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="147.5" y="83.1" width="7.5" height="116.9" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="155" y="86.4" width="7.5" height="113.6" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="162.5" y="91.1" width="7.5" height="108.9" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="170" y="97.4" width="7.5" height="102.6" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="177.5" y="104.3" width="7.5" height="95.7" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="185" y="111.7" width="7.5" height="88.3" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="192.5" y="119.3" width="7.5" height="80.7" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="200" y="127.3" width="7.5" height="72.7" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="207.5" y="135" width="7.5" height="65" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="215" y="142.6" width="7.5" height="57.4" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="222.5" y="150.3" width="7.5" height="49.7" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="230" y="157.2" width="7.5" height="42.8" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="237.5" y="164.1" width="7.5" height="35.9" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="245" y="170.1" width="7.5" height="29.9" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="252.5" y="175.7" width="7.5" height="24.3" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="260" y="180.8" width="7.5" height="19.2" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="267.5" y="185" width="7.5" height="15" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="275" y="188.6" width="7.5" height="11.4" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="282.5" y="191.6" width="7.5" height="8.4" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="290" y="194.1" width="7.5" height="5.9" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="297.5" y="196" width="7.5" height="4" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="305" y="197.4" width="7.5" height="2.6" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<rect x="312.5" y="198.4" width="7.5" height="1.6" rx="0" fill="#3b82f6" fill-opacity="0.35" stroke="none" stroke-width="1.2"/>
+<line x1="52" y1="200" x2="52" y2="42.6" stroke="#e8892b" stroke-width="3.0"/>
+<circle cx="52" cy="42.6" r="5" fill="#e8892b" fill-opacity="1.00" stroke="none" stroke-width="1.2"/>
+<text x="62" y="47.6" font-size="13" text-anchor="start" fill="#e8892b" font-style="italic">mass 5.8% exactly at a = 0</text>
+<line x1="50" y1="200" x2="50" y2="205" stroke="currentColor" stroke-width="1.1"/>
+<text x="50" y="219" font-size="13" text-anchor="middle" fill="currentColor">0</text>
+<line x1="110" y1="200" x2="110" y2="205" stroke="currentColor" stroke-width="1.1"/>
+<text x="110" y="219" font-size="13" text-anchor="middle" fill="currentColor">2</text>
+<line x1="170" y1="200" x2="170" y2="205" stroke="currentColor" stroke-width="1.1"/>
+<text x="170" y="219" font-size="13" text-anchor="middle" fill="currentColor">4</text>
+<line x1="230" y1="200" x2="230" y2="205" stroke="currentColor" stroke-width="1.1"/>
+<text x="230" y="219" font-size="13" text-anchor="middle" fill="currentColor">6</text>
+<line x1="290" y1="200" x2="290" y2="205" stroke="currentColor" stroke-width="1.1"/>
+<text x="290" y="219" font-size="13" text-anchor="middle" fill="currentColor">8</text>
+<text x="185" y="240" font-size="14" text-anchor="middle" fill="currentColor" font-style="italic">density on a > 0, plus a point mass</text>
+<line x1="390" y1="200" x2="633" y2="200" stroke="currentColor" stroke-width="1.2"/><polygon points="640,200 633,203.2 633,196.8" fill="currentColor" fill-opacity="1.00" stroke="none" stroke-width="1.0"/>
+<line x1="390" y1="200" x2="390" y2="27" stroke="currentColor" stroke-width="1.2"/><polygon points="390,20 393.1,27 386.9,27" fill="currentColor" fill-opacity="1.00" stroke="none" stroke-width="1.0"/>
+<text x="644" y="205" font-size="15" text-anchor="start" fill="currentColor" font-style="italic">a</text>
+<text x="390" y="14" font-size="15" text-anchor="middle" fill="currentColor" font-style="italic">F(a)</text>
+<polyline points="390,190.1 390,190.1 390,190 390.1,189.9 390.2,189.7 390.3,189.5 390.4,189.2 390.5,189 390.7,188.8 390.9,188.6 391.1,188.4 391.3,188.1 391.6,187.9 391.9,187.7 392.2,187.4 392.5,187.1 392.8,186.8 393.2,186.6 393.6,186.3 394,186 394.4,185.2 394.9,184.3 395.4,184 395.9,183.6 396.4,183.2 397,182.9 397.5,182.5 398.1,182.1 398.7,181.3 399.4,180.3 400,179.8 400.7,179.3 401.4,178.9 402.1,178.4 402.9,177.4 403.6,176.4 404.4,175.9 405.2,175.3 406.1,174.7 406.9,173.6 407.8,172.6 408.7,172 409.6,171.3 410.6,170.2 411.5,169 412.5,168.3 413.5,167.4 414.6,166.2 415.6,165.1 416.7,164.2 417.8,163 418.9,161.8 420.1,160.8 421.2,159.4 422.4,158.2 423.6,157 424.9,155.6 426.1,154.3 427.4,153 428.7,151.5 430,150.1 431.4,148.6 432.7,147.2 434.1,145.6 435.5,144.1 437,142.5 438.4,140.9 439.9,139.2 441.4,137.5 442.9,135.8 444.5,134 446.1,132.3 447.6,130.4 449.3,128.6 450.9,126.7 452.6,124.9 454.2,123 455.9,121 457.7,119.1 459.4,117.1 461.2,115.1 463,113.1 464.8,111 466.6,109 468.5,106.9 470.3,104.9 472.2,102.8 474.2,100.7 476.1,98.6 478.1,96.5 480.1,94.4 482.1,92.3 484.1,90.2 486.2,88.1 488.3,86 490.4,83.9 492.5,81.8 494.6,79.7 496.8,77.6 499,75.6 501.2,73.5 503.4,71.5 505.7,69.6 508,67.6 510.3,65.7 512.6,63.8 514.9,62 517.3,60.2 519.7,58.5 522.1,56.8 524.6,55.1 527,53.5 529.5,52 532,50.5 534.5,49 537.1,47.6 539.6,46.3 542.2,45 544.8,43.8 547.5,42.6 550.1,41.5 552.8,40.5 555.5,39.5 558.2,38.6 561,37.7 563.8,36.9 566.5,36.1 569.4,35.4 572.2,34.8 575.1,34.2 577.9,33.7 580.8,33.2 583.8,32.7 586.7,32.3 589.7,32 592.7,31.7 595.7,31.4 598.7,31.2 601.8,30.9 604.9,30.8 608,30.6 611.1,30.5 614.2,30.4 617.4,30.3 620.6,30.2 623.8,30.2 627,30.1" fill="none" stroke="#3b82f6" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="390" cy="190.1" r="3.5" fill="#3b82f6" fill-opacity="1.00" stroke="none" stroke-width="1.2"/>
+<circle cx="390" cy="200" r="3.5" fill="none" fill-opacity="1.00" stroke="#3b82f6" stroke-width="1.5"/>
+<line x1="399" y1="200" x2="399" y2="190.1" stroke="#e8892b" stroke-width="1.4"/>
+<text x="404" y="199.1" font-size="12" text-anchor="start" fill="#e8892b" font-style="italic">jump 0.058</text>
+<line x1="385" y1="30" x2="390" y2="30" stroke="currentColor" stroke-width="1.1"/>
+<text x="382" y="34" font-size="13" text-anchor="end" fill="currentColor">1</text>
+<line x1="385" y1="115" x2="390" y2="115" stroke="currentColor" stroke-width="1.1"/>
+<text x="382" y="119" font-size="13" text-anchor="end" fill="currentColor">0.5</text>
+<line x1="390" y1="200" x2="390" y2="205" stroke="currentColor" stroke-width="1.1"/>
+<text x="390" y="219" font-size="13" text-anchor="middle" fill="currentColor">0</text>
+<line x1="496.7" y1="200" x2="496.7" y2="205" stroke="currentColor" stroke-width="1.1"/>
+<text x="496.7" y="219" font-size="13" text-anchor="middle" fill="currentColor">4</text>
+<line x1="603.3" y1="200" x2="603.3" y2="205" stroke="currentColor" stroke-width="1.1"/>
+<text x="603.3" y="219" font-size="13" text-anchor="middle" fill="currentColor">8</text>
+<text x="510" y="240" font-size="14" text-anchor="middle" fill="currentColor" font-style="italic">distribution function: a jump at 0</text>
+</svg>
+      <figcaption>Figure 4.1: the stationary wealth distribution of the Aiyagari economy solved in Chapter 7. Left: the spread-out part, drawn as a histogram, and the atom at the borrowing limit, drawn as a spike (its height is not on the histogram's scale, since a point mass has no density). Right: the distribution function, with its jump at $a = 0$.</figcaption>
+    </figure>
+    <p>In the economy computed in Chapter 7, 5.8% of households sit exactly at $a = 0$, almost all of them (5.2% of the population) in the low earnings state. The rest of the distribution is spread out. So the distribution is</p>
+    $$
+    \Psi = p\, \delta_0 + (1 - p)\, \Psi_c,
+    $$
+    <p>with $p$ the mass of the atom and $\Psi_c$ a distribution with a density on $a \gt 0$. Its density with respect to Lebesgue measure does not exist. Its density with respect to $\lambda + \delta_0$ does: it is $p$ at the point $0$ and the density of $(1-p)\Psi_c$ elsewhere. In practice, papers report the atom separately (“the fraction of hand-to-mouth households”) and plot the rest as a histogram.</p>
+    <p>This is the main reason heterogeneous-agent models are written with measures, $\Psi(da, dz)$, rather than densities $\psi(a, z)$. The density formulation silently assumes there is no atom, and the most economically interesting households, the constrained ones whose marginal propensity to consume is close to one, live exactly in the atom. Other atoms in macroeconomic models include households who choose zero hours of work, firms that cluster at the same reset price under menu costs, and agents at a corner of any choice set.</p>
+    <p>Atoms change computations in small but real ways. An integral against $\Psi$ includes the atom's contribution: $\int g\,d\Psi = p\,g(0) + (1 - p)\int g\,d\Psi_c$. A quantile can be ambiguous at an atom: every number between $F(0^-) = 0$ and $F(0) = p$ is a “quantile at $0$,” so the bottom $p$ of the population all have the same wealth. Numerical methods that approximate $\Psi$ by a smooth density will smear the atom out, and methods that store mass on a grid (as Chapter 7 does) represent it exactly.</p>
+
+    <h2 id="change">4.3 Changing the measure: asset prices</h2>
+    <p>Two measures are <strong>equivalent</strong>, written $P \sim Q$, if each is absolutely continuous with respect to the other. Equivalent measures agree on which events are impossible, and disagree about how likely the possible ones are. By Radon–Nikodym there is a density $\xi = \frac{dQ}{dP} \gt 0$ (almost surely), and</p>
+    $$
+    \mathbb{E}^Q[X] = \mathbb{E}^P\Bigl[\frac{dQ}{dP}\, X\Bigr].
+    $$
+    <p>An expectation under $Q$ is a weighted expectation under $P$. Asset pricing uses this constantly.</p>
+    <p>In a consumption-based model, an asset paying $x$ next period, a random variable, has price</p>
+    $$
+    p = \mathbb{E}[m\, x], \qquad m = \beta\, \frac{u'(c_1)}{u'(c_0)},
+    $$
+    <p>where $m$ is the <strong>stochastic discount factor</strong>: the household's marginal rate of substitution between consumption today and consumption in each state tomorrow. A riskless bond pays $1$ in every state and has price $\mathbb{E}[m]$, so the gross riskless rate is $R_f = 1/\mathbb{E}[m]$. Marginal utility is positive, so $m \gt 0$, and</p>
+    $$
+    \frac{dQ}{dP} = \frac{m}{\mathbb{E}[m]}
+    $$
+    <p>is a positive random variable with expectation $1$: the density of a probability measure $Q$ equivalent to $P$. Substituting,</p>
+    $$
+    p = \mathbb{E}^P[m\,x] = \mathbb{E}[m]\; \mathbb{E}^P\Bigl[\frac{m}{\mathbb{E}[m]}\, x\Bigr] = \frac{\mathbb{E}^Q[x]}{R_f}.
+    $$
+    <p>Under $Q$, every asset is priced as if investors were risk neutral: expected payoff, discounted at the riskless rate. $Q$ is the <strong>risk-neutral measure</strong>. It is not anyone's belief. It is the true probability tilted toward states where $m$ is high, which are states where consumption is low and an extra unit of payoff is most valuable.</p>
+    <p>A two-state example with numbers. Today's consumption is $c_0 = 1$. Tomorrow is a boom ($c_1 = 1.1$) or a bust ($c_1 = 0.9$), each with probability $\frac12$. Utility is $\log c$, so $u'(c) = 1/c$, and $\beta = 0.96$. Then</p>
+    $$
+    m_{\text{boom}} = 0.96 \cdot \frac{1}{1.1} \approx 0.873, \qquad m_{\text{bust}} = 0.96 \cdot \frac{1}{0.9} \approx 1.067,
+    $$
+    <p>$\mathbb{E}[m] \approx 0.970$, $R_f \approx 1.031$, and the risk-neutral probabilities are</p>
+    $$
+    Q(\text{boom}) = \frac{\frac12 \cdot 0.873}{0.970} = 0.45, \qquad Q(\text{bust}) = 0.55.
+    $$
+    <figure>
+<svg viewBox="0 0 520 210" width="100%" style="max-width:520px" role="img" aria-label="Bar chart of two states, boom and bust. Under P each has probability one half. Under the risk-neutral measure Q, boom has 0.45 and bust 0.55." xmlns="http://www.w3.org/2000/svg" font-family="serif">
+<line x1="80" y1="170" x2="440" y2="170" stroke="currentColor" stroke-width="1.2"/>
+<rect x="125" y="62.3" width="54" height="107.7" rx="0" fill="#3b82f6" fill-opacity="0.45" stroke="none" stroke-width="1.2"/>
+<rect x="188" y="73.1" width="54" height="96.9" rx="0" fill="#e8892b" fill-opacity="0.55" stroke="none" stroke-width="1.2"/>
+<text x="152" y="56.3" font-size="13" text-anchor="middle" fill="currentColor">0.50</text>
+<text x="215" y="67.1" font-size="13" text-anchor="middle" fill="currentColor">0.45</text>
+<text x="183.5" y="190" font-size="14" text-anchor="middle" fill="currentColor" font-style="italic">boom</text>
+<rect x="305" y="62.3" width="54" height="107.7" rx="0" fill="#3b82f6" fill-opacity="0.45" stroke="none" stroke-width="1.2"/>
+<rect x="368" y="51.5" width="54" height="118.5" rx="0" fill="#e8892b" fill-opacity="0.55" stroke="none" stroke-width="1.2"/>
+<text x="332" y="56.3" font-size="13" text-anchor="middle" fill="currentColor">0.50</text>
+<text x="395" y="45.5" font-size="13" text-anchor="middle" fill="currentColor">0.55</text>
+<text x="363.5" y="190" font-size="14" text-anchor="middle" fill="currentColor" font-style="italic">bust</text>
+<rect x="300" y="190" width="12" height="12" rx="0" fill="#3b82f6" fill-opacity="0.45" stroke="none" stroke-width="1.2"/>
+<text x="318" y="200" font-size="14" text-anchor="start" fill="currentColor" font-style="italic">P</text>
+<rect x="350" y="190" width="12" height="12" rx="0" fill="#e8892b" fill-opacity="0.55" stroke="none" stroke-width="1.2"/>
+<text x="368" y="200" font-size="14" text-anchor="start" fill="currentColor" font-style="italic">Q</text>
+</svg>
+      <figcaption>Figure 4.2: true probabilities $P$ and risk-neutral probabilities $Q$ in the two-state example. $Q$ moves weight toward the bust, where marginal utility is high.</figcaption>
+    </figure>
+    <p>A claim to tomorrow's consumption pays $1.1$ or $0.9$. Under $P$ its expected payoff is $1$. Under $Q$ it is $0.45 \cdot 1.1 + 0.55 \cdot 0.9 = 0.99$, and its price is $0.99 / 1.031 \approx 0.96$. Its expected return under $P$ is $1/0.96 \approx 1.042$, above the riskless $1.031$. The difference is the risk premium, and in the language of this chapter it exists because $P$ and $Q$ differ.</p>
+    <p>Equivalence matters here. If $Q$ gave zero probability to a state that $P$ considers possible, an asset paying only in that state would have price zero and positive expected payoff, an arbitrage. The <strong>fundamental theorem of asset pricing</strong> says that, in a frictionless market, the absence of arbitrage is equivalent to the existence of a strictly positive stochastic discount factor, and so of an equivalent risk-neutral measure. In continuous time, the same change of measure becomes Girsanov's theorem, which is beyond what these notes need.</p>
+
+    <h2 id="remember">4.4 What to remember</h2>
+    <ul>
+      <li>A density is a Radon–Nikodym derivative $\frac{d\nu}{d\mu}$, and it exists exactly when $\nu$ never charges a set that $\mu$ considers null.</li>
+      <li>Distributions can have atoms. Borrowing limits and other corners create them, which is why distributions in macro models are measures and not density functions.</li>
+      <li>Changing to an equivalent measure reweights states. Asset prices are risk-neutral expectations, with the stochastic discount factor as the weight.</li>
+    </ul>
+    <p><a href="3.%20Integration%20and%20expectation.html">Previous: 3. Integration and expectation</a> · <a href="5.%20Information%20and%20conditional%20expectation.html">Next: 5. Information and conditional expectation</a></p>
+  </article>
+</body>
+</html>

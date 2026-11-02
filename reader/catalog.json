@@ -58,6 +58,14 @@
       "root": "reader/library/knots"
     },
     {
+      "title": "Measure Theory",
+      "description": "Intuition-first lecture notes. First track: the measure theory needed for macroeconomics, from σ-algebras as information to the continuum of households, with a solved Aiyagari economy.",
+      "owner": "theerfan",
+      "repo": "theerfan.github.io",
+      "branch": "main",
+      "root": "reader/library/measure-theory"
+    },
+    {
       "title": "Quantum Notes",
       "description": "Notes on quantum algorithms, computation and information (UCLA courses), QML, QSVT, MBQC and topological quantum computing, with an interactive surface code.",
       "owner": "theerfan",
