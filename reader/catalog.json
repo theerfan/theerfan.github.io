@@ -74,6 +74,14 @@
       "root": "library/quantum"
     },
     {
+      "title": "The Fourier Transform and its Applications",
+      "description": "Brad Osgood's Stanford EE261 course reader (Fall 2007), converted from the SEE PDF. CC BY-NC-SA 4.0.",
+      "owner": "theerfan",
+      "repo": "Pauli",
+      "branch": "main",
+      "root": "library/ee261"
+    },
+    {
       "title": "Quantum Notes",
       "description": "Notes on quantum algorithms, computation and information (UCLA courses), QML, QSVT, MBQC and topological quantum computing, with an interactive surface code.",
       "owner": "theerfan",
