@@ -2,76 +2,76 @@
   "title": "Reader",
   "folders": [
     {
-      "id": "self-hosted",
-      "title": "Self-hosted",
-      "repo": "theerfan/theerfan.github.io",
-      "description": "Notes kept in this site."
+      "id": "pauli",
+      "title": "Pauli",
+      "repo": "theerfan/Pauli",
+      "description": "Notes and libraries kept in the Pauli repo."
     }
   ],
   "repos": [
     {
-      "title": "Pauli",
+      "title": "Working notes",
       "description": "Working on a lot of things.",
       "owner": "theerfan",
       "repo": "Pauli",
       "branch": "main",
-      "root": ""
+      "root": "notes"
     },
     {
       "title": "Quantum Field Theory",
       "description": "David Tong's Cambridge lecture notes (from the HTML edition), with KaTeX math.",
       "owner": "theerfan",
-      "repo": "theerfan.github.io",
+      "repo": "Pauli",
       "branch": "main",
-      "root": "reader/library/tong-qft"
+      "root": "library/tong-qft"
     },
     {
       "title": "Blockchain",
       "description": "Consensus mechanisms, and which histories a latecomer can verify.",
       "owner": "theerfan",
-      "repo": "theerfan.github.io",
+      "repo": "Pauli",
       "branch": "main",
-      "root": "reader/library/blockchain"
+      "root": "library/blockchain"
     },
     {
       "title": "Chaos",
       "description": "A first chapter on what deterministic chaos means mathematically.",
       "owner": "theerfan",
-      "repo": "theerfan.github.io",
+      "repo": "Pauli",
       "branch": "main",
-      "root": "reader/library/chaos"
+      "root": "library/chaos"
     },
     {
       "title": "Interpretability",
       "description": "Mechanistic interpretability papers: Neural Networks Are Already Clean (Goodfire) and Natural Language Autoencoders (Anthropic), with attribution and links to the originals.",
       "owner": "theerfan",
-      "repo": "theerfan.github.io",
+      "repo": "Pauli",
       "branch": "main",
-      "root": "reader/library/interpretability"
+      "root": "library/interpretability"
     },
     {
       "title": "Knot Theory",
       "description": "An introductory chapter on knots, diagrams, Reidemeister moves, colourings and linking number, with figures.",
       "owner": "theerfan",
-      "repo": "theerfan.github.io",
+      "repo": "Pauli",
       "branch": "main",
-      "root": "reader/library/knots"
+      "root": "library/knots"
     },
     {
       "title": "Measure Theory",
       "description": "Intuition-first lecture notes. First track: the measure theory needed for macroeconomics, from σ-algebras as information to the continuum of households, with a solved Aiyagari economy.",
       "owner": "theerfan",
-      "repo": "theerfan.github.io",
+      "repo": "Pauli",
       "branch": "main",
-      "root": "reader/library/measure-theory"
+      "root": "library/measure-theory"
     },
     {
       "title": "Quantum",
       "description": "Standalone chapters with interactive figures. First: how entanglement differs for bosons and fermions, from Slater determinants to the Hong–Ou–Mandel effect and parity superselection.",
       "owner": "theerfan",
-      "repo": "theerfan.github.io",
+      "repo": "Pauli",
       "branch": "main",
-      "root": "reader/library/quantum"
+      "root": "library/quantum"
     },
     {
       "title": "Quantum Notes",
