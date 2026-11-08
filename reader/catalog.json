@@ -66,6 +66,14 @@
       "root": "reader/library/measure-theory"
     },
     {
+      "title": "Quantum",
+      "description": "Standalone chapters with interactive figures. First: how entanglement differs for bosons and fermions, from Slater determinants to the Hong–Ou–Mandel effect and parity superselection.",
+      "owner": "theerfan",
+      "repo": "theerfan.github.io",
+      "branch": "main",
+      "root": "reader/library/quantum"
+    },
+    {
       "title": "Quantum Notes",
       "description": "Notes on quantum algorithms, computation and information (UCLA courses), QML, QSVT, MBQC and topological quantum computing, with an interactive surface code.",
       "owner": "theerfan",

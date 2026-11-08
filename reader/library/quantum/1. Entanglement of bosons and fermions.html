@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>1. Entanglement of bosons and fermions</title>
+  <style>
+    :root {
+      --paper: #fbfaf6; --ink: #1c1917; --muted: #78716c; --rule: #e7e5e4;
+      --accent: #0f766e; --card: #ffffff; --code-bg: #f5f5f4;
+      --bos: #2563eb; --fer: #c2410c; --dis: #78716c;
+    }
+    html[data-theme="dark"] { --bos: #60a5fa; --fer: #fb923c; --dis: #a8a29e; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-reader-frame]):not([data-theme="light"]) {
+        --paper: #141210; --ink: #f5f2eb; --muted: #a8a29e; --rule: #3f3b37;
+        --accent: #2dd4bf; --card: #1c1917; --code-bg: #292524;
+        --bos: #60a5fa; --fer: #fb923c; --dis: #a8a29e;
+      }
+    }
+    body { background: var(--paper); color: var(--ink); }
+    article { max-width: 46rem; margin: 0 auto; padding: 0 16px; }
+    .fig {
+      border: 1px solid var(--rule); border-radius: 10px; background: var(--card);
+      padding: 14px 14px 10px; margin: 1.6em 0; font-family: var(--ui, system-ui, sans-serif);
+    }
+    .fig svg { display: block; width: 100%; height: auto; }
+    .fig .cap { font-size: 0.86em; color: var(--muted); line-height: 1.5; margin: 0.6em 0 0.2em; }
+    .row { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-start; }
+    .row > .grow { flex: 1 1 240px; min-width: 0; }
+    .row > .side { flex: 1 1 200px; min-width: 0; }
+    .seg { display: inline-flex; flex-wrap: wrap; gap: 4px; margin: 0 0 8px; }
+    .seg button, .btn {
+      font: inherit; font-size: 0.85em; padding: 4px 10px; border-radius: 6px; cursor: pointer;
+      border: 1px solid var(--rule); background: transparent; color: var(--ink);
+    }
+    .seg button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+    .btn:hover, .seg button:hover { border-color: var(--accent); }
+    label.ctl { display: block; font-size: 0.86em; margin: 6px 0 2px; color: var(--muted); }
+    label.ctl b { color: var(--ink); font-weight: 600; }
+    input[type="range"] { width: 100%; accent-color: var(--accent); margin: 2px 0 6px; }
+    .stat { font-size: 0.86em; display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; border-bottom: 1px dashed var(--rule); }
+    .stat span:last-child { font-variant-numeric: tabular-nums; font-weight: 600; }
+    .meter { height: 8px; border-radius: 4px; background: var(--rule); overflow: hidden; margin: 2px 0 8px; }
+    .meter > div { height: 100%; background: var(--accent); width: 0; transition: width .15s; }
+    .note { font-size: 0.82em; color: var(--muted); margin-top: 6px; }
+    table.cmp { border-collapse: collapse; width: 100%; font-size: 0.9em; margin: 1em 0; }
+    table.cmp th, table.cmp td { border-bottom: 1px solid var(--rule); padding: 6px 6px; text-align: left; vertical-align: top; }
+    table.cmp th { font-family: var(--ui, system-ui, sans-serif); }
+    .tablewrap { overflow-x: auto; }
+    .k-b { color: var(--bos); font-weight: 600; }
+    .k-f { color: var(--fer); font-weight: 600; }
+  </style>
+</head>
+<body>
+  <article>
+    <p><a href="README.md">Contents</a></p>
+    <h1>1. Entanglement of bosons and fermions</h1>
+    <p>For two particles that can be told apart, entanglement has one clean definition: the joint state is not a product of a state of the first and a state of the second. Identical particles break this definition at its first step. Their wavefunction must be symmetric (bosons) or antisymmetric (fermions) under exchange, so it is almost never a product, and read naively, every pair of electrons in the universe is entangled. That reading is wrong, and the reason it is wrong is where bosons and fermions part ways. This chapter says what can sensibly be called entanglement for identical particles, and shows the three places where the two kinds behave differently: what counts as an unentangled state, what happens at a beam splitter, and whether a single particle split between two places carries usable entanglement.</p>
+
+    <h2 id="names">1.1 Entanglement when particles have names</h2>
+    <p>Take two systems $A$ and $B$ with state spaces $\mathcal H_A$ and $\mathcal H_B$. A joint state lives in the tensor product $\mathcal H_A \otimes \mathcal H_B$. It is a product state when it can be written $|a\rangle \otimes |b\rangle$, and entangled otherwise. Every joint state has a Schmidt decomposition,</p>
+    $$
+    |\psi\rangle = \sum_k \sqrt{p_k}\; |u_k\rangle \otimes |v_k\rangle, \qquad p_k \geq 0, \quad \sum_k p_k = 1,
+    $$
+    <p>with $\{|u_k\rangle\}$ orthonormal in $\mathcal H_A$ and $\{|v_k\rangle\}$ orthonormal in $\mathcal H_B$. The state is a product exactly when one $p_k$ equals $1$. Tracing out $B$ leaves $A$ in the mixed state $\rho_A = \sum_k p_k |u_k\rangle\langle u_k|$, and the entanglement entropy</p>
+    $$
+    S(\rho_A) = -\sum_k p_k \log_2 p_k
+    $$
+    <p>is zero for a product and one bit for a state like $\tfrac{1}{\sqrt2}(|0\rangle|1\rangle - |1\rangle|0\rangle)$. The number has an operational meaning: someone holding $A$ and someone holding $B$, each acting only on their own system and talking by phone, can turn $n$ copies of $|\psi\rangle$ into about $nS$ perfect Bell pairs, and use those for teleportation or for violating a Bell inequality. Everything below keeps this operational meaning as the test. A candidate definition of entanglement for identical particles is good if it measures something two separated parties could actually use.</p>
+
+    <h2 id="sign">1.2 The exchange sign</h2>
+    <p>For two identical particles with positions $x_1$ and $x_2$, swapping the labels must give the same physical state, and in three dimensions this allows only</p>
+    $$
+    \psi(x_2, x_1) = +\psi(x_1, x_2) \quad \text{(bosons)}, \qquad \psi(x_2, x_1) = -\psi(x_1, x_2) \quad \text{(fermions)}.
+    $$
+    <p>(<a href="../tong-qft/notes/spin-statistics.html">Spin and statistics</a> says why only these two signs occur, and why integer spin goes with $+$.) Put one particle in an orbital $\varphi_L$ centred on the left and one in an orbital $\varphi_R$ centred on the right, both real and normalized, with overlap $s = \langle \varphi_L | \varphi_R \rangle$. A product $\varphi_L(x_1)\varphi_R(x_2)$ is not allowed. The allowed states are</p>
+    $$
+    \psi_\pm(x_1, x_2) = \frac{\varphi_L(x_1)\,\varphi_R(x_2) \pm \varphi_R(x_1)\,\varphi_L(x_2)}{\sqrt{2\,(1 \pm s^2)}} ,
+    $$
+    <p>with $+$ for bosons and $-$ for fermions. If the labels $1$ and $2$ are treated as the subsystems $A$ and $B$, neither state is a product. Their Schmidt coefficients follow from rewriting both orbitals in terms of the orthonormal pair $(\varphi_L \pm \varphi_R)/\sqrt{2(1\pm s)}$:</p>
+    $$
+    \text{bosons: } p = \frac{(1+s)^2}{2(1+s^2)},\; \frac{(1-s)^2}{2(1+s^2)}, \qquad \text{fermions: } p = \tfrac12,\; \tfrac12 \;\text{ for every } s.
+    $$
+    <p>So the “label entropy” of two fermions is pinned at one bit, however far apart they are. For two bosons it slides from one bit, when the orbitals do not overlap, to zero, when they coincide and both particles sit in the same orbital. The figure shows the two-particle wavefunction as a picture over the plane of $(x_1, x_2)$.</p>
+
+    <div class="fig" id="fig-config">
+      <div class="seg" role="group" aria-label="Kind of particles">
+        <button data-k="d">Distinguishable</button>
+        <button data-k="b" aria-pressed="true">Bosons</button>
+        <button data-k="f">Fermions</button>
+      </div>
+      <div class="row">
+        <div class="grow">
+          <svg viewBox="0 0 300 300" role="img" aria-label="The two-particle wavefunction drawn over the plane with x1 across and x2 up. Blobs sit at (left, right) and, for identical particles, at the mirror point (right, left); the dashed diagonal is where both particles are at the same place.">
+            <image id="cfg-img" x="30" y="10" width="260" height="260" preserveAspectRatio="none"/>
+            <rect x="30" y="10" width="260" height="260" fill="none" stroke="var(--rule)"/>
+            <line x1="30" y1="270" x2="290" y2="10" stroke="var(--muted)" stroke-dasharray="4 4"/>
+            <text x="160" y="292" text-anchor="middle" font-size="13" fill="var(--ink)" font-style="italic">x₁</text>
+            <text x="12" y="144" text-anchor="middle" font-size="13" fill="var(--ink)" font-style="italic">x₂</text>
+            <text x="282" y="26" text-anchor="end" font-size="10" fill="var(--muted)">x₁ = x₂</text>
+          </svg>
+        </div>
+        <div class="side">
+          <label class="ctl" for="cfg-d">Separation of the two orbitals: <b id="cfg-dv"></b> widths</label>
+          <input id="cfg-d" type="range" min="0.2" max="7" step="0.05" value="4">
+          <div class="stat"><span>Overlap s</span><span id="cfg-s"></span></div>
+          <div class="stat"><span>Label entropy S(ρ₁)</span><span id="cfg-S"></span></div>
+          <div class="meter"><div id="cfg-Sm"></div></div>
+          <div class="stat"><span>Density at x₁ = x₂, relative to distinguishable</span><span id="cfg-diag"></span></div>
+          <p class="note"><span style="color:#14968c">■</span> positive amplitude &nbsp; <span style="color:#e06e1e">■</span> negative amplitude. Brightness is the size of the amplitude.</p>
+        </div>
+      </div>
+      <p class="cap">Far apart, the two blobs are the same physics whatever the sign between them: one particle on the left, one on the right. Push them together and the sign matters. Bosons pile up on the diagonal (twice the distinguishable density there, then more as the orbitals merge). Fermions have a node along the whole diagonal: they are never found at the same place.</p>
+    </div>
+
+    <h2 id="labels">1.3 Labels are not subsystems</h2>
+    <p>Put one electron in a trap on Earth and another in a trap on the Moon. Their state is $\psi_-$ with $s = 0$, and its label entropy is one bit, the same number as a Bell pair. Yet nobody holding the Earth trap and nobody holding the Moon trap can do anything with this bit. A measurement made on Earth is a measurement of “whichever electron is on Earth”, not of “electron number 1”. Written in terms of the field operators that create and destroy a particle at a point, every observable localized on Earth involves only points on Earth, and with non-overlapping orbitals all joint statistics factorize: the probability of an outcome on Earth and an outcome on the Moon is the product of the two probabilities. There is no Bell violation, no teleportation, nothing a product state could not do. The bit in the label entropy is bookkeeping for a label that no experiment can address.</p>
+    <p>So the tensor product $\mathcal H \otimes \mathcal H$ over particle labels is the wrong place to look. There are two better ones, and they answer different questions:</p>
+    <ul>
+      <li><strong>Particle entanglement.</strong> Keep the particle picture, but call a state unentangled when it has no correlations beyond those the exchange sign forces on it. This asks whether the particles themselves are correlated.</li>
+      <li><strong>Mode entanglement.</strong> Choose two sets of modes (single-particle states), such as “everything on Earth” and “everything on the Moon”, write the state in occupation numbers of those modes, and ask about entanglement between the two sets. This asks what two parties holding those regions can use.</li>
+    </ul>
+    <p>Bosons and fermions differ in both pictures.</p>
+
+    <h2 id="slater">1.4 Fermions: Slater determinants are the product states</h2>
+    <p>In second quantization, $a^\dagger_i$ adds a particle to the orthonormal mode $i$, and a general two-fermion state is</p>
+    $$
+    |\psi\rangle = \sum_{i<j} c_{ij}\; a^\dagger_i a^\dagger_j |0\rangle, \qquad \sum_{i<j} |c_{ij}|^2 = 1 ,
+    $$
+    <p>with $a^\dagger_i a^\dagger_j = -a^\dagger_j a^\dagger_i$. The fermionic analogue of a product state is a single Slater determinant $a^\dagger_\varphi a^\dagger_\chi|0\rangle$: one particle in mode $\varphi$, one in mode $\chi$, antisymmetrized and nothing more. Its wavefunction is $\psi_-$ above. Schliemann, Cirac, Kuś, Lewenstein and Loss showed that the Schmidt decomposition has a fermionic version. Using a theorem of Youla on antisymmetric matrices, a suitable orthonormal basis of modes $b_k$ brings every state to the form</p>
+    $$
+    |\psi\rangle = \sum_k z_k\; b^\dagger_{2k-1}\, b^\dagger_{2k}\, |0\rangle, \qquad \sum_k |z_k|^2 = 1 .
+    $$
+    <p>The number of nonzero $z_k$ is the Slater rank, and the state is unentangled exactly when the rank is $1$. The one-particle density matrix $\rho_1$ (normalized to trace $1$) has eigenvalues $|z_k|^2/2$, each appearing twice. Two consequences follow. No eigenvalue exceeds $\tfrac12$, which is the Pauli principle stated for density matrices. And</p>
+    $$
+    S(\rho_1) \;\geq\; 1 \text{ bit}, \qquad \text{with equality exactly for a single Slater determinant.}
+    $$
+    <p>The pinned bit of figure 1 is this floor. It is not entanglement; entanglement is what sits above it. With four modes, the case of two spin-½ particles on two sites, there is a closed formula. Number the modes $1, 2, 3, 4$ and set</p>
+    $$
+    C = 2\,\bigl|\,c_{12}c_{34} - c_{13}c_{24} + c_{14}c_{23}\,\bigr| = 2\,|z_1 z_2| .
+    $$
+    <p>$C$ vanishes exactly on Slater determinants (the bracket is the Plücker relation that a determinant satisfies) and equals $1$ for the most entangled states. It plays the role the concurrence plays for two qubits.</p>
+    <p>Two examples show how different this is from looking at the spin part. The ground state of helium, in the approximation that ignores the repulsion between the electrons, is $a^\dagger_{1s\uparrow}a^\dagger_{1s\downarrow}|0\rangle$. Its spin part is a singlet $\tfrac{1}{\sqrt2}(\uparrow\downarrow - \downarrow\uparrow)$, the textbook entangled state, but the whole state is one determinant and $C = 0$. The singlet is not a correlation the electrons have acquired. It is forced: the two electrons share an orbital, so the spin part must be antisymmetric. Now take two quantum dots, left and right, with one electron on each in a spin singlet, $\tfrac{1}{\sqrt2}\bigl(a^\dagger_{L\uparrow}a^\dagger_{R\downarrow} - a^\dagger_{L\downarrow}a^\dagger_{R\uparrow}\bigr)|0\rangle$. With the modes ordered $L\!\uparrow, L\!\downarrow, R\!\uparrow, R\!\downarrow$, only $c_{14} = \tfrac{1}{\sqrt2}$ and $c_{23} = -\tfrac{1}{\sqrt2}$ are nonzero, and $C = 1$. This is the entanglement of the Loss–DiVincenzo spin qubits.</p>
+    <p>A two-site Hubbard model connects the two. Two electrons hop between the sites with amplitude $t$ and pay an energy $U$ when they sit on the same site. The ground state is a spin singlet mixing a “covalent” part, one electron per site, with an “ionic” part, both on one site. At $U = 0$ both electrons occupy the bonding orbital $\tfrac{1}{\sqrt2}(\varphi_L + \varphi_R)$: one determinant. As $U$ grows the ionic part is suppressed. Working out the ground state gives</p>
+    $$
+    C = \frac{U}{\sqrt{U^2 + 16\,t^2}} .
+    $$
+
+    <div class="fig" id="fig-hub">
+      <div class="row">
+        <div class="grow">
+          <svg viewBox="0 0 320 170" role="img" aria-label="Bars for the probability of finding one electron on each site, both on the left, and both on the right, in the ground state of the two-site Hubbard model.">
+            <g id="hub-bars"></g>
+            <line x1="20" y1="130" x2="300" y2="130" stroke="var(--rule)"/>
+            <text x="70" y="148" text-anchor="middle" font-size="11" fill="var(--ink)">one per site</text>
+            <text x="70" y="162" text-anchor="middle" font-size="10" fill="var(--muted)">spin singlet</text>
+            <text x="160" y="148" text-anchor="middle" font-size="11" fill="var(--ink)">both left</text>
+            <text x="250" y="148" text-anchor="middle" font-size="11" fill="var(--ink)">both right</text>
+          </svg>
+        </div>
+        <div class="side">
+          <label class="ctl" for="hub-u">Repulsion: <b id="hub-uv"></b></label>
+          <input id="hub-u" type="range" min="0" max="30" step="0.1" value="4">
+          <div class="stat"><span>Particle entanglement C</span><span id="hub-c"></span></div>
+          <div class="meter"><div id="hub-cm"></div></div>
+          <div class="stat"><span>One-particle entropy S(ρ₁)</span><span id="hub-s"></span></div>
+          <div class="stat"><span>Usable by one holder per site</span><span id="hub-e"></span></div>
+          <div class="meter"><div id="hub-em"></div></div>
+        </div>
+      </div>
+      <p class="cap">Particle entanglement $C$ starts at zero and approaches 1 as repulsion forces one electron onto each site. The one-particle entropy never drops below 1 bit (that much is Pauli). The last line counts what two people holding one site each can extract, given that electric charge cannot be put in superposition: they keep the cases with one electron each, and those are a perfect spin singlet. It is (1 + C)/2 Bell pairs, and it is half a Bell pair even at U = 0, where the state is a single determinant.</p>
+    </div>
+
+    <p>The last line of the figure is the warning that goes with this section. “A Slater determinant is unentangled” is a statement about the particles, not about places. Two electrons in a delocalized bonding orbital are uncorrelated as particles, yet because Pauli exclusion forced their spins into a singlet, separating the orbital into its left and right halves and keeping the runs with one electron on each side yields spin-entangled pairs. This is the working principle of the Cooper pair splitter: a superconductor holds electrons in spin-singlet pairs, and a device that sends the two electrons of a pair to two different quantum dots turns that forced singlet into entanglement between distant dots.</p>
+
+    <h2 id="bosons">1.5 Bosons: no exclusion, two candidate baselines</h2>
+    <p>For bosons, $c_{ij}$ is symmetric, and the same matrix theorem (now Takagi's factorization of symmetric matrices) gives a bosonic Schmidt decomposition,</p>
+    $$
+    |\psi\rangle = \sum_k z_k\; \frac{(b^\dagger_k)^2}{\sqrt2}\, |0\rangle, \qquad \sum_k |z_k|^2 = 1,
+    $$
+    <p>a superposition of “both particles in mode $k$”. Now $\rho_1$ has eigenvalues $|z_k|^2$, with no factor $\tfrac12$ and no ceiling, so $S(\rho_1)$ can be zero: both bosons in one orbital, the state of figure 1 at zero separation. The floor for bosons is zero bits, not one.</p>
+    <p>That leaves an honest ambiguity. One boson in $\varphi$ and one in an orthogonal $\chi$, $a^\dagger_\varphi a^\dagger_\chi|0\rangle$, is the bosonic counterpart of a Slater determinant. In the decomposition above it has two terms,</p>
+    $$
+    a^\dagger_\varphi a^\dagger_\chi|0\rangle = \tfrac{1}{\sqrt2}\Bigl( \tfrac{(b_+^\dagger)^2}{\sqrt2} - \tfrac{(b_-^\dagger)^2}{\sqrt2} \Bigr)|0\rangle, \qquad b_\pm = \tfrac{1}{\sqrt2}(a_\varphi \pm a_\chi),
+    $$
+    <p>so its label entropy is one bit. Paškauskas and You, and Eckert, Schliemann, Bruß and Lewenstein, count only single-orbital states as unentangled, which makes this state entangled. Ghirardi and Marinatto count it as unentangled too, on the grounds that each particle then has a definite set of properties (one is “in $\varphi$”, the other “in $\chi$”). For fermions there is no such dispute, because the determinant is the only candidate. For bosons the two rules agree about far-separated particles only in the sense that matters operationally: the Earth–Moon state is useless either way, which is the mode-picture verdict.</p>
+    <p>The deeper difference is that nothing forces correlations on bosons. Two bosons can share an orbital and an internal state, and splitting that orbital in two gives, in the runs with one particle per side, two particles with identical internal states: a product. Fermions sharing an orbital are pushed into opposite internal states, and that is where the Cooper pair splitter's singlet came from. Bosons reach entanglement by another route: interference.</p>
+
+    <h2 id="splitter">1.6 At a beam splitter</h2>
+    <p>A 50:50 beam splitter has two input ports $a, b$ and two output ports $c, d$. A particle entering either port leaves by either output with amplitude $1/\sqrt2$, with a phase $i$ on reflection:</p>
+    $$
+    a^\dagger \to \tfrac{1}{\sqrt2}\bigl(c^\dagger + i\,d^\dagger\bigr), \qquad b^\dagger \to \tfrac{1}{\sqrt2}\bigl(i\,c^\dagger + d^\dagger\bigr).
+    $$
+    <p>Send one particle into each input. The two ways of ending with one particle in each output, both transmitted and both reflected, have amplitudes $\tfrac12$ and $\tfrac{i \cdot i}{2} = -\tfrac12$. For bosons the operators commute and the two terms cancel:</p>
+    $$
+    a^\dagger b^\dagger |0\rangle \;\to\; \tfrac{i}{2}\bigl(c^{\dagger 2} + d^{\dagger 2}\bigr)|0\rangle = \tfrac{i}{\sqrt2}\bigl(|2,0\rangle + |0,2\rangle\bigr).
+    $$
+    <p>The pair always leaves together. This is the Hong–Ou–Mandel effect (1987), seen with photons. For fermions $d^\dagger c^\dagger = -c^\dagger d^\dagger$ turns the cancellation into reinforcement, and $c^{\dagger 2} = 0$ forbids the bunched terms, so $a^\dagger b^\dagger|0\rangle \to c^\dagger d^\dagger|0\rangle$: the pair always splits. Distinguishable particles split half the time.</p>
+    <p>A beam splitter only sees which port a particle is in. If the particles also carry an internal state (polarization, spin) and arrive with a time offset, what matters is the exchange sign of everything else. Let $\epsilon = +1$ for bosons and $-1$ for fermions, let $\eta$ be the expectation value of swapping the two internal states ($+1$ if they are equal, $0$ for orthogonal product states such as $\uparrow$ and $\downarrow$, $+1$ for the symmetric entangled state $\tfrac{1}{\sqrt2}(\uparrow\downarrow + \downarrow\uparrow)$, $-1$ for the singlet), and let $|\gamma|^2$ be the overlap of the two arrival-time wavepackets. Then the probability of one particle in each output is</p>
+    $$
+    P_{\text{split}} = \tfrac12\bigl(1 - \epsilon\,\eta\,|\gamma|^2\bigr).
+    $$
+
+    <div class="fig" id="fig-hom">
+      <div class="seg" role="group" aria-label="Kind of particles">
+        <button data-k="b" aria-pressed="true">Photons</button>
+        <button data-k="f">Electrons</button>
+      </div>
+      <div class="seg" role="group" aria-label="Internal state of the pair" id="hom-int"></div>
+      <div class="row">
+        <div class="grow">
+          <svg viewBox="0 0 400 250" role="img" aria-label="A beam splitter at the centre. Particles enter from the left (port a) and from below (port b). Detectors sit to the right (port c) and at the top (port d). Pairs fly in and are counted.">
+            <line x1="20" y1="140" x2="380" y2="140" stroke="var(--rule)" stroke-width="2"/>
+            <line x1="200" y1="245" x2="200" y2="20" stroke="var(--rule)" stroke-width="2"/>
+            <line x1="176" y1="164" x2="224" y2="116" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
+            <rect id="det-c" x="362" y="122" width="26" height="36" rx="4" fill="var(--card)" stroke="var(--ink)"/>
+            <rect id="det-d" x="182" y="6" width="36" height="26" rx="4" fill="var(--card)" stroke="var(--ink)"/>
+            <text x="375" y="176" text-anchor="middle" font-size="12" fill="var(--ink)" font-style="italic">c</text>
+            <text x="232" y="24" font-size="12" fill="var(--ink)" font-style="italic">d</text>
+            <text x="24" y="132" font-size="12" fill="var(--ink)" font-style="italic">a</text>
+            <text x="208" y="242" font-size="12" fill="var(--ink)" font-style="italic">b</text>
+            <g id="hom-dots"></g>
+          </svg>
+        </div>
+        <div class="side">
+          <label class="ctl" for="hom-t">Arrival delay: <b id="hom-tv"></b> coherence times</label>
+          <input id="hom-t" type="range" min="-3" max="3" step="0.05" value="0">
+          <div class="stat"><span>P(one in each output)</span><span id="hom-p"></span></div>
+          <svg viewBox="0 0 240 120" id="hom-bars" role="img" aria-label="Counts of pairs leaving both through c, one in each, and both through d, with the predicted fractions marked."></svg>
+          <div class="seg">
+            <button class="btn" id="hom-play">Pause</button>
+            <button class="btn" id="hom-many">+1000 pairs</button>
+            <button class="btn" id="hom-reset">Reset</button>
+          </div>
+        </div>
+      </div>
+      <svg viewBox="0 0 400 140" id="hom-curve" role="img" aria-label="The probability that the pair splits, plotted against the arrival delay. A dip to zero at zero delay for bunching pairs, a peak to one for antibunching pairs, flat at one half when the internal states are orthogonal."></svg>
+      <p class="cap">Identical photons bunch and identical electrons antibunch. Swap the internal state for the antisymmetric one and the roles reverse: photons in the polarization singlet always split, electrons in the spin singlet always leave together. Delay one particle by more than its coherence time and every case relaxes to the distinguishable one half.</p>
+    </div>
+
+    <p>Two facts about entanglement come out of this picture. First, the boson output $\tfrac{1}{\sqrt2}(|2,0\rangle + |0,2\rangle)$ is mode-entangled between $c$ and $d$ (a two-photon “NOON” state, used for phase measurements beyond the shot-noise limit), while the input $|1,1\rangle$ was a product of the modes $a$ and $b$. A passive optical element, which cannot create entanglement between distinguishable particles, has converted indistinguishability into mode entanglement. Killoran, Cramer and Plenio showed that this is general: the exchange structure of identical particles is a resource that passive operations plus particle detection can extract. For fermions in a single pair of spinless modes nothing comes out, since $c^\dagger d^\dagger|0\rangle$ is again a product; with spin there is room, and the split runs of an $\uparrow$ and a $\downarrow$ electron come out in the entangled spin state $\tfrac{1}{\sqrt2}(\uparrow_c\downarrow_d + \downarrow_c\uparrow_d)$.</p>
+    <p>Second, the beam splitter reads the exchange symmetry of the internal state, so it can detect entanglement. For photons, the polarization singlet is the only Bell state that always splits, which is how linear-optics Bell-state measurement (and the first teleportation experiments) picks it out. For electrons, Burkard, Loss and Sukhorukov proposed the mirror image: spin-singlet electrons bunch like bosons and triplets antibunch, so the current noise after an electronic beam splitter reveals whether an electron source emits entangled pairs. The single-electron Hong–Ou–Mandel effect has since been observed in quantum Hall edge channels.</p>
+
+    <h2 id="one">1.7 One particle in two places</h2>
+    <p>The sharpest difference involves just one particle. Let modes $A$ and $B$ be two distant locations and put one particle in an equal superposition of both:</p>
+    $$
+    \tfrac{1}{\sqrt2}\bigl(a^\dagger_A + a^\dagger_B\bigr)|0\rangle = \tfrac{1}{\sqrt2}\bigl(|1\rangle_A|0\rangle_B + |0\rangle_A|1\rangle_B\bigr).
+    $$
+    <p>In the mode picture this has exactly the form of a Bell state, with occupation numbers $0$ and $1$ playing the role of a qubit at each location.</p>
+    <p><span class="k-b">For a photon</span> the entanglement is real. Let each half be absorbed by an atom, one at $A$ and one at $B$. The atoms end up in $\tfrac{1}{\sqrt2}(|e\rangle|g\rangle + |g\rangle|e\rangle)$, ordinary entanglement between two material systems, of the kind that quantum-repeater schemes create and then swap. To verify it, each side must measure in a basis that mixes $|0\rangle$ and $|1\rangle$ (or $|g\rangle$ and $|e\rangle$), which needs a shared phase reference. For light that is easy: a strong laser beam is a classical field with a definite phase, and both sides can lock to it.</p>
+    <p><span class="k-f">For an electron</span> the same state is useless on its own. A rotation by $2\pi$ multiplies every state with an odd number of fermions by $-1$ and leaves even ones alone. Since a rotation by $2\pi$ is physically no change at all, no observable can distinguish $|0\rangle + |1\rangle$ from $|0\rangle - |1\rangle$: every observable commutes with the fermion parity $(-1)^F$. This is the parity superselection rule of Wick, Wightman and Wigner. The person at $A$ can measure whether the electron is there, and nothing else, so the state is indistinguishable, by local measurements, from the classical mixture “the electron is at $A$ or at $B$, each with probability ½”. And there is no fermionic laser to lift the restriction. A fermion field has no classical limit: Pauli exclusion forbids the macroscopic occupation that makes a coherent state, and $\langle \psi \rangle = 0$ in every physical state. The only phase reference for fermion parity is more of the same quantum resource. Two delocalized electrons, one shared pair of locations each, do contain usable entanglement: in the half of the runs where $A$ finds exactly one electron, the two sides hold a genuine entangled state with fixed local parity.</p>
+    <p>Electric charge sharpens this further for electrons, since charge cannot be superposed either; for massive bosons such as atoms, conservation of atom number plays the same role, but a Bose–Einstein condensate is a matter wave with a phase and can serve as the reference that photons get from a laser. In each case the boson has a classical field to borrow a phase from, and the fermion does not.</p>
+
+    <h2 id="summary">1.8 Side by side</h2>
+    <div class="tablewrap">
+    <table class="cmp">
+      <thead><tr><th></th><th>Distinguishable</th><th class="k-b">Bosons</th><th class="k-f">Fermions</th></tr></thead>
+      <tbody>
+        <tr><td>Two-particle states</td><td>all of $\mathcal H \otimes \mathcal H$</td><td>symmetric part</td><td>antisymmetric part</td></tr>
+        <tr><td>Unentangled states</td><td>products</td><td>both in one orbital (and, on one view, two orthogonal orbitals)</td><td>single Slater determinants</td></tr>
+        <tr><td>Decomposition</td><td>Schmidt</td><td>bosonic Schmidt: $\sum z_k (b_k^\dagger)^2/\sqrt2$</td><td>Slater: $\sum z_k b^\dagger_{2k-1} b^\dagger_{2k}$</td></tr>
+        <tr><td>Floor of $S(\rho_1)$</td><td>0</td><td>0</td><td>1 bit ($\ln N$ for $N$ fermions)</td></tr>
+        <tr><td>Sharing an orbital</td><td>no constraint</td><td>allowed, internal states free</td><td>forbidden unless internal states are antisymmetric (a singlet)</td></tr>
+        <tr><td>Beam splitter, identical internal states</td><td>split half the time</td><td>always together</td><td>always apart</td></tr>
+        <tr><td>One particle in two places</td><td>—</td><td>usable with a phase reference (laser, condensate)</td><td>not usable alone: parity superselection, no classical field</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>The common thread is that for identical particles, entanglement is defined relative to what the parties can do: which modes they hold, which operations are physical, which references exist. Fix those, and the answer is unambiguous. Bosons and fermions then differ because of three facts already present in the exchange sign: fermions cannot share a state, so they are forced into correlations that bosons are free to avoid; their amplitudes at a beam splitter add where bosons' cancel; and their fields have no classical limit, so a superposition of “here” and “not here” cannot be read out.</p>
+
+    <h2>References</h2>
+    <ul>
+      <li>J. Schliemann, J. I. Cirac, M. Kuś, M. Lewenstein, D. Loss, “Quantum correlations in two-fermion systems,” <em>Phys. Rev. A</em> 64, 022303 (2001).</li>
+      <li>R. Paškauskas, L. You, “Quantum correlations in two-boson wave functions,” <em>Phys. Rev. A</em> 64, 042310 (2001).</li>
+      <li>K. Eckert, J. Schliemann, D. Bruß, M. Lewenstein, “Quantum correlations in systems of indistinguishable particles,” <em>Ann. Phys.</em> 299, 88 (2002).</li>
+      <li>G. Ghirardi, L. Marinatto, “General criterion for the entanglement of two indistinguishable particles,” <em>Phys. Rev. A</em> 70, 012109 (2004).</li>
+      <li>P. Zanardi, “Quantum entanglement in fermionic lattices,” <em>Phys. Rev. A</em> 65, 042101 (2002).</li>
+      <li>H. M. Wiseman, J. A. Vaccaro, “Entanglement of indistinguishable particles shared between two parties,” <em>Phys. Rev. Lett.</em> 91, 097902 (2003).</li>
+      <li>M.-C. Bañuls, J. I. Cirac, M. M. Wolf, “Entanglement in fermionic systems,” <em>Phys. Rev. A</em> 76, 022311 (2007).</li>
+      <li>N. Killoran, M. Cramer, M. B. Plenio, “Extracting entanglement from identical particles,” <em>Phys. Rev. Lett.</em> 112, 150501 (2014).</li>
+      <li>C. K. Hong, Z. Y. Ou, L. Mandel, “Measurement of subpicosecond time intervals between two photons by interference,” <em>Phys. Rev. Lett.</em> 59, 2044 (1987).</li>
+      <li>G. Burkard, D. Loss, E. V. Sukhorukov, “Noise of entangled electrons: bunching and antibunching,” <em>Phys. Rev. B</em> 61, R16303 (2000).</li>
+      <li>P. Recher, E. V. Sukhorukov, D. Loss, “Andreev tunneling, Coulomb blockade, and resonant transport of nonlocal spin-entangled electrons,” <em>Phys. Rev. B</em> 63, 165314 (2001); L. Hofstetter et al., “Cooper pair splitter realized in a two-quantum-dot Y-junction,” <em>Nature</em> 461, 960 (2009).</li>
+      <li>E. Bocquillon et al., “Coherence and indistinguishability of single electrons emitted by independent sources,” <em>Science</em> 339, 1054 (2013).</li>
+      <li>G. C. Wick, A. S. Wightman, E. P. Wigner, “The intrinsic parity of elementary particles,” <em>Phys. Rev.</em> 88, 101 (1952).</li>
+    </ul>
+  </article>
+
+  <script>
+  (function () {
+    "use strict";
+    function $(id) { return document.getElementById(id); }
+    function H2(p) { return p > 0 && p < 1 ? -p * Math.log2(p) - (1 - p) * Math.log2(1 - p) : 0; }
+    function fmt(x, n) { return x.toFixed(n == null ? 2 : n); }
+    var SVGNS = "http://www.w3.org/2000/svg";
+    function el(tag, attrs, parent) {
+      var e = document.createElementNS(SVGNS, tag);
+      for (var k in attrs) e.setAttribute(k, attrs[k]);
+      if (parent) parent.appendChild(e);
+      return e;
+    }
+    function segment(group, onPick) {
+      var buttons = group.querySelectorAll("button[data-k]");
+      buttons.forEach(function (b) {
+        b.addEventListener("click", function () {
+          buttons.forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+          onPick(b.getAttribute("data-k"));
+        });
+      });
+    }
+
+    /* ---- Figure 1: the two-particle wavefunction over (x1, x2) ---- */
+    (function () {
+      var root = $("fig-config");
+      var kind = "b";
+      var N = 120, X = 6;
+      var canvas = document.createElement("canvas");
+      canvas.width = canvas.height = N;
+      var ctx = canvas.getContext("2d");
+      var img = ctx.createImageData(N, N);
+      function draw() {
+        var d = parseFloat($("cfg-d").value);
+        var a = -d / 2, b = d / 2;
+        var vals = new Float64Array(N * N), max = 0;
+        for (var j = 0; j < N; j++) {
+          var x2 = X - (2 * X * (j + 0.5)) / N;
+          for (var i = 0; i < N; i++) {
+            var x1 = -X + (2 * X * (i + 0.5)) / N;
+            var l1 = Math.exp(-(x1 - a) * (x1 - a) / 2), r1 = Math.exp(-(x1 - b) * (x1 - b) / 2);
+            var l2 = Math.exp(-(x2 - a) * (x2 - a) / 2), r2 = Math.exp(-(x2 - b) * (x2 - b) / 2);
+            var v = kind === "d" ? l1 * r2 : kind === "b" ? l1 * r2 + r1 * l2 : l1 * r2 - r1 * l2;
+            vals[j * N + i] = v;
+            if (Math.abs(v) > max) max = Math.abs(v);
+          }
+        }
+        for (var k = 0; k < N * N; k++) {
+          var t = max > 0 ? vals[k] / max : 0;
+          var p = 4 * k;
+          if (t >= 0) { img.data[p] = 20; img.data[p + 1] = 150; img.data[p + 2] = 140; }
+          else { img.data[p] = 224; img.data[p + 1] = 110; img.data[p + 2] = 30; }
+          img.data[p + 3] = Math.round(Math.pow(Math.abs(t), 0.8) * 240);
+        }
+        ctx.putImageData(img, 0, 0);
+        $("cfg-img").setAttribute("href", canvas.toDataURL());
+
+        var s = Math.exp(-d * d / 4);
+        var S, diag;
+        if (kind === "d") { S = 0; diag = "×1"; }
+        else if (kind === "b") {
+          S = H2((1 + s) * (1 + s) / (2 * (1 + s * s)));
+          diag = "×" + fmt(2 / (1 + s * s));
+        } else { S = 1; diag = "0 (a node)"; }
+        $("cfg-dv").textContent = fmt(d, 1);
+        $("cfg-s").textContent = fmt(s, 3);
+        $("cfg-S").textContent = fmt(S) + " bit";
+        $("cfg-Sm").style.width = (S * 100) + "%";
+        $("cfg-diag").textContent = diag;
+      }
+      segment(root.querySelector(".seg"), function (k) { kind = k; draw(); });
+      $("cfg-d").addEventListener("input", draw);
+      draw();
+    })();
+
+    /* ---- Figure 2: two-site Hubbard model ---- */
+    (function () {
+      var bars = $("hub-bars");
+      var rects = [70, 160, 250].map(function (x) {
+        return {
+          r: el("rect", { x: x - 24, width: 48, rx: 3, fill: "var(--accent)" }, bars),
+          t: el("text", { x: x, "text-anchor": "middle", "font-size": 11, fill: "var(--ink)" }, bars)
+        };
+      });
+      function draw() {
+        var U = parseFloat($("hub-u").value); /* in units of t */
+        var u = U / 4, r = Math.sqrt(u * u + 1) - u;   /* beta / alpha */
+        var a2 = 1 / (1 + r * r), b2 = 1 - a2;
+        var C = U / Math.sqrt(U * U + 16);
+        var z1 = (1 + Math.sqrt(Math.max(0, 1 - C * C))) / 2;
+        var probs = [a2, b2 / 2, b2 / 2];
+        probs.forEach(function (p, i) {
+          var h = p * 110;
+          rects[i].r.setAttribute("y", 130 - h);
+          rects[i].r.setAttribute("height", Math.max(h, 0.5));
+          rects[i].t.setAttribute("y", 124 - h);
+          rects[i].t.textContent = fmt(p);
+        });
+        $("hub-uv").textContent = "U = " + fmt(U, 1) + " t";
+        $("hub-c").textContent = fmt(C);
+        $("hub-cm").style.width = C * 100 + "%";
+        $("hub-s").textContent = fmt(1 + H2(z1)) + " bit";
+        $("hub-e").textContent = fmt((1 + C) / 2) + " Bell pairs";
+        $("hub-em").style.width = (1 + C) * 50 + "%";
+      }
+      $("hub-u").addEventListener("input", draw);
+      draw();
+    })();
+
+    /* ---- Figure 3: Hong–Ou–Mandel ---- */
+    (function () {
+      var root = $("fig-hom");
+      var kind = "b", internal = 0, playing = true;
+      var LABELS = {
+        b: ["H, H", "H, V", "(HV + VH)/√2", "(HV − VH)/√2"],
+        f: ["↑, ↑", "↑, ↓", "(↑↓ + ↓↑)/√2", "(↑↓ − ↓↑)/√2"]
+      };
+      var ETA = [1, 0, 1, -1];
+      var intGroup = $("hom-int");
+      function buildInternal() {
+        intGroup.innerHTML = "";
+        LABELS[kind].forEach(function (lab, i) {
+          var b = document.createElement("button");
+          b.setAttribute("data-k", String(i));
+          b.setAttribute("aria-pressed", String(i === internal));
+          b.textContent = lab;
+          intGroup.appendChild(b);
+        });
+        segment(intGroup, function (k) { internal = +k; reset(); });
+      }
+      function tau() { return parseFloat($("hom-t").value); }
+      function pSplit(t) {
+        return 0.5 * (1 - (kind === "b" ? 1 : -1) * ETA[internal] * Math.exp(-t * t));
+      }
+      var counts = { cc: 0, cd: 0, dd: 0 };
+      function sample() {
+        var p = pSplit(tau()), u = Math.random();
+        return u < p ? "cd" : u < p + (1 - p) / 2 ? "cc" : "dd";
+      }
+
+      /* bars */
+      var barSvg = $("hom-bars");
+      var BL = ["both c", "one each", "both d"], KEYS = ["cc", "cd", "dd"];
+      var bar = KEYS.map(function (k, i) {
+        var x = 40 + i * 80;
+        return {
+          r: el("rect", { x: x - 20, width: 40, rx: 3, fill: "var(--accent)" }, barSvg),
+          m: el("line", { x1: x - 26, x2: x + 26, stroke: "var(--ink)", "stroke-width": 2, "stroke-dasharray": "3 2" }, barSvg),
+          t: el("text", { x: x, "text-anchor": "middle", "font-size": 10, fill: "var(--ink)" }, barSvg),
+          l: (function () { var t = el("text", { x: x, y: 116, "text-anchor": "middle", "font-size": 10, fill: "var(--muted)" }, barSvg); t.textContent = BL[i]; return t; })()
+        };
+      });
+      el("line", { x1: 10, x2: 230, y1: 100, y2: 100, stroke: "var(--rule)" }, barSvg);
+      function drawBars() {
+        var n = counts.cc + counts.cd + counts.dd;
+        var p = pSplit(tau());
+        var pred = { cc: (1 - p) / 2, cd: p, dd: (1 - p) / 2 };
+        KEYS.forEach(function (k, i) {
+          var f = n ? counts[k] / n : 0, h = f * 82;
+          bar[i].r.setAttribute("y", 100 - h);
+          bar[i].r.setAttribute("height", Math.max(h, 0.5));
+          var ym = 100 - pred[k] * 82;
+          bar[i].m.setAttribute("y1", ym); bar[i].m.setAttribute("y2", ym);
+          bar[i].t.setAttribute("y", Math.min(100 - h, ym) - 4);
+          bar[i].t.textContent = counts[k];
+        });
+      }
+
+      /* curve */
+      var cv = $("hom-curve");
+      var CX0 = 40, CX1 = 390, CY0 = 120, CY1 = 12;
+      function cx(t) { return CX0 + (t + 3) / 6 * (CX1 - CX0); }
+      function cy(p) { return CY0 - p * (CY0 - CY1); }
+      el("line", { x1: CX0, x2: CX1, y1: CY0, y2: CY0, stroke: "var(--rule)" }, cv);
+      el("line", { x1: CX0, x2: CX0, y1: CY0, y2: CY1, stroke: "var(--rule)" }, cv);
+      el("line", { x1: CX0, x2: CX1, y1: cy(0.5), y2: cy(0.5), stroke: "var(--muted)", "stroke-dasharray": "3 3" }, cv);
+      [[0, "0"], [0.5, "½"], [1, "1"]].forEach(function (q) {
+        var t = el("text", { x: CX0 - 6, y: cy(q[0]) + 4, "text-anchor": "end", "font-size": 10, fill: "var(--muted)" }, cv); t.textContent = q[1];
+      });
+      [-3, 0, 3].forEach(function (q) {
+        var t = el("text", { x: cx(q), y: CY0 + 14, "text-anchor": "middle", "font-size": 10, fill: "var(--muted)" }, cv); t.textContent = q;
+      });
+      var ttl = el("text", { x: CX1, y: CY1 + 2, "text-anchor": "end", "font-size": 10, fill: "var(--muted)" }, cv);
+      ttl.textContent = "P(split) against delay";
+      var path = el("path", { fill: "none", "stroke-width": 2.5 }, cv);
+      var dot = el("circle", { r: 5, fill: "var(--accent)" }, cv);
+      function drawCurve() {
+        var dpath = "";
+        for (var i = 0; i <= 120; i++) {
+          var t = -3 + i / 20;
+          dpath += (i ? "L" : "M") + fmt(cx(t), 1) + "," + fmt(cy(pSplit(t)), 1);
+        }
+        path.setAttribute("d", dpath);
+        path.setAttribute("stroke", kind === "b" ? "var(--bos)" : "var(--fer)");
+        dot.setAttribute("cx", cx(tau()));
+        dot.setAttribute("cy", cy(pSplit(tau())));
+        $("hom-tv").textContent = fmt(tau(), 2);
+        $("hom-p").textContent = fmt(pSplit(tau()), 3);
+      }
+
+      /* animation */
+      var dots = $("hom-dots");
+      var A = el("circle", { r: 7 }, dots), B = el("circle", { r: 7 }, dots);
+      var BS = [200, 140], IN_A = [20, 140], IN_B = [200, 245], OUT_C = [362, 140], OUT_D = [200, 32];
+      var current = null, t0 = 0, PERIOD = 1300;
+      function lerp(p, q, f) { return [p[0] + (q[0] - p[0]) * f, p[1] + (q[1] - p[1]) * f]; }
+      function newPair(now) {
+        var o = sample();
+        var aTo, bTo;
+        if (o === "cd") { if (Math.random() < 0.5) { aTo = OUT_C; bTo = OUT_D; } else { aTo = OUT_D; bTo = OUT_C; } }
+        else if (o === "cc") { aTo = OUT_C; bTo = OUT_C; } else { aTo = OUT_D; bTo = OUT_D; }
+        current = { o: o, aTo: aTo, bTo: bTo, counted: false, lag: tau() * 0.08 };
+        t0 = now;
+      }
+      function pos(from, to, f, off) {
+        if (f < 0) return null;
+        if (f < 0.5) return lerp(from, BS, f / 0.5);
+        if (f <= 1) { var p = lerp(BS, to, (f - 0.5) / 0.5); return [p[0] + off[0], p[1] + off[1]]; }
+        return null;
+      }
+      function flash(id) {
+        var r = $(id);
+        r.setAttribute("fill", "var(--accent)");
+        setTimeout(function () { r.setAttribute("fill", "var(--card)"); }, 180);
+      }
+      function frame(now) {
+        if (playing) {
+          if (!current || now - t0 > PERIOD) newPair(now);
+          var f = (now - t0) / (PERIOD * 0.8);
+          var same = current.aTo === current.bTo;
+          var offA = same ? (current.aTo === OUT_C ? [0, -6] : [-6, 0]) : [0, 0];
+          var offB = same ? (current.aTo === OUT_C ? [0, 6] : [6, 0]) : [0, 0];
+          var lagA = Math.max(0, -current.lag), lagB = Math.max(0, current.lag);
+          var pa = pos(IN_A, current.aTo, f - lagA, offA), pb = pos(IN_B, current.bTo, f - lagB, offB);
+          [[A, pa], [B, pb]].forEach(function (q) {
+            if (q[1]) { q[0].setAttribute("cx", q[1][0]); q[0].setAttribute("cy", q[1][1]); q[0].style.display = ""; }
+            else q[0].style.display = "none";
+          });
+          if (!current.counted && !pa && !pb && f > 1) {
+            current.counted = true;
+            counts[current.o]++;
+            if (current.o !== "dd") flash("det-c");
+            if (current.o !== "cc") flash("det-d");
+            drawBars();
+          }
+        }
+        requestAnimationFrame(frame);
+      }
+      function color() {
+        var c = kind === "b" ? "var(--bos)" : "var(--fer)";
+        A.setAttribute("fill", c); B.setAttribute("fill", c);
+      }
+      function reset() {
+        counts = { cc: 0, cd: 0, dd: 0 };
+        current = null;
+        drawBars(); drawCurve();
+      }
+      segment(root.querySelector(".seg"), function (k) { kind = k; buildInternal(); color(); reset(); });
+      $("hom-t").addEventListener("input", reset);
+      $("hom-reset").addEventListener("click", reset);
+      $("hom-many").addEventListener("click", function () {
+        for (var i = 0; i < 1000; i++) counts[sample()]++;
+        drawBars();
+      });
+      $("hom-play").addEventListener("click", function () {
+        playing = !playing;
+        this.textContent = playing ? "Pause" : "Play";
+        if (playing) current = null;
+      });
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        playing = false; $("hom-play").textContent = "Play";
+      }
+      buildInternal(); color(); reset();
+      requestAnimationFrame(frame);
+    })();
+  })();
+  </script>
+</body>
+</html>
