@@ -329,13 +329,12 @@ body.view-catalog .topbar-files {
   word-break: break-all;
 }
 
+/* Collapsed on desktop: the sidebar is gone entirely; the top bar's
+   files button brings it back. */
 html[data-sidebar="collapsed"] .sidebar,
 body.sidebar-collapsed .sidebar,
 .sidebar.is-collapsed {
-  width: 56px;
-  padding: 12px 8px;
-  overflow: hidden;
-  cursor: pointer;
+  display: none;
 }
 
 html[data-sidebar="collapsed"] .sidebar-head,
@@ -704,6 +703,7 @@ body.sidebar-collapsed .truncated,
   html[data-sidebar="collapsed"] .sidebar,
   body.sidebar-collapsed .sidebar,
   .sidebar.is-collapsed {
+    display: block;
     width: var(--sidebar-w);
     padding: 16px 12px 32px;
     overflow: auto;
