@@ -48,6 +48,8 @@
     els.sizeDown = $("sizeDown");
     els.sizeUp = $("sizeUp");
     els.sizeValue = $("sizeValue");
+    els.widthRange = $("widthRange");
+    els.widthValue = $("widthValue");
     els.sidebarToggle = $("sidebarToggle");
     els.filesBtn = $("filesBtn");
     els.folderTools = $("folderTools");
@@ -102,6 +104,12 @@
     els.sizeValue.addEventListener("click", function () {
       setTextSize(1);
     });
+    els.widthRange.addEventListener("input", function () {
+      setMeasure(els.widthRange.value, false);
+    });
+    els.widthRange.addEventListener("change", function () {
+      setMeasure(els.widthRange.value, true);
+    });
     document.addEventListener("click", function (ev) {
       var btn = ev.target.closest("[data-action='toggle-sidebar']");
       if (!btn) return;
@@ -150,6 +158,7 @@
     syncWarmButton();
     syncAlignButtons();
     syncTextPrefs();
+    syncMeasure();
     setSidebarRail(document.documentElement.getAttribute("data-sidebar") === "collapsed");
   }
 
@@ -195,6 +204,7 @@
       key === "reader-warmth" ||
       key === "reader-font" ||
       key === "reader-text-size" ||
+      key === "reader-text-width" ||
       key === "reader-sidebar"
     ) {
       try {
@@ -293,6 +303,34 @@
     els.sizeValue.textContent = Math.round(size * 100) + "%";
     els.sizeDown.disabled = size <= TEXT_SIZES[0];
     els.sizeUp.disabled = size >= TEXT_SIZES[TEXT_SIZES.length - 1];
+  }
+
+  /* Text column width (--measure), 20..80 rem. The column still shrinks to
+     the page on a narrow screen (width: 100% on .markdown-body). Live while
+     dragging; saved when the slider is released. */
+  var MEASURE_MIN = 20;
+  var MEASURE_MAX = 80;
+  var MEASURE_DEFAULT = 46;
+
+  function currentMeasure() {
+    var n = Math.round(parseFloat(document.documentElement.style.getPropertyValue("--measure")));
+    return n >= MEASURE_MIN && n <= MEASURE_MAX ? n : MEASURE_DEFAULT;
+  }
+
+  function setMeasure(value, save) {
+    var n = Math.round(parseFloat(value));
+    if (!(n >= MEASURE_MIN && n <= MEASURE_MAX)) n = MEASURE_DEFAULT;
+    if (n === MEASURE_DEFAULT) document.documentElement.style.removeProperty("--measure");
+    else document.documentElement.style.setProperty("--measure", n + "rem");
+    if (save) persist("reader-text-width", String(n));
+    syncMeasure();
+  }
+
+  function syncMeasure() {
+    var n = currentMeasure();
+    els.widthRange.value = String(n);
+    els.widthValue.textContent = n + " rem";
+    els.widthRange.setAttribute("aria-valuetext", n + " rem");
   }
 
   function syncThemeButton() {

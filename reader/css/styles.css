@@ -849,6 +849,28 @@ body.sidebar-collapsed .truncated,
 .size-small { font-size: 0.8em; }
 .size-large { font-size: 1.25em; line-height: 1; }
 
+/* Text column width, in the ⋯ menu. --measure (css/doc.css) caps
+   .markdown-body; width: 100% already keeps it inside a narrow viewport. */
+.width-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 8px;
+}
+.width-label output { color: var(--muted); font-variant-numeric: tabular-nums; }
+.text-prefs input[type="range"] {
+  width: calc(100% - 16px);
+  margin: 4px 8px;
+  accent-color: var(--accent);
+}
+.width-ends {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 8px 2px;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
 /* Phone navigation (js/mobile.js): drawer "All libraries" link and
    Files / Contents tabs, the Previous / Next pager, larger touch targets.
    Hidden above 800px, so the desktop layout is unchanged. */

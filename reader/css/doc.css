@@ -25,7 +25,7 @@
   --mono: "IBM Plex Mono", ui-monospace, monospace;
   --sidebar-w: 280px;
   --bar-h: 56px;
-  --measure: 46rem;
+  --measure: 46rem; /* text column; the ⋯ menu slider sets this, 20..80 rem */
   color-scheme: light;
 }
 

@@ -63,6 +63,7 @@
   var legacyWarm = readPref("reader-warm");
   var storedFont = readPref("reader-font");
   var storedSize = readPref("reader-text-size");
+  var storedMeasure = readPref("reader-text-width");
   var theme;
   var align;
   var sidebar;
@@ -101,6 +102,11 @@
   var size = parseFloat(storedSize);
   if (size >= 0.85 && size <= 1.5 && size !== 1) {
     document.documentElement.style.setProperty("--text-scale", String(size));
+  }
+  /* Text column width (--measure in css/doc.css), 20..80 rem; 46 is the default. */
+  var measure = Math.round(parseFloat(storedMeasure));
+  if (measure >= 20 && measure <= 80 && measure !== 46) {
+    document.documentElement.style.setProperty("--measure", measure + "rem");
   }
   if (document.body) {
     document.body.classList.toggle("sidebar-collapsed", sidebar === "collapsed");

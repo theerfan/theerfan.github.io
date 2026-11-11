@@ -19,7 +19,7 @@
   /* Element ids the reader itself looks up; documents must not shadow them. */
   const READER_IDS = [
     "menuBtn", "filesBtn", "crumb", "jumpFormBar", "jumpInputBar", "alignGroup",
-    "themeBtn", "fontGroup", "sizeDown", "sizeUp", "sizeValue", "warmMenu", "warmBtn", "warmRange", "warmValue", "moreMenu", "githubLink", "sidebar", "sidebarTitle", "sidebarMeta",
+    "themeBtn", "fontGroup", "sizeDown", "sizeUp", "sizeValue", "widthRange", "widthValue", "warmMenu", "warmBtn", "warmRange", "warmValue", "moreMenu", "githubLink", "sidebar", "sidebarTitle", "sidebarMeta",
     "sidebarToggle", "folderTools", "collapseAll", "expandAll", "fileList",
     "truncatedNote", "backdrop", "status", "catalogView", "jumpForm",
     "jumpInput", "jumpError", "repoList", "repoView", "article"
@@ -27,7 +27,7 @@
 
   /* Class names used by the reader's own CSS; stripped from document markup. */
   const RESERVED_CLASS =
-    /^(topbar(-.*)?|brand|crumb|sep|here|home-link|menu-btn|icon-btn|seg|jump(-.*)?|more(-.*)?|theme-(sun|moon)|warm-(btn|menu|panel|label|ends)|text-prefs(-.*)?|font-pick|size-(pick|small|large)|is-warm|crumb-.*|saved-heading|layout|sidebar(-.*)?|folder-.*|file-.*|nested|dir-.*|is-root|is-collapsed|active|muted|truncated|main|status|error|article(-msg)?|catalog|lede|repo-.*|empty|pick-.*|markdown-body|doc-.*|backdrop|view-.*)$/;
+    /^(topbar(-.*)?|brand|crumb|sep|here|home-link|menu-btn|icon-btn|seg|jump(-.*)?|more(-.*)?|theme-(sun|moon)|warm-(btn|menu|panel|label|ends)|text-prefs(-.*)?|font-pick|size-(pick|small|large)|width-(label|ends|pick)|is-warm|crumb-.*|saved-heading|layout|sidebar(-.*)?|folder-.*|file-.*|nested|dir-.*|is-root|is-collapsed|active|muted|truncated|main|status|error|article(-msg)?|catalog|lede|repo-.*|empty|pick-.*|markdown-body|doc-.*|backdrop|view-.*)$/;
 
   /* <style> is kept only inside inline SVG (scoped to that SVG). */
   const FORBID_TAGS = [
