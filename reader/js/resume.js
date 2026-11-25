@@ -275,6 +275,7 @@
     const v = d && d.view;
     if (v === "file" || v === "wiki" || v === "web") return true;
     if (v === "substack") return !!(d.route && d.route.slug);
+    if (v === "aaronson") return !!(d.route && d.route.id);
     return v === "raypeat" && !!(d.route && d.route.path);
   }
 

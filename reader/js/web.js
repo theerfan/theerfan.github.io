@@ -35,9 +35,10 @@
   }
 
   function hashFor(url, anchor) {
-    /* Sources with their own view (js/raypeat.js, js/substack.js) take their addresses. */
+    /* Sources with their own view (js/raypeat.js, js/substack.js, js/aaronson.js) take their addresses. */
     const own = (global.ReaderRayPeat && global.ReaderRayPeat.hashForUrl(url, anchor)) ||
-      (global.ReaderSubstack && global.ReaderSubstack.hashForUrl(url, anchor));
+      (global.ReaderSubstack && global.ReaderSubstack.hashForUrl(url, anchor)) ||
+      (global.ReaderAaronson && global.ReaderAaronson.hashForUrl(url, anchor));
     if (own) return own;
     return "#/~web/" + encodeURIComponent(String(url).split("#")[0]) + (anchor ? "#" + encodeURIComponent(anchor) : "");
   }

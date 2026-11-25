@@ -1362,3 +1362,89 @@ img.lb-media { object-fit: contain; image-rendering: auto; }
 .lb.lb-bare .lb-top, .lb.lb-bare .lb-cap, .lb.lb-bare .lb-nav { opacity: 0; pointer-events: none; }
 .lb.lb-bare .lb-btn { pointer-events: none; }
 html.lb-open { overscroll-behavior: none; }
+
+/* ---- Shtetl-Optimized, Scott Aaronson's blog (js/aaronson.js) ---- */
+.doc-aaronson .sa-head h1 { margin-bottom: 0.2em; }
+.doc-aaronson .sa-meta { color: var(--muted); font-family: var(--ui); font-size: 0.88rem; margin: 0.2em 0 0; }
+.doc-aaronson .sa-meta a { color: var(--accent-ink); }
+.doc-aaronson .sa-source { color: var(--muted); font-family: var(--ui); font-size: 0.8rem; margin: 0.3em 0 1.6em; }
+.doc-aaronson .sa-body img { max-width: 100%; height: auto; border-radius: 4px; }
+.doc-aaronson .sa-body figure, .doc-aaronson .sa-body .wp-block-image { margin: 1.4em 0; text-align: center; }
+.doc-aaronson .sa-body figcaption { color: var(--muted); font-size: 0.85em; margin-top: 0.5em; line-height: 1.4; }
+.doc-aaronson .sa-body .alignleft, .doc-aaronson .sa-body .alignright { float: none; display: block; margin: 1em auto; }
+.doc-aaronson .sa-body mark { background: none; color: inherit; }
+.doc-aaronson .sa-body .has-vivid-red-color { color: var(--danger); }
+.doc-aaronson .sa-body table { display: block; max-width: 100%; overflow-x: auto; }
+.doc-aaronson .sa-body pre { white-space: pre; overflow-x: auto; }
+.doc-aaronson .sa-card {
+  display: block; margin: 1.4em 0; padding: 0.6em; border: 1px solid var(--rule); border-radius: 8px;
+  background: var(--card); font-size: 0.92em;
+}
+.doc-aaronson .sa-card-line { margin: 0.4em 0.3em 0.2em; }
+.doc-aaronson .sa-card-kind { color: var(--muted); font-family: var(--ui); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; margin-right: 0.4em; }
+.doc-aaronson .sa-card-thumb { position: relative; display: block; line-height: 0; }
+.doc-aaronson .sa-card-thumb img { width: 100%; height: auto; border-radius: 6px; }
+.doc-aaronson .sa-card-play {
+  position: absolute; left: 50%; top: 50%; width: 3.2rem; height: 3.2rem; margin: -1.6rem 0 0 -1.6rem; border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6); color: #fff; font-size: 1.1rem; line-height: 3.2rem; text-align: center; padding-left: 0.15em; box-sizing: border-box;
+}
+
+/* Comments: folded away until the button is pressed. */
+.sa-comments { margin-top: 2.6em; padding-top: 0.4em; border-top: 1px solid var(--rule); }
+.sa-comments .sa-comments-title { margin: 0.8em 0 0.5em; border: 0; padding: 0; font-size: 1.35em; }
+.sa-comments-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5em 1em; }
+.sa-comments-toggle, .sa-comments-retry, .sa-more, .sa-clear {
+  font: inherit; font-family: var(--ui); font-size: 0.9rem; min-height: 40px; padding: 8px 18px; border-radius: 8px;
+  border: 1px solid var(--accent); background: var(--card); color: var(--accent-ink); cursor: pointer;
+}
+.sa-comments-toggle:hover, .sa-comments-retry:hover, .sa-more:hover:not(:disabled), .sa-clear:hover { background: var(--sidebar); }
+.sa-comments-toggle[hidden], .sa-clear[hidden], .sa-more[hidden] { display: none; }
+.sa-comments-toggle[aria-expanded="true"] { border-color: var(--rule); color: var(--ink); }
+.sa-comments-note { color: var(--muted); font-family: var(--ui); font-size: 0.85rem; }
+.sa-comments-panel[hidden] { display: none; }
+.sa-comments-panel { margin-top: 1em; }
+.sa-comments-end { margin: 1.4em 0 0; display: flex; flex-wrap: wrap; gap: 0.6em; }
+.sa-thread, .sa-replies { list-style: none; margin: 0; padding: 0; }
+.sa-comment { margin: 0; padding: 0.9em 0 0.3em; border-top: 1px solid var(--rule); }
+.sa-thread > .sa-comment:first-child { border-top: 0; padding-top: 0.2em; }
+.sa-replies { margin: 0.5em 0 0 0.15em; padding-left: 1em; border-left: 2px solid var(--rule); }
+.sa-replies > .sa-comment { border-top: 0; padding-top: 0.5em; }
+.sa-comment[data-depth="6"] > .sa-replies { margin-left: 0; padding-left: 0; border-left: 0; }
+.sa-c-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.7em; font-family: var(--ui); font-size: 0.88rem; }
+.sa-c-author { font-weight: 600; color: var(--ink); }
+.sa-c-date { color: var(--muted); font-size: 0.78rem; }
+.sa-c-body { font-size: 0.95em; line-height: 1.6; overflow-wrap: anywhere; }
+.sa-c-body p { margin: 0.5em 0; }
+.sa-c-body blockquote { margin: 0.6em 0; }
+.sa-c-body img { max-width: 100%; height: auto; }
+.sa-comment:target > .sa-c-head .sa-c-author { background: var(--status-bg); border-radius: 4px; padding: 0 4px; }
+@media (max-width: 560px) {
+  .sa-replies { padding-left: 0.6em; }
+  .sa-c-body { font-size: 0.97em; }
+}
+
+/* The index. */
+.sa-index .sa-index-head { margin-bottom: 1em; }
+.sa-index .sa-intro { color: var(--muted); font-size: 0.95em; }
+.sa-index .sa-note { color: var(--muted); font-size: 0.85em; font-style: italic; }
+.sa-index .sa-note[hidden], .sa-index .sa-none[hidden] { display: none; }
+.sa-controls { position: sticky; top: 0; z-index: 2; padding: 8px 0; background: var(--paper); }
+.sa-selects { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.sa-selects select {
+  flex: 1 1 11em; min-width: 0; max-width: 100%; font: inherit; font-family: var(--ui); font-size: 0.9rem; color: var(--ink);
+  background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; min-height: 40px;
+}
+.sa-selects select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.sa-clear { border-color: var(--rule); color: var(--muted); padding: 6px 14px; }
+.sa-index .sa-count { color: var(--muted); font-family: var(--ui); font-size: 0.85rem; min-height: 1.2em; margin: 0.2em 0 0; }
+.sa-index .sa-list { list-style: none; padding-left: 0; margin: 0.6em 0; }
+.sa-index .sa-list li { margin: 0; border-bottom: 1px solid var(--rule); }
+.sa-index .sa-list a { display: block; padding: 0.75em 0.1em; text-decoration: none; color: inherit; }
+.sa-index .sa-list a:hover .sa-item-title { text-decoration: underline; }
+.sa-index .sa-item-title { display: block; font-weight: 600; color: var(--accent); }
+.sa-index .sa-item-meta { display: block; color: var(--muted); font-family: var(--ui); font-size: 0.78rem; margin-top: 0.25em; }
+.sa-index .sa-item-excerpt { display: block; font-size: 0.92em; margin-top: 0.3em; line-height: 1.5; }
+.sa-index .sa-none { color: var(--muted); }
+.sa-index .sa-more-wrap { margin: 1.2em 0 2em; text-align: center; }
+.sa-index .sa-more:disabled { opacity: 0.6; cursor: default; }
+.sa-index .sa-more-note { display: block; color: var(--muted); font-family: var(--ui); font-size: 0.8rem; margin-top: 0.5em; }

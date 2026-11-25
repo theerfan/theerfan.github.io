@@ -190,6 +190,9 @@
       /* So do Substack posts and publications (js/substack.js). */
       const ss = global.ReaderSubstack ? global.ReaderSubstack.hashForUrl(href) : "";
       if (ss) return { kind: "route", hash: ss };
+      /* And Scott Aaronson's blog (js/aaronson.js), including the old scottaaronson.com/blog. */
+      const sa = global.ReaderAaronson ? global.ReaderAaronson.hashForUrl(href) : "";
+      if (sa) return { kind: "route", hash: sa };
       if (/^(https?:|mailto:|\/\/)/i.test(href)) return { kind: "external", url: href };
       return { kind: "none" };
     }

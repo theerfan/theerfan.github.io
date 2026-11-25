@@ -97,6 +97,13 @@
       "site": "raypeat.com · articles",
       "href": "#/~raypeat",
       "description": "Ray Peat's articles on physiology, hormones and nutrition, read live from raypeat.com in the reader's style. Searchable index."
+    },
+    {
+      "id": "aaronson",
+      "title": "Scott Aaronson",
+      "site": "scottaaronson.blog · Shtetl-Optimized",
+      "href": "#/~aaronson",
+      "description": "Shtetl-Optimized, read live from scottaaronson.blog in the reader's style: posts with their comments folded away until you ask, and a searchable index with category and year filters."
     }
   ]
 }

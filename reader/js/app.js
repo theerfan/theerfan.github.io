@@ -560,10 +560,16 @@
       if (repo === "~id") return { view: "substack", id: parts[2] || "", anchor: anchor };
       return { view: "substack", host: repo.toLowerCase(), slug: parts[2] === "p" ? parts[3] || "" : "", anchor: anchor };
     }
+    /* #/~aaronson[/p/<id> | /cat/<id>/year/<yyyy>/q/<text>]: Shtetl-Optimized (js/aaronson.js). */
+    if (owner === "~aaronson" && window.ReaderAaronson) {
+      return ReaderAaronson.routeFromParts(parts.slice(1), anchor);
+    }
     /* #/~web/<encoded URL>: any web page (js/web.js). */
     if (owner === "~web" && /^https?:\/\//i.test(repo || "")) {
       const rp = window.ReaderRayPeat ? ReaderRayPeat.pathForUrl(repo) : null;
       if (rp !== null) return { view: "raypeat", path: rp, anchor: anchor };
+      const sa = window.ReaderAaronson ? ReaderAaronson.routeForUrl(repo, anchor) : null;
+      if (sa) return sa;
       const ss = window.ReaderSubstack ? ReaderSubstack.parseUrl(repo) : null;
       if (ss && ss.kind === "id") return { view: "substack", id: ss.id, anchor: anchor };
       if (ss) return { view: "substack", host: ss.host, slug: ss.kind === "post" ? ss.slug : "", anchor: anchor };
@@ -1295,6 +1301,7 @@
     if (route.view === "web") return "~web/" + route.url;
     if (route.view === "raypeat") return "~raypeat/" + String(route.path || "").toLowerCase();
     if (route.view === "substack") return "~substack/" + (route.id ? "~id/" + route.id : route.host + "/" + (route.slug || ""));
+    if (route.view === "aaronson") return "~aaronson/" + (route.id ? "p/" + route.id : "index/" + [route.cat, route.year, route.q].join("/"));
     return [route.owner, route.repo, route.path].join("/").toLowerCase();
   }
 
@@ -1742,6 +1749,162 @@
     announce(route, outline, { title: p.title, source: p.pubName || "Substack" });
   }
 
+  /* Shtetl-Optimized (js/aaronson.js): the blog's index (searchable, with category and year
+     filters), or one post with its comments folded away behind a button. The sidebar lists
+     the latest posts (the pager follows it), with the open post's contents. */
+  function showAaronsonChrome(title, url) {
+    const AA = window.ReaderAaronson;
+    document.body.classList.remove("view-catalog");
+    document.body.classList.add("view-repo");
+    els.catalog.hidden = true;
+    els.repo.hidden = false;
+    els.githubLink.hidden = !url;
+    if (url) els.githubLink.href = url;
+    els.githubLink.textContent = "Open on scottaaronson.blog";
+    els.crumb.innerHTML = title
+      ? '<a class="crumb-up" href="' + escapeHtml(AA.hashForIndex({})) + '">' + escapeHtml(AA.name) + '</a><span class="sep">/</span>' +
+        '<span class="here">' + escapeHtml(title) + "</span>"
+      : '<span class="here">' + escapeHtml(AA.name) + "</span>";
+    $("sidebarTitle").textContent = AA.name;
+    $("sidebarMeta").textContent = "scottaaronson.blog";
+    if (els.folderTools) els.folderTools.hidden = true;
+    els.truncated.hidden = true;
+    els.jumpInputBar.value = url || "";
+  }
+
+  function renderAaronsonList(arc, current, outline, nb) {
+    els.fileList.innerHTML = ReaderAaronson.sidebarHtml(arc, current, outline, nb);
+    ReaderAaronson.wireSidebar(els.fileList);
+    const active = els.fileList.querySelector(".file-link.active");
+    if (active && active.scrollIntoView) active.scrollIntoView({ block: "nearest" });
+  }
+
+  function aaronsonError(title, err, url) {
+    showArticleMessage(title, (err && err.message) || "Couldn\u2019t load it from scottaaronson.blog.", "error");
+    const more = document.createElement("p");
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "Open it on scottaaronson.blog";
+    more.appendChild(link);
+    const box = els.article.querySelector(".article-msg");
+    if (box) box.appendChild(more);
+    state.renderedDoc = "";
+    showStatus("");
+  }
+
+  async function renderAaronson(route) {
+    const AA = window.ReaderAaronson;
+    state.meta = null;
+    state.files = [];
+    state.framed = false;
+    state.aaronsonComments = null;
+    const later = function (promise, ms) {
+      return Promise.race([promise, new Promise(function (r) { setTimeout(r, ms, null); })]);
+    };
+    if (!route.id) {
+      const filters = { cat: route.cat, year: route.year, q: route.q };
+      showAaronsonChrome("", AA.blogUrl());
+      setTitle([AA.name, "Reader"]);
+      els.fileList.innerHTML = "";
+      showStatus("Loading the index from scottaaronson.blog\u2026");
+      const results = await Promise.all([AA.archive(filters), AA.categories(), AA.archive({})]);
+      if (state.route !== route) return;
+      const arc = results[0];
+      const latest = results[2];
+      if (!arc.items.length && arc.error) {
+        renderAaronsonList(latest.items.length ? latest : null, null, null, null);
+        aaronsonError(AA.name, { message: arc.error }, AA.blogUrl());
+        announce(route, null, { title: AA.name, source: AA.name });
+        return;
+      }
+      renderAaronsonList(latest, null, null, null);
+      els.article.innerHTML = "";
+      els.article.appendChild(AA.indexView(arc, results[1], {
+        onFilters: function (f) {
+          /* The filters live in the address (no new history entry, no re-render). */
+          if (state.route !== route) return;
+          if (history.replaceState) history.replaceState(null, "", AA.hashForIndex(f));
+        },
+        onMore: function () {
+          if (state.route === route) renderAaronsonList(AA.archiveFor({}) || latest, null, null, null);
+        }
+      }));
+      state.renderedDoc = docKey(route);
+      showStatus(arc.from === "stale" ? "Offline: showing the list from your last visit." : "");
+      els.repo.scrollTop = 0;
+      announce(route, null, { title: AA.name, source: AA.name });
+      return;
+    }
+    showAaronsonChrome("Post " + route.id, AA.postUrl(route.id));
+    setTitle([AA.name, "Reader"]);
+    els.fileList.innerHTML = "";
+    showStatus("Loading the post from scottaaronson.blog\u2026");
+    const latestP = AA.archive({});
+    let page;
+    try {
+      page = await AA.render(route.id);
+    } catch (err) {
+      if (state.route !== route) return;
+      const arc = await later(latestP, 3000);
+      if (state.route !== route) return;
+      renderAaronsonList(arc && arc.items.length ? arc : null, null, null, null);
+      aaronsonError("Couldn\u2019t open the post", err, AA.postUrl(route.id));
+      announce(route, null, { title: AA.name, source: AA.name });
+      return;
+    }
+    if (state.route !== route) return; /* navigated away meanwhile */
+    const p = page.post;
+    showAaronsonChrome(p.title, p.url);
+    setTitle([p.title, AA.name, "Reader"]);
+    els.article.innerHTML = "";
+    const body = document.createElement("div");
+    body.className = "markdown-body doc-html doc-web doc-aaronson";
+    while (page.wrap.firstChild) body.appendChild(page.wrap.firstChild);
+    const comments = AA.commentsSection(p);
+    body.appendChild(comments.el);
+    els.article.appendChild(body);
+    state.aaronsonComments = comments;
+    if (window.ReaderInk) ReaderInk.scan(body);
+    ReaderDoc.fitMath(body);
+    let outline = null;
+    try {
+      outline = ReaderDoc.outline(body);
+    } catch (e) {
+      outline = null;
+    }
+    const arc = await later(latestP, 4000);
+    if (state.route !== route) return;
+    const listed = !!(arc && arc.items.some(function (i) { return i.id === p.id; }));
+    let nb = null;
+    if (!listed) {
+      const nbP = AA.neighbors(p);
+      nb = await later(nbP, 3000);
+      if (!nb) {
+        nbP.then(function (n) {
+          if (state.route === route && state.renderedDoc === docKey(route)) renderAaronsonList(arc, p, outline, n);
+        });
+      }
+    }
+    if (state.route !== route) return;
+    renderAaronsonList(arc, p, outline, nb);
+    if (!arc) {
+      latestP.then(function (a) {
+        if (state.route === route && state.renderedDoc === docKey(route)) renderAaronsonList(a, p, outline, nb);
+      });
+    }
+    state.renderedDoc = docKey(route);
+    showStatus(page.from === "stale" ? "Offline: showing the copy from your last visit." : "");
+    /* A link to one comment: its thread is folded away, so open it first. */
+    if (/^comment-\d+$/.test(route.anchor || "")) {
+      await comments.whenBuilt();
+      if (state.route !== route) return;
+    }
+    scrollDocTo(route.anchor, false);
+    announce(route, outline, { title: p.title, source: AA.name });
+  }
+
   async function renderWiki(route) {
     const title = route.title.replace(/_/g, " ");
     state.meta = null;
@@ -1793,11 +1956,18 @@
 
       /* Same document, different #anchor: just scroll. */
       if (
-        (route.view === "file" || route.view === "wiki" || route.view === "web" || route.view === "raypeat" || route.view === "substack") &&
+        (route.view === "file" || route.view === "wiki" || route.view === "web" || route.view === "raypeat" || route.view === "substack" || (route.view === "aaronson" && route.id)) &&
         previous &&
         previous.view === route.view &&
         state.renderedDoc === docKey(route)
       ) {
+        if (route.view === "aaronson" && /^comment-\d+$/.test(route.anchor || "") && state.aaronsonComments) {
+          /* A comment is inside the folded-away thread: open it first. */
+          state.aaronsonComments.whenBuilt().then(function () {
+            if (state.route === route) scrollDocTo(route.anchor, true);
+          });
+          return;
+        }
         scrollDocTo(route.anchor, true);
         return;
       }
@@ -1821,6 +1991,11 @@
       if (route.view === "substack") {
         state.scopedFolder = "";
         await renderSubstack(route);
+        return;
+      }
+      if (route.view === "aaronson") {
+        state.scopedFolder = "";
+        await renderAaronson(route);
         return;
       }
 

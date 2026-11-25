@@ -117,7 +117,7 @@
     state.outline = outline && outline.length ? outline : null;
     /* Wikipedia and web pages: the file list already is the article's contents. */
     els.tabs.querySelector('[data-tab="files"]').textContent =
-      route.view === "wiki" || route.view === "web" ? "Contents" : route.view === "raypeat" ? "Articles" : route.view === "substack" ? "Posts" : "Files";
+      route.view === "wiki" || route.view === "web" ? "Contents" : route.view === "raypeat" ? "Articles" : route.view === "substack" || route.view === "aaronson" ? "Posts" : "Files";
     els.tabs.hidden = !(state.outline || global.ReaderFavorites);
     if (!state.outline) {
       els.outline.innerHTML = "";
@@ -131,7 +131,9 @@
           ? global.ReaderRayPeat.hashFor(route.path, h.id)
           : route.view === "substack"
             ? global.ReaderSubstack.hashFor(route.host, route.slug, h.id)
-            : global.ReaderDoc.hashFor(route.owner, route.repo, route.path, h.id);
+            : route.view === "aaronson"
+              ? global.ReaderAaronson.hashFor(route.id, h.id)
+              : global.ReaderDoc.hashFor(route.owner, route.repo, route.path, h.id);
         return (
           '<li class="toc-item" style="--depth:' + (h.level - min) + '"><a class="file-link" href="' +
           esc(href) + '">' + esc(h.text) + "</a></li>"
@@ -145,7 +147,7 @@
     if (!els.article) return;
     const old = els.article.querySelector(".doc-pager");
     if (old) old.remove();
-    if (route.view !== "file" && !(route.view === "raypeat" && route.path) && !(route.view === "substack" && route.slug)) return;
+    if (route.view !== "file" && !(route.view === "raypeat" && route.path) && !(route.view === "substack" && route.slug) && !(route.view === "aaronson" && route.id)) return;
     const links = Array.prototype.slice.call(els.fileList.querySelectorAll(".file-item .file-link"));
     const i = links.findIndex(function (a) { return a.classList.contains("active"); });
     if (i === -1) return;
@@ -170,7 +172,7 @@
     const d = ev.detail || {};
     const route = d.route || {};
     state.route = route;
-    renderOutline(route, route.view === "file" || route.view === "raypeat" || route.view === "substack" ? d.outline : null);
+    renderOutline(route, route.view === "file" || route.view === "raypeat" || route.view === "substack" || route.view === "aaronson" ? d.outline : null);
     renderPager(route);
   }
 
