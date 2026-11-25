@@ -18,7 +18,7 @@
    Fetching: the blog answers cross-origin reads (it echoes the page's origin), so
    - on the website the API is read directly, with the public CORS relays (api.cors.lol,
      allorigins, codetabs) as the fallback when that fails (rate limit, an outage, a firewall);
-   - in the Android app it is read natively (CapacitorHttp).
+   - in the Android app it is read natively (CapacitorHttp), then through the same relays if that fails.
    Responses are kept in this browser's / app's own cache (Cache API) for a short while (posts
    30 min, lists and comments 10 min, categories a day) and used when offline. Nothing is
    bundled, and nothing is saved for offline use. */
@@ -158,19 +158,53 @@
   ];
 
   function inApp() {
-    return document.documentElement.classList.contains("native-app");
+    return document.documentElement.classList.contains("native-app") || !!(global.__readerNativeTest);
   }
+  /* Capacitor 7: use Plugins if present, otherwise registerPlugin (what native.js uses). */
   function httpPlugin() {
     const t = global.__readerNativeTest;
     if (t) return t.CapacitorHttp || null;
     const C = global.Capacitor;
-    return (C && C.Plugins && C.Plugins.CapacitorHttp) || null;
+    if (C && C.Plugins && C.Plugins.CapacitorHttp && C.Plugins.CapacitorHttp.request) return C.Plugins.CapacitorHttp;
+    try {
+      if (C && C.registerPlugin) {
+        const p = C.registerPlugin("CapacitorHttp");
+        if (p && p.request) return p;
+      }
+    } catch (e) { /* none */ }
+    return null;
   }
   function base64Bytes(b64) {
-    const bin = atob(String(b64 || ""));
+    const bin = atob(String(b64 || "").replace(/\s+/g, ""));
     const out = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
     return out;
+  }
+  /* CapacitorHttp's Android plugin ignores responseType when Content-Type is JSON: it
+     returns a parsed object (or, if org.json can't parse it, the raw JSON text). A
+     non-JSON error page is a string too. Only treat a string as base64 when it isn't
+     already text; atob() on JSON or HTML throws and used to be misread as "no connection". */
+  function dataToBytes(data) {
+    if (data == null) return null;
+    if (typeof data === "object" && data.byteLength !== undefined) return new Uint8Array(data);
+    if (typeof data === "object") {
+      try {
+        return new TextEncoder().encode(JSON.stringify(data));
+      } catch (e) {
+        return null;
+      }
+    }
+    if (typeof data !== "string") return null;
+    const trim = data.replace(/^\s+/, "");
+    const c = trim.charAt(0);
+    if (c === "{" || c === "[" || c === "<" || c === "\"" || /^[\x09\x0a\x0d\x20-\x7e]{0,64}(error|denied|forbidden|cloudflare|just a moment)/i.test(trim)) {
+      return new TextEncoder().encode(data);
+    }
+    try {
+      return base64Bytes(data);
+    } catch (e) {
+      return new TextEncoder().encode(data);
+    }
   }
   function parseJson(bytes) {
     try {
@@ -202,6 +236,46 @@
       { final: true }
     );
   }
+  function fromHttpBody(status, bytes, headers) {
+    const v = bytes ? parseJson(bytes) : null;
+    const err = wpError(v);
+    if (err) throw finalError(err);
+    if (status === 429) throw fail("Shtetl-Optimized is limiting requests right now (HTTP 429). Try again in a minute.", 429);
+    if (status >= 400 || !v) {
+      const hint = !bytes || !bytes.length ? "empty body"
+        : v ? ""
+          : (bytes.length > 8 && bytes[0] === 0x1f && bytes[1] === 0x8b) ? "compressed body the reader couldn\u2019t decode"
+            : "not the WordPress JSON API";
+      throw fail(
+        "scottaaronson.blog answered HTTP " + (status || "?") + (hint ? " (" + hint + ")" : "") + ".",
+        status
+      );
+    }
+    return { bytes: bytes, total: num(headerOf(headers, "x-wp-total")), pages: num(headerOf(headers, "x-wp-totalpages")) };
+  }
+  function networkFail(e, where) {
+    if (e && e.final) return e;
+    const status = e && e.status;
+    const msg = (e && e.message) || (e && e.code) || "";
+    if (status === 429) return fail("Shtetl-Optimized is limiting requests right now (HTTP 429). Try again in a minute.", 429);
+    if (status) return e instanceof Error && /answered HTTP|limiting requests|isn\u2019t on/.test(e.message) ? e
+      : fail("scottaaronson.blog answered HTTP " + status + ".", status);
+    if (/abort|timeout|timed out|Timeout/i.test(msg)) return fail("scottaaronson.blog took too long to answer (" + where + ").", 0, "timeout");
+    return fail("Couldn\u2019t reach scottaaronson.blog" + (where ? " via " + where : "") + (msg ? " (" + msg + ")" : "") + ".", status);
+  }
+  function combineFails(errs) {
+    const last = errs[errs.length - 1];
+    if (last && last.final) return last;
+    const useful = errs.filter(Boolean);
+    const withStatus = useful.filter(function (e) { return e.status; });
+    const first = withStatus[0] || useful[0];
+    const status = (withStatus[0] || {}).status;
+    const more = useful.length > 1;
+    if (first && first.message) {
+      return fail(first.message + (more ? " A relay fallback also failed." : ""), status);
+    }
+    return fail("Couldn\u2019t reach scottaaronson.blog (direct request and relays both failed). Try again in a minute.", status);
+  }
 
   async function timed(url) {
     const ctrl = global.AbortController ? new AbortController() : null;
@@ -216,12 +290,19 @@
   /* The website: the API answers this page's origin directly. */
   async function viaDirect(url) {
     const res = await timed(url);
-    const bytes = new Uint8Array(await res.arrayBuffer());
-    const v = parseJson(bytes);
-    const err = wpError(v);
-    if (err) throw finalError(err);
-    if (!res.ok || !v) throw fail("the blog answered " + res.status, res.status);
-    return { bytes: bytes, total: num(res.headers.get("x-wp-total")), pages: num(res.headers.get("x-wp-totalpages")) };
+    let bytes;
+    try {
+      bytes = new Uint8Array(await res.arrayBuffer());
+    } catch (e) {
+      /* Capacitor's patched fetch can fail arrayBuffer() on JSON; fall back to text. */
+      try {
+        const t = await res.text();
+        bytes = new TextEncoder().encode(t);
+      } catch (e2) {
+        throw fail("scottaaronson.blog answered HTTP " + res.status + " but the body couldn\u2019t be read.", res.status);
+      }
+    }
+    return fromHttpBody(res.status, bytes, res.headers);
   }
 
   async function viaRelays(url) {
@@ -230,11 +311,12 @@
       first = localStorage.getItem(PROXY_KEY) || "";
     } catch (e) { /* ignore */ }
     const order = RELAYS.slice().sort(function (a, b) { return (b.id === first) - (a.id === first); });
+    let lastStatus = 0;
     for (let i = 0; i < order.length; i++) {
       const relay = order[i];
       try {
         const res = await timed(relay.url(url));
-        if (!res.ok) continue;
+        if (!res.ok) { lastStatus = res.status; continue; }
         let bytes;
         if (relay.json) {
           const j = await res.json();
@@ -257,13 +339,19 @@
       }
     }
     throw fail(
-      "Couldn\u2019t reach scottaaronson.blog. The Reader asks it directly, then through public relays, and nothing " +
-        "answered just now (the blog may be limiting requests). Try again in a minute."
+      "Couldn\u2019t reach scottaaronson.blog through a public relay" +
+        (lastStatus ? " (last HTTP " + lastStatus + ")" : "") +
+        ". The blog may be limiting requests; try again in a minute.",
+      lastStatus
     );
   }
 
   function headerOf(headers, name) {
     if (!headers) return null;
+    if (typeof headers.get === "function") {
+      const g = headers.get(name);
+      if (g != null && g !== "") return g;
+    }
     const keys = Object.keys(headers);
     for (let i = 0; i < keys.length; i++) {
       if (keys[i].toLowerCase() === name) return headers[keys[i]];
@@ -271,44 +359,60 @@
     return null;
   }
 
+  function nativeHeaders() {
+    const headers = { Accept: "application/json", "Accept-Encoding": "identity" };
+    try {
+      if (global.navigator && navigator.userAgent) {
+        headers["User-Agent"] = navigator.userAgent;
+        headers["x-cap-user-agent"] = navigator.userAgent;
+      }
+    } catch (e) { /* none */ }
+    return headers;
+  }
+
   /* The app: CapacitorHttp reads it with no CORS at all. */
   async function viaNative(url) {
     const http = httpPlugin();
     if (http && http.request) {
+      const r = await http.request({
+        url: url, method: "GET", responseType: "arraybuffer",
+        connectTimeout: TIMEOUT_MS, readTimeout: TIMEOUT_MS,
+        headers: nativeHeaders()
+      });
+      const status = r && r.status != null ? r.status : 0;
+      const got = dataToBytes(r && r.data);
+      return fromHttpBody(status, got, (r && r.headers) || {});
+    }
+    return viaDirect(url);
+  }
+
+  /* In the app: native HTTP first, then the same relay chain the website uses.
+     (A failed direct/native read used to be labelled "no connection" and never tried
+     a relay, even when the blog had answered with an HTTP error or non-JSON body.) */
+  async function fromNetwork(url) {
+    const errs = [];
+    if (inApp()) {
       try {
-        const r = await http.request({
-          url: url, method: "GET", responseType: "arraybuffer", connectTimeout: TIMEOUT_MS, readTimeout: TIMEOUT_MS,
-          headers: { Accept: "application/json" }
-        });
-        const got = typeof r.data === "string" ? base64Bytes(r.data)
-          : r.data && r.data.byteLength !== undefined ? new Uint8Array(r.data)
-            : r.data && typeof r.data === "object" ? new TextEncoder().encode(JSON.stringify(r.data)) : null;
-        const v = got ? parseJson(got) : null;
-        const err = wpError(v);
-        if (err) throw finalError(err);
-        if (r.status >= 400 || !v) throw fail(r.status === 429 ? "Shtetl-Optimized is limiting requests right now. Try again in a minute." : "scottaaronson.blog answered " + r.status + ".", r.status);
-        return { bytes: got, total: num(headerOf(r.headers, "x-wp-total")), pages: num(headerOf(r.headers, "x-wp-totalpages")) };
+        return await viaNative(url);
       } catch (e) {
-        if (e && (e.final || e.status)) throw e;
-        /* fall back to the patched fetch */
+        if (e && e.final) throw e;
+        errs.push(networkFail(e, "the app"));
+      }
+    } else {
+      try {
+        return await viaDirect(url);
+      } catch (e) {
+        if (e && e.final) throw e;
+        errs.push(networkFail(e, "this page"));
       }
     }
     try {
-      return await viaDirect(url);
+      return await viaRelays(url);
     } catch (e) {
       if (e && e.final) throw e;
-      throw fail("Couldn\u2019t reach scottaaronson.blog (no connection?).", e && e.status);
+      errs.push(e);
+      throw combineFails(errs);
     }
-  }
-
-  async function fromNetwork(url) {
-    if (inApp()) return viaNative(url);
-    try {
-      return await viaDirect(url);
-    } catch (e) {
-      if (e && e.final) throw e;
-    }
-    return viaRelays(url);
   }
 
   async function openCache() {
